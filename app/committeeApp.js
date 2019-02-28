@@ -1,4 +1,5 @@
-var committeeApp = angular.module("committeeApp", ["ngRoute"]);
+var committeeApp = angular.module("committeeApp", []);
+// var committeeApp = angular.module("committeeApp", ["ngRoute"]);
 
 // committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 //     console.log();
