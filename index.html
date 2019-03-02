@@ -18,6 +18,8 @@
     <script src="app/shared/navbar/navbarDir.js"></script>
     <script src="app/shared/navbar/navbarCtrl.js"></script>
 
+    <script src="app/shared/navbar/bottomNavbarDir.js"></script>
+
     <script src="app/model/UserSrv.js"></script>
     <!-- <script src="nameCtrl.js"></script> -->
 
@@ -28,17 +30,14 @@
 </head>
 
 <body>
-    <navbar></navbar>
+    <header>
+        <navbar></navbar>
+    </header>
     <ng-view></ng-view>
-    <div class="jumbotron">
-        <h1 class="display-3">Jumbo heading</h1>
-        <p class="lead">Jumbo helper text</p>
-        <hr class="my-2">
-        <p>More info</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p>
-    </div>
+
+    <footer>
+        <bottom-navbar></bottom-navbar>
+    </footer>
 
 </body>
 
