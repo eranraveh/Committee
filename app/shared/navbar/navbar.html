@@ -16,11 +16,12 @@
         </ul>
         <ul class="navbar-nav ml-auto mt-lg-0">
             <li class="nav-item" ng-hide="isUserLoggedIn()">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" data-toggle="modal" href="#loginForm">Login</a>
             </li>
             <li class="nav-item" ng-hide="isUserLoggedIn()">
-                <a class="nav-link" href="/signup">Sign Up</a>
-            </li>
+                    <a class="nav-link"  href="signup">Sign Up</a>
+                    <!-- <a class="nav-link" data-toggle="modal" href="#signupForm">Sign Up</a> -->
+                </li>
             <li class="nav-item" ng-show="isUserLoggedIn()">
                 <a class="nav-link" href="javascript:void(0)" ng-click="logout()">Logout</a>
             </li>

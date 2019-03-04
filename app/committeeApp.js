@@ -6,10 +6,10 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
     $routeProvider.when("/", {
             templateUrl: "/app/home/home.html"
         })
-//         .when("/dogs", {
-//             templateUrl: "/app/breedsGallery/breeds.html",
-//             controller: "breedsCtrl"
-//         })
+        .when("/signup", {
+            templateUrl: "/app/signup/signup.html"
+            // controller: "breedsCtrl"
+        })
 //         .when("/dogs/:breedId", {
 //             templateUrl: "/app/breedImagesGallery/breedImages.html",
 //             controller: "imageCtrl"
