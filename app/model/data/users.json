@@ -1,0 +1,35 @@
+[
+    {
+        "user": "1",
+        "fname": "Eran",
+        "lname": "Raveh",
+        "email": "eran@eran.com",
+        "pwd": "123",
+        "committeeId": "1"
+    },
+    {
+        "user": "2",
+        "fname": "Jessica",
+        "lname": "Johns",
+        "email": "jessica@hotmail.com",
+        "pwd": "123",
+        "committeeId": "1"
+    },
+    {
+        "user": "3",
+        "fname": "Iron",
+        "lname": "Man",
+        "email": "iron@hotmail.com",
+        "pwd": "123",
+        "committeeId": "2"
+    },
+    {
+        "user": "4",
+        "fname": "The",
+        "lname": "Hulk",
+        "email": "hulk@hotmail.com",
+        "pwd": "123",
+        "committeeId": "2"
+    }
+
+]

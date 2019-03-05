@@ -8,6 +8,8 @@ committeeApp.factory("userSrv", function ($http, $q, $log) {
             this.fname = plainUser.fname;
             this.lname = plainUser.lname;
             this.email = plainUser.email;
+            this.committeeId = plainUser.committeeId;
+            this.pwd = plainUser.pwd
         }
     }
 

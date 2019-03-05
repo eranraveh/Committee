@@ -10,7 +10,7 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
             templateUrl: "/app/signup/signup.html",
             controller: "signupCtrl"
         })
-        .when("/myCommittee:committeeId/messages", {
+        .when("/myCommittee/messages", {
             templateUrl: "/app/messages/messages.html",
             controller: "messagesCtrl"
         })
