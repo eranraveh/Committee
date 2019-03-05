@@ -7,13 +7,13 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
             templateUrl: "/app/home/home.html"
         })
         .when("/signup", {
-            templateUrl: "/app/signup/signup.html"
-            // controller: "breedsCtrl"
+            templateUrl: "/app/signup/signup.html",
+            controller: "signupCtrl"
         })
-//         .when("/dogs/:breedId", {
-//             templateUrl: "/app/breedImagesGallery/breedImages.html",
-//             controller: "imageCtrl"
-//         })
+        .when("/myCommittee:committeeId/messages", {
+            templateUrl: "/app/messages/messages.html",
+            controller: "messagesCtrl"
+        })
 //         .when("/about", {
 //             templateUrl: "/app/about/about.html",
 //         })

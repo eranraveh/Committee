@@ -1,7 +1,6 @@
 .iCommittee {
     font-family: 'Charm', cursive;
     font-weight: bold;
-    font-size: 2em;
 }
 
 #brand {
@@ -9,10 +8,67 @@
     width: 2em;
 }
 
+.iCommittee.navbar-brand {
+    font-size: 2em;
+}
+
+.iCommittee.title {
+    font-size: 4em;
+
+}
+
 .jumbotron {
-    background-image: linear-gradient(180deg, black, 10%,  pink, 90%,  black); 
+    background-image: linear-gradient(180deg, black, 10%, pink, 90%, black);
 }
 
 .list-group-item {
     background-color: transparent;
+}
+
+.appBackground {
+    position: relative;
+    background-image: linear-gradient(180deg, black, 10%, pink, 90%, black);
+    background-repeat: no-repeat;
+    background-size: 100% 100vh;
+}
+
+.viewSize {
+    size: 100% 100vh;
+}
+
+
+.solid-line {
+    position: relative;
+    z-index: 1;
+    border-top: 2px solid #dfdfdf;
+    margin: 0 auto;
+    padding-bottom: 2em;
+
+    /* &:before { */
+    /* border-top: 2px solid #dfdfdf;
+        content:"";
+        margin: 0 auto;  */
+    /* this centers the line to the full width specified */
+    /* position: absolute;  */
+    /* positioning must be absolute here, and relative positioning must be applied to the parent */
+    /* top: 50%; left: 0; right: 0; bottom: 0;
+        width: 95%;
+        z-index: -1; */
+    /* } */
+}
+
+.solid-line > p {
+    /* to hide the lines from behind the text, you have to set the background color the same as the container */
+    display: inline;
+    position: absolute; 
+    background: #fff;
+    top: -50%;
+    left: 45%;
+    margin-left: -50px;
+    padding: 0 15px;
+    z-index: -1;
+}
+
+.modal-body > #signup {
+    width: 100%;
 }
