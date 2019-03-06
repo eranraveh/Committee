@@ -9,3 +9,12 @@
 רישום ועד בית
 להוסיף תגובות לתהליך הודעות
 תהליך תקלות
+
+
+
+1. signup
+2. messages - accordion
+3. messages - add/update/delete
+4. issues - accordion
+5. issues - add/update/delete
+6. dashboard

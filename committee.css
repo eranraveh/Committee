@@ -17,25 +17,23 @@
 
 }
 
+
 .jumbotron {
-    background-image: linear-gradient(180deg, black, 10%, pink, 90%, black);
+    background:transparent !important;
 }
 
 .list-group-item {
     background-color: transparent;
 }
 
-.appBackground {
-    position: relative;
-    background-image: linear-gradient(180deg, black, 10%, pink, 90%, black);
+
+body {
+    
+    background-image: linear-gradient(180deg, #fcc36f, 15%, #a0ff9d, 25%, #a0ff9d, 90%, #fcc36f);
+    /* background-image: linear-gradient(180deg, black, 2%, pink, 95%, black); */
     background-repeat: no-repeat;
-    background-size: 100% 100vh;
-}
-
-.viewSize {
-    size: 100% 100vh;
-}
-
+    background-attachment: fixed;
+  }
 
 .solid-line {
     position: relative;
@@ -44,17 +42,6 @@
     margin: 0 auto;
     padding-bottom: 2em;
 
-    /* &:before { */
-    /* border-top: 2px solid #dfdfdf;
-        content:"";
-        margin: 0 auto;  */
-    /* this centers the line to the full width specified */
-    /* position: absolute;  */
-    /* positioning must be absolute here, and relative positioning must be applied to the parent */
-    /* top: 50%; left: 0; right: 0; bottom: 0;
-        width: 95%;
-        z-index: -1; */
-    /* } */
 }
 
 .solid-line > p {
