@@ -1,6 +1,13 @@
 // var committeeApp = angular.module("committeeApp", []);
 var committeeApp = angular.module("committeeApp", ["ngRoute"]);
 
+// parse initialization
+Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+Parse.initialize(
+  'uNY5Z6HLyf9TmJNS1xQgDRfbWXZUrr39kXDDcR7d', // This is your Application ID
+  'aQd9zgCmtGEXVn1kZ3rNDmsXdKGlEdfiw1rUvDNr' // This is your Javascript key
+);
+
 committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     console.log();
     $routeProvider.when("/", {

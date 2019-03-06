@@ -1,5 +1,14 @@
-committeeApp.controller("messagesCtrl", function($scope, userSrv) {
+committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, messagesSrv) {
 
-$scope.test = "11111";
+    if (!userSrv.isLoggedIn()) {
+        $location.path("/");
+        return;
+    }
+
+    messagesSrv.getActiveUserMessages().then((messages) => {
+        $scope.messages = messages;
+    }).catch((err) => {
+        $log.error(err);
+    });
 
 })

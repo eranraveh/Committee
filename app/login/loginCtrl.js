@@ -2,11 +2,12 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
 
     $scope.invalidLogin = false;
 
-    $scope.email = "eran@eran.com";
+    $scope.username = "xerave1";
     $scope.pwd = "123";
 
     $scope.login = function () {
-        userSrv.login($scope.email, $scope.pwd).then(function (user) {
+        userSrv.login($scope.username, $scope.pwd).then(function (user) {
+            $("#loginForm").modal("hide");
             $location.path("/myCommittee/messages");
 
         }, function (error) {

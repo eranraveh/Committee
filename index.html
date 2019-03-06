@@ -14,6 +14,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+    <script src="node_modules/parse/dist/parse.min.js"></script>
     <script src="app/committeeApp.js"></script>
     <script src="app/shared/navbar/navbarDir.js"></script>
     <script src="app/shared/navbar/navbarCtrl.js"></script>
@@ -26,7 +27,7 @@
 
 
     <script src="app/model/UserSrv.js"></script>
-    <!-- <script src="nameCtrl.js"></script> -->
+    <script src="app/model/messagesSrv.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Charm" rel="stylesheet">
     <link rel="stylesheet" href="committee.css" />
@@ -59,14 +60,16 @@
 
                     <form role="form">
                         <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" ng-model="email">
+                            <label for="username">Email or username:</label>
+                            <input type="text" class="form-control" id="username" ng-model="username">
+                            <!-- <input type="email" class="form-control" id="email" ng-model="email"> -->
                         </div>
                         <div class="form-group">
                             <label for="pwd">Password:</label>
                             <input type="password" class="form-control" id="pwd" ng-model="pwd">
                         </div>
-                        <button type="button" class="btn btn-success btn-block" data-dismiss="modal" ng-click="login()">Sign In</button>
+                        <!-- data-dismiss="modal"  -->
+                        <button type="button" class="btn btn-success btn-block" ng-click="login()">Sign In</button>
                     </form>
 
                     <br>
