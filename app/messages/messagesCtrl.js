@@ -33,7 +33,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             $scope.unread++;
     }
 
-    function onQueryChange() {
+    $scope.onQueryChange = function () {
         $scope.unread = 0;
     }
     // $scope.getUnreadMessagesCount = () => {
