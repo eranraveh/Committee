@@ -59,3 +59,12 @@ body {
 .modal-body > #signup {
     width: 100%;
 }
+
+.myNavbar {
+    color: rgba(255,255,255,.5) !important;
+}
+
+.myNavbar:hover {
+    color: rgba(255,255,255,.75) !important;
+    background-color: #343a40!important;
+}

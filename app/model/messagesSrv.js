@@ -5,8 +5,11 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.title = parseMessage.get("title");
             this.details = parseMessage.get("details");
             this.priority = parseMessage.get("priority");
+            // for committee members, could contain false too
             this.isActive = parseMessage.get("isActive");
             this.user = parseMessage.get("userId");
+            this.postingDate = parseMessage.get("createdAt");
+            
         }
     }
 
@@ -18,9 +21,12 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         const ParseMessage = Parse.Object.extend('Message');
         const query = new Parse.Query(ParseMessage);
 
+        // query.equalTo("isActive", true);
         query.equalTo("committeeId", userSrv.getActiveUserCommitteeId());
         query.find().then((results) => {
-            results.forEach(parseMessage => messages.push(new Message(parseMessage)));
+            results.forEach(parseMessage => {
+                messages.push(new Message(parseMessage))
+            });
 
             async.resolve(messages);
 

@@ -5,6 +5,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         return;
     }
 
+    $scope.messages = [];
+    
     messagesSrv.getActiveUserMessages().then((messages) => {
         $scope.messages = messages;
     }).catch((err) => {

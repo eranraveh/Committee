@@ -18,5 +18,4 @@
 4. issues - accordion
 5. issues - add/update/delete
 6. dashboard
-7. navbar - after login, add drop down "Hello {{name}}" -> logout
- 
+

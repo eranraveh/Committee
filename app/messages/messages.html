@@ -1,12 +1,18 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">Fluid jumbo heading</h1>
-        <p class="lead">Jumbo helper text</p>
+        <h1 class="">Fluid jumbo heading</h1>
+        <!-- <p class="lead">Jumbo helper text</p> -->
         <hr class="my-2">
-        <p>More info</p>
+        <p>{{messages.length}} unread messages</p>
 
-        <div id="accordion" ng-repeat="message in messages">
-            <message></message>
+        <div id="accordion" >
+            <!-- <ul>
+                <li ng-repeat="message in messages">{{message.title}}</li>
+            </ul> -->
+
+            <!-- <p>{{message.title}}</p> -->
+
+            <message-card ng-repeat="message in messages"></message-card>
         </div>
     </div>
 </div>

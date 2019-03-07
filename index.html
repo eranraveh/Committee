@@ -23,6 +23,7 @@
 
     <script src="app/login/loginCtrl.js"></script>
     <script src="app/messages/messagesCtrl.js"></script>
+    <script src="app/messages/messageDir.js"></script>
     
 
 
@@ -32,7 +33,7 @@
     <link href="https://fonts.googleapis.com/css?family=Charm" rel="stylesheet">
     <link rel="stylesheet" href="committee.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="/" />
+    <!-- <base href="/" /> -->
 </head>
 
 <body>
@@ -41,51 +42,6 @@
     </header>
 
     <ng-view></ng-view>
-
-
-    <div id="loginForm" class="container modal" ng-controller="loginCtrl">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-                <div class="modal-header jumbotron">
-                    <h4 class="modal-title w-100 text-center">Login to <span class="iCommittee">iCommitte</span></h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-
-                <div class="modal-body">
-                    <div class="alert alert-danger" role="alert" ng-show="invalidLogin">
-                        <strong>Invalid Login</strong> incorrect email or password
-                    </div>
-
-                    <form role="form">
-                        <div class="form-group">
-                            <label for="username">Email or username:</label>
-                            <input type="text" class="form-control" id="username" ng-model="username">
-                            <!-- <input type="email" class="form-control" id="email" ng-model="email"> -->
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" id="pwd" ng-model="pwd">
-                        </div>
-                        <!-- data-dismiss="modal"  -->
-                        <button type="button" class="btn btn-success btn-block" ng-click="login()">Sign In</button>
-                    </form>
-
-                    <br>
-                    <br>
-
-                    
-                    <div class=" solid-line">
-                        <p class=" text-center">New to <span class="iCommittee">iCommittee</span>?</p>
-                    </div>
-
-                    <a id="signup" href="/signup" class="btn btn-primary">Create your <span class="iCommittee">iCommitte</span>
-                        account</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <footer>
         <bottom-navbar></bottom-navbar>
