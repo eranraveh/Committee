@@ -6,6 +6,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     }
 
     $scope.messages = [];
+    let lastQuery = "";
+    $scope.query = "";
 
     messagesSrv.getActiveUserMessages().then((messages) => {
         $scope.unread = 0;
@@ -16,19 +18,24 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     });
 
     $scope.queryFilter = function (message) {
+        if ($scope.query != lastQuery) {
+            lastQuery =  $scope.query;
+            $scope.unread = 0;
+        }
+
         if (!$scope.query) {
-            isMessageUnread();
+            isMessageUnread(message);
             return true;
         } else if (message.title.toLowerCase().includes($scope.query.toLowerCase()) ||
             message.details.toLowerCase().includes($scope.query.toLowerCase())) {
-            isMessageUnread();
+            isMessageUnread(message);
             return true;
         } else {
             return false;
         }
     }
 
-    function isMessageUnread() {
+    function isMessageUnread(message) {
         if (!message.wasRead)
             $scope.unread++;
     }
