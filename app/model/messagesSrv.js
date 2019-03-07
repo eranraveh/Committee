@@ -9,9 +9,8 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.isActive = parseMessage.get("isActive");
             this.user = parseMessage.get("userId");
             this.postingDate = parseMessage.get("createdAt");
-
-            let objId = parseMessage.id;
-            this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(objId) > -1);
+            this.messageId = parseMessage.id;
+            this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
         }
     }
 

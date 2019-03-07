@@ -7,8 +7,6 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
     let unread = 0;
     $scope.messages = [];
-    let lastQuery = "";
-    // $scope.query = "";
 
     messagesSrv.getActiveUserMessages().then((messages) => {
         unread = 0;
@@ -48,4 +46,15 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     $scope.getUnreadMessagesCount = () => {
         return unread;
     };
+
+    $scope.onMessageOpen = function(message) {
+        var promise = userSrv.addOpenedMessages(message.messageId);
+        promise.then(wasAdded => {
+            if (wasAdded) {
+                message.wasRead = true;
+            }
+        }, error => {
+
+        });
+    }
 })
