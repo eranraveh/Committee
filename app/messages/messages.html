@@ -3,11 +3,15 @@
         <h1 class="">Fluid jumbo heading</h1>
         <!-- <p class="lead">Jumbo helper text</p> -->
         <form class="form-inline justify-content-between ">
-            <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query" ng-change="onQueryChange()">
-            <button class="btn btn-primary" ng-click="updateImages()">Update images</button>
+            <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" ng-model="importance">Only important messages
+                </label>
+            </div>
         </form>
         <hr class="my-2">
-        <p>{{unread}} unread messages</p>
+        <p>{{getUnreadMessagesCount()}} unread messages</p>
 
         <div id="accordion">
 

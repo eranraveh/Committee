@@ -19,7 +19,7 @@
         <h5 class="mb-0">
             <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true"
                 aria-controls="collaps{{$index}}" ng-class="{'font-weight-bold': message.wasRead == false }">
-                <i class="fas fa-exclamation mr-1" ng-show="{{message.priority == 1}}"></i><i class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
+                <i class="fas fa-exclamation mr-1" ng-class="{'hide-me': message.priority != 1}"></i><i class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
                 <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
             </button>
         </h5>
