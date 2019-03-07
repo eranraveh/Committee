@@ -2,17 +2,16 @@
     <div class="container">
         <h1 class="">Fluid jumbo heading</h1>
         <!-- <p class="lead">Jumbo helper text</p> -->
+        <form class="form-inline justify-content-between ">
+            <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query" ng-change="onQueryChange()">
+            <button class="btn btn-primary" ng-click="updateImages()">Update images</button>
+        </form>
         <hr class="my-2">
-        <p>{{messages.length}} unread messages</p>
+        <p>{{getUnreadMessagesCount()}} unread messages</p>
 
-        <div id="accordion" >
-            <!-- <ul>
-                <li ng-repeat="message in messages">{{message.title}}</li>
-            </ul> -->
+        <div id="accordion">
 
-            <!-- <p>{{message.title}}</p> -->
-
-            <message-card ng-repeat="message in messages"></message-card>
+            <message-card ng-repeat="message in messages | filter : queryFilter"></message-card>
         </div>
     </div>
 </div>

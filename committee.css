@@ -18,12 +18,12 @@
 }
 
 
-.jumbotron {
+/* .jumbotron {
     background:transparent !important;
-}
+} */
 
-.list-group-item {
-    background-color: transparent;
+.list-group-item, .jumbotron, .card {
+    background-color: transparent !important;
 }
 
 
@@ -67,4 +67,16 @@ body {
 .myNavbar:hover {
     color: rgba(255,255,255,.75) !important;
     background-color: #343a40!important;
+}
+
+/* .messageButton {
+    position: relative;
+} */
+/* .messageDate {
+    display: inline;
+    
+} */
+
+.fa-exclamation {
+    color: coral;
 }

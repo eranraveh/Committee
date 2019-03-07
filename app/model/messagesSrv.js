@@ -9,7 +9,9 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.isActive = parseMessage.get("isActive");
             this.user = parseMessage.get("userId");
             this.postingDate = parseMessage.get("createdAt");
-            
+
+            let objId = parseMessage.id;
+            this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(objId) > -1);
         }
     }
 
@@ -25,8 +27,13 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         query.equalTo("committeeId", userSrv.getActiveUserCommitteeId());
         query.find().then((results) => {
             results.forEach(parseMessage => {
-                messages.push(new Message(parseMessage))
+                var message = new Message(parseMessage);
+
+                messages.push(message)
             });
+
+            
+            messages.sort(function(a, b){return b.postingDate - a.postingDate});
 
             async.resolve(messages);
 

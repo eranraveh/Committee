@@ -8,7 +8,10 @@ committeeApp.factory("userSrv", function ($q, $log) {
             this.isCommitteeMember = parseUser.get("isCommitteeMember");
             this.email = parseUser.get("email");
             this.apartment = parseUser.get("apartment");
-            
+            this.readMessages = parseUser.get("messagesRead");
+            if (this.readMessages === undefined)
+                this.readMessages = [];
+
             this.committeeId = parseUser.get("committeId");
         }
     }
@@ -26,7 +29,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
         return async.promise;
     }
-    
+
     function isLoggedIn() {
         return activeUser ? true : false;
     }

@@ -17,14 +17,15 @@
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true"
-                aria-controls="collaps{{$index}}">
-                {{message.title}}
+            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true"
+                aria-controls="collaps{{$index}}" ng-class="{'font-weight-bold': message.wasRead == false }">
+                <i class="fas fa-exclamation mr-1" ng-show="{{message.priority == 1}}"></i><i class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
+                <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
             </button>
         </h5>
     </div>
 
-    <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == 0}" aria-labelledby="heading{{$index}}"
+    <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
         data-parent="#accordion">
         <div class="card-body">
             {{message.details}}
