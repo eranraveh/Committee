@@ -90,24 +90,29 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         });
     }
 
-    $scope.editMessage = function(message) {
+    $scope.editMessage = function (message) {
 
     }
-    
-    $scope.deleteMessage = function(message) {
-        messagesSrv.deleteMessage(message).then((comment) => {
-            ......
-            message.commentsObject.comments.unshift(comment);
 
-            $scope.newComment[index] = "";
-            $('#collapseComment' + index).collapse("hide");
-        }, (error) => {
-            alert("Failed post comment to server. Please try again");
+    $scope.deleteMessage = function (message) {
+        messagesSrv.deleteMessage(message).then(() => {
+
+            commentsSrv.deleteMessageComments(message).then((successCounter, failCounter) => {
+                console.log("${successCounter} comments deleted and ${failCounter} comments ")
+            }, (error) => {
+
+            });
+
+            var reomveIndex = $scope.messages.indexOf(message);
+            if (reomveIndex > -1)
+                $scope.messages.splice(reomveIndex, 1);
+        }, () => {
+            alert("Failed delete message from server. Please try again");
         });
 
     }
-    
-    $scope.isCommitteeMember = function() {
+
+    $scope.isCommitteeMember = function () {
         return userSrv.isCommitteeMember();
     }
 })

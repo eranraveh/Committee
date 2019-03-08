@@ -51,40 +51,65 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function createRecipe(name, description, img, ingredients, steps, duration) {
+    // function createRecipe(name, description, img, ingredients, steps, duration) {
+    //     var async = $q.defer();
+
+    //     const RecipeParse = Parse.Object.extend('Recipe');
+    //     const newRecipe = new RecipeParse();
+
+    //     newRecipe.set('name', name);
+    //     newRecipe.set('description', description);
+    //     newRecipe.set('image', new Parse.File(name + ".jpg", {
+    //         base64: img
+    //     }));
+    //     newRecipe.set('ingredients', ingredients);
+    //     newRecipe.set('steps', steps);
+    //     newRecipe.set('duration', duration);
+    //     newRecipe.set('userId', Parse.User.current());
+
+    //     newRecipe.save().then(
+    //         function (result) {
+    //             $log.info('Recipe created', result);
+    //             var newRecipe = new Recipe(result);
+    //             async.resolve(newRecipe);
+    //         },
+    //         function (error) {
+    //             $log.error('Error while creating Recipe: ', error);
+    //             async.reject(error);
+    //         }
+    //     );
+
+    //     return async.promise;
+    // }
+
+    function deleteMessage(message) {
         var async = $q.defer();
 
-        const RecipeParse = Parse.Object.extend('Recipe');
-        const newRecipe = new RecipeParse();
+        const Message = Parse.Object.extend('Message');
+        const query = new Parse.Query(Message);
+        // here you put the objectId that you want to delete
+        query.get(message.messageId).then((object) => {
 
-        newRecipe.set('name', name);
-        newRecipe.set('description', description);
-        newRecipe.set('image', new Parse.File(name + ".jpg", {
-            base64: img
-        }));
-        newRecipe.set('ingredients', ingredients);
-        newRecipe.set('steps', steps);
-        newRecipe.set('duration', duration);
-        newRecipe.set('userId', Parse.User.current());
-
-        newRecipe.save().then(
-            function (result) {
-                $log.info('Recipe created', result);
-                var newRecipe = new Recipe(result);
-                async.resolve(newRecipe);
-            },
-            function (error) {
-                $log.error('Error while creating Recipe: ', error);
-                async.reject(error);
-            }
-        );
+            object.destroy().then((response) => {
+                console.log('Deleted Message', response);
+                async.resolve(message);
+                // object.destroy promise error
+            }, (error) => {
+                console.error('Error while deleting Message', error);
+                (error) => async.reject(error);
+            })
+            // query.get promise error
+        }, (error) => {
+            console.error('Error while getting Message', error);
+            async.reject(error)
+        });
 
         return async.promise;
     }
 
     return {
         getActiveUserMessages: getActiveUserMessages,
-        createRecipe: createRecipe
+        deleteMessage: deleteMessage
     }
 
 })
