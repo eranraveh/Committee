@@ -1,21 +1,19 @@
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="">Fluid jumbo heading</h1>
-        <!-- <p class="lead">Jumbo helper text</p> -->
-        <form class="form-inline justify-content-between ">
-            <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
-            <div class="form-check">
-                <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" ng-model="importance">Only important messages
-                </label>
-            </div>
-        </form>
-        <hr class="my-2">
-        <p>{{getUnreadMessagesCount()}} unread messages</p>
-
-        <div id="accordion">
-
-            <message-card ng-repeat="message in messages | filter : queryFilter"></message-card>
+<div class="container">
+    <h1 class="">Messages</h1>
+    <!-- <p class="lead">Jumbo helper text</p> -->
+    <form class="form-inline justify-content-between ">
+        <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" ng-model="importance">Only important messages
+            </label>
         </div>
+    </form>
+    <hr class="my-2">
+    <p>{{getUnreadMessagesCount()}} unread messages</p>
+
+    <div id="accordion">
+
+        <message-card ng-repeat="message in messages | filter : queryFilter"></message-card>
     </div>
 </div>

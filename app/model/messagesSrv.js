@@ -11,6 +11,11 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.postingDate = parseMessage.get("createdAt");
             this.messageId = parseMessage.id;
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
+            this.commentsObject = {
+                wasLoaded: false,
+                comments: []
+            };
+            this.parseMessage = parseMessage;
         }
     }
 
@@ -31,8 +36,10 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
                 messages.push(message)
             });
 
-            
-            messages.sort(function(a, b){return b.postingDate - a.postingDate});
+
+            messages.sort(function (a, b) {
+                return b.postingDate - a.postingDate
+            });
 
             async.resolve(messages);
 

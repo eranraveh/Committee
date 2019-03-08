@@ -1,26 +1,10 @@
-<!-- <div class="card">
-    <div class="card-header">
-        <a class="card-link" data-toggle="collapse" href="#collapse{{$index}}">
-            {{message.title}}
-        </a>
-        <i class="fas fa-readme    "></i>
-    </div>
-    <div id="collapse{{$index}}" class="collapse show" data-parent="#accordion">
-        <div class="card-body">
-            {{message.details}}
-        </div>
-    </div>
-</div> -->
-
-
 
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}" 
-                aria-expanded="true" aria-controls="collaps{{$index}}" ng-click="onMessageOpen(message)"
-                ng-class="{'font-weight-bold': message.wasRead == false }">
-                <i class="fas fa-exclamation mr-1" ng-class="{'hide-me': message.priority != 1}"></i><i class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
+            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onMessageOpen(message,$index)" ng-class="{'font-weight-bolder': message.wasRead == false }">
+                <i class="fas  mr-1" ng-class="{'fa-exclamation text-danger': message.priority == 1,'fa-info': message.priority != 1}"></i><i class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
                 <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
             </button>
         </h5>
@@ -29,7 +13,25 @@
     <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
         data-parent="#accordion">
         <div class="card-body">
-            {{message.details}}
+            <p>{{message.details}}</p>
+
+            <!-- comments -->
+            <div ng-repeat="comment in message.commentsObject.comments">
+                <div class="border border-dark rounded-lg rounded px-2">
+                    <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | date: "d MMMM"}}</span>
+                        <span class="font-weight-bold text-primary">{{comment.username}} :</span> {{comment.text}}</p>                    
+                </div>
+            </div>
+
+            <!-- new comment -->
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseComment{{$index}}">Comment</button>
+            <div id="collapseComment{{$index}}" class="collapse ">
+                <div class="form-group ">
+                    <textarea class="form-control" rows="5" ng-model="newComment[$index]" placeholder="Add comment"></textarea>
+                    <button class="btn btn-primary mt-1" ng-click="postComment($index, message)">Post</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+

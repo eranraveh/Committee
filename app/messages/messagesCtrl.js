@@ -1,4 +1,4 @@
-committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, messagesSrv) {
+committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, messagesSrv, commentsSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -7,6 +7,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
     let unread = 0;
     $scope.messages = [];
+    $scope.newComment = []
 
     messagesSrv.getActiveUserMessages().then((messages) => {
         unread = 0;
@@ -29,7 +30,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
                 return false;
             }
         } else if ((message.title.toLowerCase().includes($scope.query.toLowerCase()) ||
-            message.details.toLowerCase().includes($scope.query.toLowerCase())) &&
+                message.details.toLowerCase().includes($scope.query.toLowerCase())) &&
             (!$scope.importance || message.priority === "1")) {
             isMessageUnread(message);
             return true;
@@ -42,19 +43,50 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         if (!message.wasRead)
             unread++;
     }
- 
+
     $scope.getUnreadMessagesCount = () => {
         return unread;
     };
 
-    $scope.onMessageOpen = function(message) {
-        var promise = userSrv.addOpenedMessages(message.messageId);
-        promise.then(wasAdded => {
-            if (wasAdded) {
-                message.wasRead = true;
-            }
-        }, error => {
+    $scope.onMessageOpen = function (message, index) {
+        $scope.newComment[index] = "";
+        $('#collapseComment' + index).collapse("hide");
 
+        if (!message.wasRead) {
+            var addMessagePromise = userSrv.addOpenedMessages(message.messageId);
+            addMessagePromise.then(wasAdded => {
+                if (wasAdded) {
+                    message.wasRead = true;
+                }
+            }, error => {
+
+            });
+        };
+
+        if (!message.commentsObject.wasLoaded) {
+            var getCommentsPromise = commentsSrv.getMessageComments(message);
+            getCommentsPromise.then(comments => {
+                message.commentsObject.wasLoaded = true;
+                message.commentsObject.comments = comments;
+            }, error => {
+
+            });
+        }
+    }
+
+    $scope.postComment = function (index, message) {
+        var text = $scope.newComment[index];
+        if (!text) {
+            alert("Enter a comment text");
+            return;
+        }
+
+        commentsSrv.createComment(text, message).then((comment) => {
+            message.commentsObject.comments.unshift(comment);
+            $scope.newComment[index] = "";
+            $('#collapseComment' + index).collapse("hide");
+        }, (error) => {
+            alert("Failed post comment to server. Please try again");
         });
     }
 })
