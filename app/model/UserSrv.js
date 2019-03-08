@@ -101,13 +101,20 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return messages;
     }
 
+    function isCommitteeMember() {
+        if (activeUser != null)
+            return activeUser.isCommitteeMember;
+        return false;
+    }
+
     return {
         login: login,
         isLoggedIn: isLoggedIn,
         logout: logout,
         getActiveUser: getActiveUser,
         getActiveUserCommitteeId: getActiveUserCommitteeId,
-        addOpenedMessages: addOpenedMessages
+        addOpenedMessages: addOpenedMessages,
+        isCommitteeMember: isCommitteeMember
     }
 
 });

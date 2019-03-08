@@ -89,4 +89,25 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             alert("Failed post comment to server. Please try again");
         });
     }
+
+    $scope.editMessage = function(message) {
+
+    }
+    
+    $scope.deleteMessage = function(message) {
+        messagesSrv.deleteMessage(message).then((comment) => {
+            ......
+            message.commentsObject.comments.unshift(comment);
+
+            $scope.newComment[index] = "";
+            $('#collapseComment' + index).collapse("hide");
+        }, (error) => {
+            alert("Failed post comment to server. Please try again");
+        });
+
+    }
+    
+    $scope.isCommitteeMember = function() {
+        return userSrv.isCommitteeMember();
+    }
 })
