@@ -1,4 +1,4 @@
-committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
+committeeApp.factory("issueCommentsSrv", function ($q) {
 
     class Comment {
         constructor(parseComment) {
@@ -10,14 +10,14 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
         }
     }
 
-    function getMessageComments(message) {
+    function getIssueComments(issue) {
         var async = $q.defer();
 
         var comments = [];
 
-        const MessageComment = Parse.Object.extend('MessageComment');
-        const query = new Parse.Query(MessageComment);
-        query.equalTo("messageId", message.parseMessage);
+        const IssueComment = Parse.Object.extend('IssueComment');
+        const query = new Parse.Query(IssueComment);
+        query.equalTo("issueId", issue.parseIssue);
         query.find().then((results) => {
             results.forEach(parseComment => {
                 var comment = new Comment(parseComment);
@@ -37,14 +37,14 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function createComment(text, message) {
+    function createComment(text, issue) {
         var async = $q.defer();
 
-        const MessageComment = Parse.Object.extend('MessageComment');
-        const myNewComment = new MessageComment();
+        const IssueComment = Parse.Object.extend('IssueComment');
+        const myNewComment = new IssueComment();
 
         myNewComment.set('text', text);
-        myNewComment.set('messageId', message.parseMessage);
+        myNewComment.set('issueId', issue.parseIssue);
         myNewComment.set('userId', Parse.User.current());
 
         myNewComment.save().then(
@@ -54,18 +54,18 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
             },
             (error) => {
                 async.reject(error);
-                console.error('Error while creating MessageComment: ', error);
+                console.error('Error while creating IssueComment: ', error);
             }
         );
 
         return async.promise;
     }
 
-    function deleteMessageComments(message) {
+    function deleteIssueComments(comments) {
         var async = $q.defer();
 
         var commentPromises = []
-        message.commentsObject.comments.forEach((comment) =>
+        comments.forEach((comment) =>
             commentPromises.push(deleteComment(comment.commentId))
         );
 
@@ -93,19 +93,19 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
     function deleteComment(commentId) {
         var async = $q.defer();
 
-        const MessageComment = Parse.Object.extend('MessageComment');
-        const query = new Parse.Query(MessageComment);
+        const IssueComment = Parse.Object.extend('IssueComment');
+        const query = new Parse.Query(IssueComment);
         // here you put the objectId that you want to delete
         query.get(commentId).then((object) => {
             object.destroy().then((response) => {
-                console.log('Deleted MessageComment', response);
+                console.log('Deleted IssueComment', response);
                 async.resolve(commentId);
             }, (error) => {
-                console.error('Error while deleting MessageComment', error);
+                console.error('Error while deleting IssueComment', error);
                 (error) => async.reject(error);
             });
         }, (error) => {
-            console.error('Error while getting MessageComment', error);
+            console.error('Error while getting IssueComment', error);
             async.reject(error);
         });
 
@@ -113,9 +113,9 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
     }
 
     return {
-        getMessageComments: getMessageComments,
+        getIssueComments: getIssueComments,
         createComment: createComment,
-        deleteMessageComments: deleteMessageComments
+        deleteIssueComments: deleteIssueComments
     }
 
 })

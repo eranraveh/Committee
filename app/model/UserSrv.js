@@ -4,6 +4,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
     class User {
         constructor(parseUser) {
+            this.username = parseUser.get("username");
             this.name = parseUser.get("name");
             this.isCommitteeMember = parseUser.get("isCommitteeMember");
             this.email = parseUser.get("email");
@@ -50,6 +51,10 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(messageId);
     }
 
+    function addOpenedIssues(issueId) {
+        return updateUser(issueId);
+    }
+
     function updateUser(messageId = null) {
         var async = $q.defer();
 
@@ -70,28 +75,6 @@ committeeApp.factory("userSrv", function ($q, $log) {
         });
 
         return async.promise;
-        // const User = new Parse.User();
-        // const query = new Parse.Query(User);
-
-        // // Finds the user by its ID
-        // query.get('hEPjkt4epS').then((user) => {
-        //     // Updates the data we want
-        //     user.set('username', 'A string');
-        //     user.set('email', 'A string');
-        //     user.set('name', 'A string');
-        //     user.set('apartment', 'A string');
-        //     user.set('isCommitteeMember', 'A string');
-        //     user.set('committeId', new Parse.Object("Committee"));
-        //     user.set('messagesRead', [1, 'a string']);
-        //     // Saves the user with the updated data
-        //     user.save().then((response) => {
-        //         if (typeof document !== 'undefined') document.write(`Updated user: ${JSON.stringify(response)}`);
-        //         console.log('Updated user', response);
-        //     }).catch((error) => {
-        //         if (typeof document !== 'undefined') document.write(`Error while updating user: ${JSON.stringify(error)}`);
-        //         console.error('Error while updating user', error);
-        //     });
-        // });
     }
 
     function getMessages(currentUser) {
@@ -114,6 +97,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         getActiveUser: getActiveUser,
         getActiveUserCommitteeId: getActiveUserCommitteeId,
         addOpenedMessages: addOpenedMessages,
+        addOpenedIssues: addOpenedIssues,
         isCommitteeMember: isCommitteeMember
     }
 

@@ -9,7 +9,6 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.isActive = parseMessage.get("isActive");
             this.user = parseMessage.get("userId");
             this.postingDate = parseMessage.get("updatedAt");
-            this.messageId = parseMessage.id;
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
             this.commentsObject = {
                 wasLoaded: false,
@@ -90,7 +89,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         const ParseMessage = Parse.Object.extend('Message');
         const query = new Parse.Query(ParseMessage);
 
-        query.get(oldMessage.messageId).then((updatedMessage) => {
+        query.get(oldMessage.parseMessage.id).then((updatedMessage) => {
             updatedMessage.set('title', title);
             updatedMessage.set('details', messageBody);
             updatedMessage.set('priority', priority ? '1' : '2');

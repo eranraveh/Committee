@@ -1,0 +1,86 @@
+<div class="container">
+    <h1 class="">Issues</h1>
+    <!-- <p class="lead">Jumbo helper text</p> -->
+    <form class="form-inline  ">
+        <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
+        <div class="form-check ml-3">
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="importance">Urgent
+            </label>
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="unread">Unread
+            </label>
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="myIssues">My issues
+            </label>
+        </div>
+    </form>
+    <hr class="my-2">
+
+    <div class="mb-1">
+
+        <!-- by spec only tenant can add new issue, actually everyone can
+                ng-show="isCommitteeMember()"  -->
+        <button class="btn btn-new text-danger py-0 px-1 " data-toggle="modal" rel="tooltip" title="Add new issue"
+            tooltip type="button" data-target="#newIssueForm" ng-click="newIssueOpen()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <span class="align-middle mb-0">{{getUnreadIssuesCount()}} unread issues, {{getOpenIssuesCount()}} open issues,
+            {{getMyIssuesCount()}} issues I opened</span>
+    </div>
+
+    <div id="accordion">
+
+        <issue-card ng-repeat="issue in issues | filter : queryFilter"></issue-card>
+    </div>
+</div>
+
+
+<div id="newIssueForm" class="container modal ">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+
+            <div class="modal-header jumbotron">
+                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Open new issue</h4>
+                <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit issue</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <form role="form" name="newIssueForm">
+                <div class="modal-body">
+                    <div id="priority" class="btn-group1 btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary " data-toggle="tooltip" title="Urgent" tooltip>
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="1" required name="priority" ><i class="fas fa-exclamation text-danger"></i>
+                        </label>
+                        <label class="btn btn-secondary ml-1" data-toggle="tooltip" title="Important" tooltip>
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="2" required name="priority" ><i class="fas fa-lightbulb text-warning"></i>
+                        </label>
+                        <label class="btn btn-secondary ml-1 active" data-toggle="tooltip" title="Normal" tooltip >
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="3" required name="priority" checked><i class="fas fa-arrow-down text-primary"></i>
+                        </label>
+                    </div>
+                    <div class="form-group" ng-show="editMode">
+                        <label for="status">Status:</label>
+                        <select class="custom-select mr-sm-2" id="status" ng-model="newIssue.status">
+                            <option>New</option>
+                            <option>In progress</option>
+                            <option>Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" ng-model="newIssue.title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea class="form-control" rows="5" id="message" ng-model="newIssue.issueBody" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mr-auto" ng-click="postIssue()" ng-class="{'btn-block': !editMode}">Post</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

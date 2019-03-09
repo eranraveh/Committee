@@ -13,9 +13,11 @@
 
 
 1. signup
-2. messages - show only unreaad
-3. messages - when update message , to unread the message from all users?
-4. issues - accordion
+2. issues - when update message , to unread the message from all users?
+3. issues - by spec only tenant can add new issue, actually everyone can
+4. issues - by spec only committe can comment issue, actually everyone can
 5. issues - add/update/delete
 6. dashboard
+
+7.Isuu
 

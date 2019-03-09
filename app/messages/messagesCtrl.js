@@ -1,4 +1,4 @@
-committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, messagesSrv, commentsSrv) {
+committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, messagesSrv, messageCommentsSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -65,7 +65,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         $('#collapseComment' + index).collapse("hide");
 
         if (!message.wasRead) {
-            var addMessagePromise = userSrv.addOpenedMessages(message.messageId);
+            var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
             addMessagePromise.then(wasAdded => {
                 if (wasAdded) {
                     message.wasRead = true;
@@ -76,7 +76,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         };
 
         if (!message.commentsObject.wasLoaded) {
-            var getCommentsPromise = commentsSrv.getMessageComments(message);
+            var getCommentsPromise = messageCommentsSrv.getMessageComments(message);
             getCommentsPromise.then(comments => {
                 message.commentsObject.wasLoaded = true;
                 message.commentsObject.comments = comments;
@@ -109,7 +109,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     $scope.deleteMessage = function (message) {
         messagesSrv.deleteMessage(message).then(() => {
 
-            commentsSrv.deleteMessageComments(message).then(([successCounter, failCounter]) => {
+            messageCommentsSrv.deleteMessageComments(message.commentsObject.comments).then(([successCounter, failCounter]) => {
                 console.log(successCounter + " comments deleted and " + failCounter + " comments failed")
             }, (error) => {
 
@@ -176,7 +176,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             return;
         }
 
-        commentsSrv.createComment(text, message).then((comment) => {
+        messageCommentsSrv.createComment(text, message).then((comment) => {
             message.commentsObject.comments.unshift(comment);
             $scope.newComment[index] = "";
             $('#collapseComment' + index).collapse("hide");

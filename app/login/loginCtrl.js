@@ -10,7 +10,7 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
     $scope.login = function () {
         userSrv.login($scope.username, $scope.pwd).then(function (user) {
             $("#loginForm").modal("hide");
-            $location.path("/myCommittee/messages");
+            $location.path("/myCommittee/issues");
 
         }, function (error) {
             $scope.invalidLogin = true;

@@ -1,4 +1,3 @@
-// var committeeApp = angular.module("committeeApp", []);
 var committeeApp = angular.module("committeeApp", ["ngRoute"]);
 
 // parse initialization
@@ -20,6 +19,10 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
         .when("/myCommittee/messages", {
             templateUrl: "/app/messages/messages.html",
             controller: "messagesCtrl"
+        })
+        .when("/myCommittee/issues", {
+            templateUrl: "/app/issues/issues.html",
+            controller: "issuesCtrl"
         })
 //         .when("/about", {
 //             templateUrl: "/app/about/about.html",
