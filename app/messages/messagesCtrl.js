@@ -5,12 +5,15 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         return;
     }
 
+    // trigger tooltip on hover only
     $('[rel="tooltip"]').tooltip({
         trigger: "hover"
     });
+
     let unread = 0;
     $scope.messages = [];
     $scope.newComment = []
+    $scope.editMode = false;
 
     messagesSrv.getActiveUserMessages().then((messages) => {
         unread = 0;
@@ -77,24 +80,24 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         }
     }
 
-    $scope.postComment = function (index, message) {
-        var text = $scope.newComment[index];
-        if (!text) {
-            alert("Enter a comment text");
-            return;
-        }
-
-        commentsSrv.createComment(text, message).then((comment) => {
-            message.commentsObject.comments.unshift(comment);
-            $scope.newComment[index] = "";
-            $('#collapseComment' + index).collapse("hide");
-        }, (error) => {
-            alert("Failed post comment to server. Please try again");
-        });
-    }
-
     $scope.editMessage = function (message) {
+        $scope.newMessage = {
+            title: message.title,
+            message: message.details,
+            priority: message.priority === '1' ? "high" : "low"
+        };
 
+        if ($scope.newMessage.priority === "high") {
+            $("#priority > label:first-child").addClass("active");
+            $("#priority > label:last-child").removeClass("active");
+        } else {
+            $("#priority > label:first-child").removeClass("active");
+            $("#priority > label:last-child").addClass("active");
+        }
+        $scope.editedMessage = message;
+
+        $scope.editMode = true;
+        $("#newMessageForm").modal("show");
     }
 
     $scope.deleteMessage = function (message) {
@@ -116,6 +119,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     }
 
     $scope.newMessageOpen = function () {
+        $scope.editMode = false;
+        $scope.editedMessage = null
         resetForm();
     }
 
@@ -125,25 +130,55 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             message: null,
             priority: false
         };
-        // $scope.newMessage.title = null;
-        // $scope.newMessage.message = null;
-        $("#priority>label").removeClass("active");
-        // $scope.newMessage.priority = false;
 
+        $("#priority>label").removeClass("active");
     }
 
     $scope.postMessage = function () {
         if ($scope.newMessageForm.$invalid)
             return;
 
-        messagesSrv.postMessage($scope.newMessage.title, $scope.newMessage.message, $scope.newMessage.priority === "high").then((message) => {
+        var promise = messagesSrv.postMessage($scope.newMessage.title, $scope.newMessage.message, $scope.newMessage.priority === "high", $scope.editedMessage);
+
+        promise.then((message) => {
+            // remove "old" message
+            if ($scope.editedMessage != null) {
+                var reomveIndex = $scope.messages.indexOf($scope.editedMessage);
+                if (reomveIndex > -1)
+                    $scope.messages.splice(reomveIndex, 1);
+            }
+
+            // add "new" message
             $scope.messages.unshift(message);
+
+            // open the message just been updated/added (located first in the array)
+            // $('#collapse' + 0).collapse("show");
+
             resetForm();
+
             $("#newMessageForm").modal("hide");
         }, (error) => {
             alert("Posting message failed");
         });
+
     }
+
+    $scope.postComment = function (index, message) {
+        var text = $scope.newComment[index];
+        if (!text) {
+            alert("Enter a comment text");
+            return;
+        }
+
+        commentsSrv.createComment(text, message).then((comment) => {
+            message.commentsObject.comments.unshift(comment);
+            $scope.newComment[index] = "";
+            $('#collapseComment' + index).collapse("hide");
+        }, (error) => {
+            alert("Failed post comment to server. Please try again");
+        });
+    }
+
 
     $scope.isCommitteeMember = function () {
         return userSrv.isCommitteeMember();

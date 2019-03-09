@@ -14,7 +14,7 @@
 
 1. signup
 2. messages - show only unreaad
-3. messages - add/update/ delete(comments - to finish)
+3. messages - when update message , to unread the message from all users?
 4. issues - accordion
 5. issues - add/update/delete
 6. dashboard

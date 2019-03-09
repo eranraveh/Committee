@@ -32,22 +32,26 @@
         <div class="modal-content bg-dark">
 
             <div class="modal-header jumbotron">
-                <h4 class="modal-title w-100 text-center">Post new message</h4>
+                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Post new message</h4>
+                <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit message</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
-            <div class="modal-body">
-                <!-- <div class="alert alert-danger" role="alert" ng-show="invalidLogin">
+            <form role="form" name="newMessageForm">
+                <div class="modal-body">
+                    <!-- <div class="alert alert-danger" role="alert" ng-show="invalidLogin">
                     <strong>Invalid Login</strong> incorrect email or password
                 </div> -->
 
-                <form role="form" name="newMessageForm">
+                    <!-- <form role="form" name="newMessageForm"> -->
                     <div id="priority" class="btn-group1 btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-secondary ">
-                            <input type="radio" ng-model="newMessage.priority" autocomplete="off" value="high" required name="priority"><i class="fas fa-exclamation text-danger"></i>
+                            <input type="radio" ng-model="newMessage.priority" autocomplete="off" value="high" required
+                                name="priority"><i class="fas fa-exclamation text-danger"></i>
                         </label>
                         <label class="btn btn-secondary ml-1">
-                            <input type="radio" ng-model="newMessage.priority" autocomplete="off" value="low" required name="priority"><i class="fas fa-info text-primary"></i>
+                            <input type="radio" ng-model="newMessage.priority" autocomplete="off" value="low" required
+                                name="priority"><i class="fas fa-info text-primary"></i>
                         </label>
                     </div>
                     <div class="form-group">
@@ -58,10 +62,12 @@
                         <label for="message">Message:</label>
                         <textarea class="form-control" rows="5" id="message" ng-model="newMessage.message" required></textarea>
                     </div>
-                    <!-- data-dismiss="modal"  -->
-                    <button type="submit" class="btn btn-success btn-block" ng-click="postMessage()">Post</button>
-                </form>
-            </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mr-auto" ng-click="postMessage()" ng-class="{'btn-block': !editMode}">Post</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

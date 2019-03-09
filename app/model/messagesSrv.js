@@ -8,7 +8,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             // for committee members, could contain false too
             this.isActive = parseMessage.get("isActive");
             this.user = parseMessage.get("userId");
-            this.postingDate = parseMessage.get("createdAt");
+            this.postingDate = parseMessage.get("updatedAt");
             this.messageId = parseMessage.id;
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
             this.commentsObject = {
@@ -51,7 +51,11 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function postMessage(title, messageBody, priority) {
+    function postMessage(title, messageBody, priority, oldMessage) {
+        if (oldMessage != null) {
+            return updateMessage(title, messageBody, priority, oldMessage);
+        }
+
         var async = $q.defer();
 
         const ParseMessage = Parse.Object.extend('Message');
@@ -75,6 +79,37 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
                 async.reject(error);
             }
         );
+
+        return async.promise;
+    }
+
+
+    function updateMessage(title, messageBody, priority, oldMessage) {
+        var async = $q.defer();
+
+        const ParseMessage = Parse.Object.extend('Message');
+        const query = new Parse.Query(ParseMessage);
+
+        query.get(oldMessage.messageId).then((updatedMessage) => {
+            updatedMessage.set('title', title);
+            updatedMessage.set('details', messageBody);
+            updatedMessage.set('priority', priority ? '1' : '2');
+            updatedMessage.set('userId', Parse.User.current());
+            updatedMessage.save().then(
+                (result) => {
+                    console.log('Message created', result);
+                    var newMessageObj = new Message(result);
+                    async.resolve(newMessageObj);
+                },
+                (error) => {
+                    console.error('Error while updating Message: ', error);
+                    async.reject(error);
+                }
+            );
+        }, (error) => {
+            console.error('Error while getting Message', error);
+            async.reject(error);
+        });
 
         return async.promise;
     }
