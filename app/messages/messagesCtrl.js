@@ -5,6 +5,9 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         return;
     }
 
+    $('[rel="tooltip"]').tooltip({
+        trigger: "hover"
+    });
     let unread = 0;
     $scope.messages = [];
     $scope.newComment = []
@@ -97,8 +100,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     $scope.deleteMessage = function (message) {
         messagesSrv.deleteMessage(message).then(() => {
 
-            commentsSrv.deleteMessageComments(message).then((successCounter, failCounter) => {
-                console.log("${successCounter} comments deleted and ${failCounter} comments ")
+            commentsSrv.deleteMessageComments(message).then(([successCounter, failCounter]) => {
+                console.log(successCounter + " comments deleted and " + failCounter + " comments failed")
             }, (error) => {
 
             });
@@ -110,6 +113,36 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             alert("Failed delete message from server. Please try again");
         });
 
+    }
+
+    $scope.newMessageOpen = function () {
+        resetForm();
+    }
+
+    function resetForm() {
+        $scope.newMessage = {
+            title: null,
+            message: null,
+            priority: false
+        };
+        // $scope.newMessage.title = null;
+        // $scope.newMessage.message = null;
+        $("#priority>label").removeClass("active");
+        // $scope.newMessage.priority = false;
+
+    }
+
+    $scope.postMessage = function () {
+        if ($scope.newMessageForm.$invalid)
+            return;
+
+        messagesSrv.postMessage($scope.newMessage.title, $scope.newMessage.message, $scope.newMessage.priority === "high").then((message) => {
+            $scope.messages.unshift(message);
+            resetForm();
+            $("#newMessageForm").modal("hide");
+        }, (error) => {
+            alert("Posting message failed");
+        });
     }
 
     $scope.isCommitteeMember = function () {

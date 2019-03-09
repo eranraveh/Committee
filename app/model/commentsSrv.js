@@ -75,7 +75,7 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
         );
 
         // wait for all promises, while the neutrailized promises (which rejected...) 
-        $q.all(commentPromises, results => {
+        $q.all(commentPromises).then(results => {
             var successCounter = 0;
             var failCounter = 0;
             for (let index = 0; index < results.length; index++) {
@@ -84,7 +84,7 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
                 else
                     successCounter++;
             }
-            async.resolve(successCounter, failCounter);
+            async.resolve([successCounter, failCounter]);
         });
 
         return async.promise;
@@ -104,8 +104,12 @@ committeeApp.factory("commentsSrv", function ($q, $log, userSrv) {
                 console.error('Error while deleting MessageComment', error);
                 (error) => async.reject(error);
             });
+        }, (error) => {
+            console.error('Error while getting MessageComment', error);
+            async.reject(error);
         });
 
+        return async.promise;
     }
 
     return {

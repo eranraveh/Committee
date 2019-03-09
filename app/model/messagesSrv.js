@@ -51,36 +51,33 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    // function createRecipe(name, description, img, ingredients, steps, duration) {
-    //     var async = $q.defer();
+    function postMessage(title, messageBody, priority) {
+        var async = $q.defer();
 
-    //     const RecipeParse = Parse.Object.extend('Recipe');
-    //     const newRecipe = new RecipeParse();
+        const ParseMessage = Parse.Object.extend('Message');
+        const newMessage = new ParseMessage();
 
-    //     newRecipe.set('name', name);
-    //     newRecipe.set('description', description);
-    //     newRecipe.set('image', new Parse.File(name + ".jpg", {
-    //         base64: img
-    //     }));
-    //     newRecipe.set('ingredients', ingredients);
-    //     newRecipe.set('steps', steps);
-    //     newRecipe.set('duration', duration);
-    //     newRecipe.set('userId', Parse.User.current());
+        newMessage.set('title', title);
+        newMessage.set('details', messageBody);
+        newMessage.set('priority', priority ? '1' : '2');
+        newMessage.set('userId', Parse.User.current());
+        newMessage.set('committeeId', userSrv.getActiveUserCommitteeId());
+        newMessage.set('isActive', true);
 
-    //     newRecipe.save().then(
-    //         function (result) {
-    //             $log.info('Recipe created', result);
-    //             var newRecipe = new Recipe(result);
-    //             async.resolve(newRecipe);
-    //         },
-    //         function (error) {
-    //             $log.error('Error while creating Recipe: ', error);
-    //             async.reject(error);
-    //         }
-    //     );
+        newMessage.save().then(
+            (result) => {
+                console.log('Message created', result);
+                var newMessageObj = new Message(result);
+                async.resolve(newMessageObj);
+            },
+            (error) => {
+                console.error('Error while creating Message: ', error);
+                async.reject(error);
+            }
+        );
 
-    //     return async.promise;
-    // }
+        return async.promise;
+    }
 
     function deleteMessage(message) {
         var async = $q.defer();
@@ -109,6 +106,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
 
     return {
         getActiveUserMessages: getActiveUserMessages,
+        postMessage: postMessage,
         deleteMessage: deleteMessage
     }
 

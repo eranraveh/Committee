@@ -4,7 +4,7 @@
             <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
                 aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onMessageOpen(message,$index)"
                 ng-class="{'font-weight-bolder': message.wasRead == false }">
-                <i class="fas  mr-1" ng-class="{'fa-exclamation text-danger': message.priority == 1,'fa-info': message.priority != 1}"></i><i
+                <i class="fas  mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
                     class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
                 <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
             </button>
