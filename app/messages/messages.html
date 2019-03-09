@@ -1,11 +1,14 @@
 <div class="container">
     <h1 class="">Messages</h1>
     <!-- <p class="lead">Jumbo helper text</p> -->
-    <form class="form-inline justify-content-between ">
+    <form class="form-inline  ">
         <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
-        <div class="form-check">
+        <div class="form-check ml-3">
             <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" ng-model="importance">Only important messages
+                <input type="checkbox" class="form-check-input" ng-model="importance">Important
+            </label>
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="unread">Unread
             </label>
         </div>
     </form>

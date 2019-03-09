@@ -29,7 +29,10 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         }
 
         if (!$scope.query) {
-            if (!$scope.importance || message.priority === "1") {
+            // show only important message
+            if ((!$scope.importance || message.priority === "1") && 
+            // show only unread message
+            (!$scope.unread || !message.wasRead)) {
                 isMessageUnread(message);
                 return true;
             } else {
@@ -37,8 +40,11 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             }
         } else if ((message.title.toLowerCase().includes($scope.query.toLowerCase()) ||
                 message.details.toLowerCase().includes($scope.query.toLowerCase())) &&
-            (!$scope.importance || message.priority === "1")) {
-            isMessageUnread(message);
+            // show only important message
+            (!$scope.importance || message.priority === "1") &&
+            // show only unread message
+            (!$scope.unread || !message.wasRead)) {
+                isMessageUnread(message);
             return true;
         } else {
             return false;
