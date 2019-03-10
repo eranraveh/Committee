@@ -10,9 +10,10 @@ Parse.initialize(
 committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     console.log();
     $routeProvider.when("/", {
-            templateUrl: "/app/home/home.html"
+            templateUrl: "/app/home/home.html",
+            controller: "loginCtrl"
         })
-        .when("/signup", {
+        .when("/myCommittee/signup", {
             templateUrl: "/app/signup/signup.html",
             controller: "signupCtrl"
         })

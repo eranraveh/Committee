@@ -1,79 +1,193 @@
-<!-- <div id="signupForm" class="modal"> -->
-<!-- <div class="modal-dialog"> -->
-<div >
+<div class="container mb-5 col-sm-10 col-md-6 col-lg-5 col-xl-5 mx-auto rounded pb-4" id="signupForm">
+    <h1 class="text-center mb-4 border-bottom pb-2">Signup and create your committee</h1>
 
-    <!-- Modal Header -->
-    <div class="modal-header1 jumbotron">
-        <h4 class="w-100 h-50 text-center">Signup</h4>
-        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-    </div>
-
-    <!-- Modal body -->
-    <!-- <div class="modal-body"> -->
-    <form class="container">
+    <form class="container ">
         <div class="form-group row">
-            <label for="inputName" class="col-sm-3 col-form-label">Full Name</label>
-            <div class="col-sm-9">
+            <label for="inputName" class="col-sm-4 col-form-label">Full Name</label>
+            <div class="col-sm-8">
                 <input type="text" class="form-control" id="inputName" required placeholder="Full Name">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="inputPassword3" class="col-sm-3 col-form-label">Password</label>
-            <div class="col-sm-9">
-                <input type="password" class="form-control" id="inputPassword3" required placeholder="Password">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8 ">
+                <input id="password-field1" type="password" class="form-control" required name="password" placeholder="Password">
+                <i toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-3 col-form-label">Email</label>
-            <div class="col-sm-9">
-                <input type="email" class="form-control" id="inputEmail3" required placeholder="Email">
+            <label for="verificationPassword" class="col-sm-4 col-form-label">Confirm Password</label>
+            <div class="col-sm-8 ">
+                <input id="password-field2" type="password" class="form-control" required name="verificationPassword"
+                    placeholder="Confirm Password">
+                <i toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
             </div>
         </div>
 
-        <fieldset class="form-group">
-            <div class="row">
-                <legend class="col-form-label col-sm-3 pt-0">Gender</legend>
-                <div class="col-sm-9">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadiosMale" value="male"
-                            checked>
-                        <label class="form-check-label" for="gridRadiosMale">
-                            Male
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadiosFemale" value="female">
-                        <label class="form-check-label" for="gridRadios2">
-                            Female
-                        </label>
-                    </div>
+        <div class="form-group row">
+            <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
+            <div class="col-sm-8">
+                <input type="email" class="form-control" id="inputEmail" required placeholder="Email">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="userName" class="col-sm-4 col-form-label">Username</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="userName" placeholder="select your username">
+                <small>optional, otherwise your email will be used to login</small>
+            </div>
+        </div>
+
+
+        <fieldset class="form-group border-light px-2 rounded">
+            <legend class="col-form-label col-sm-4 pt-0 text-muted">Your committee</legend>
+
+            <div class="form-group row ">
+                <label for="city" class="col-sm-4 col-form-label">City</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="city" required placeholder="City">
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <label for="address" class="col-sm-4 col-form-label">Address</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="address" required placeholder="Your building Address">
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <label for="apt" class="col-sm-4 col-form-label">Apartment</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="apt" required placeholder="Apartment">
+                </div>
+            </div>
+
+            <div class="form-group row " ng-show="false">
+                <label for="image" class="col-sm-4 col-form-label">Select image</label>
+                <div class="col-sm-8">
+                    <input type="file" image-with-preview class="form-control-file" id="image" ng-model="img" accept="image/*">
                 </div>
             </div>
         </fieldset>
-        <div class="form-group row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-9">
-                <div class="form-check">
-                    <input class="form-check-input" required type="checkbox" value="" id="gridCheckConfirm">
-                    <label class="form-check-label" for="gridCheckConfirm">
-                        I read and agreed with the <a href="#"><strong>Terms of Service</strong></a>,
-                        and <a href="#"><strong>Privacy Policy</strong></a>.
-                    </label>
-                    <div class="invalid-feedback">
-                        You must agree before Signing-up.
-                    </div>
+
+        <div class="form-group ">
+            <!-- <div class="col-sm-3"></div> -->
+            <!-- <div class=""> -->
+            <div class="form-check">
+                <input class="form-check-input" required type="checkbox" value="" id="gridCheckConfirm">
+                <label class="form-check-label" for="gridCheckConfirm">
+                    I read and agreed with the <a class="" href="javascript:void(0)" data-toggle="modal" data-target="#termsOfService"><strong>Terms
+                            of Service</strong></a>,
+                    and <a class="" href="#" data-toggle="modal" data-target="#privacyPolicy"><strong>Privacy Policy</strong></a>.
+                </label>
+                <div class="invalid-feedback">
+                    You must agree before Signing-up.
                 </div>
             </div>
+            <!-- </div> -->
         </div>
 
         <div class="justify-content-between w-100">
-            <button type="submit" class="btn btn-primary" >Sign-up</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Sign-up</button>
+            <button type="reset" class="btn btn-secondary" value="Reset">Reset</button>
         </div>
     </form>
 
 </div>
-<!-- </div> -->
-<!-- </div> -->
+
+<div id="termsOfService" class="container modal ">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+
+            <div class="modal-header jumbotron">
+                <h4 class="modal-title w-100 text-center">Terms of Service</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <P>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquet, mi eu venenatis eleifend,
+                    risus
+                    justo venenatis justo, a ullamcorper purus velit nec ex. Nunc velit nulla, auctor sed leo egestas,
+                    eleifend iaculis urna. Suspendisse condimentum ante in augue finibus, id scelerisque magna
+                    tristique.
+                    Phasellus quis neque nibh. Nunc a augue mollis, hendrerit mauris in, eleifend turpis. Aliquam eget
+                    mattis orci. Nullam vulputate elit quam, et malesuada nibh consequat ut. Donec ipsum ex, accumsan
+                    auctor tincidunt vitae, rhoncus vitae ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit.
+                    Aliquam commodo erat a nibh venenatis blandit. Etiam non eros sed felis euismod sagittis. Nulla
+                    facilisi.
+
+
+                    Curabitur efficitur fringilla efficitur. Nam leo nisi, dignissim et quam sed, mollis maximus dolor.
+                    Ut
+                    ut risus in sem faucibus rutrum. Sed et sapien tincidunt, varius diam quis, interdum nisl. Praesent
+                    bibendum ligula quis gravida elementum. Morbi elementum faucibus feugiat. Nunc quam quam, aliquet
+                    eget
+                    faucibus ut, scelerisque vitae lectus. Pellentesque feugiat id erat sed dapibus. Donec quam sapien,
+                    interdum nec velit ac, ultrices vestibulum libero. Mauris vestibulum consequat tempus. Vivamus
+                    tortor
+                    metus, blandit sit amet risus quis, aliquam pulvinar turpis. Maecenas eget ex sed est tempus
+                    vehicula.
+                    Mauris in enim vitae elit lobortis mollis. Vivamus feugiat dui sed purus euismod, vel aliquet ante
+                    blandit. Nunc sollicitudin commodo metus ut vestibulum. Phasellus ac semper mi.
+
+                </P>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="privacyPolicy" class="container modal ">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+
+            <div class="modal-header jumbotron">
+                <h4 class="modal-title w-100 text-center">Privacy Policy</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <P>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquet, mi eu venenatis eleifend,
+                    risus
+                    justo venenatis justo, a ullamcorper purus velit nec ex. Nunc velit nulla, auctor sed leo egestas,
+                    eleifend iaculis urna. Suspendisse condimentum ante in augue finibus, id scelerisque magna
+                    tristique.
+                    Phasellus quis neque nibh. Nunc a augue mollis, hendrerit mauris in, eleifend turpis. Aliquam eget
+                    mattis orci. Nullam vulputate elit quam, et malesuada nibh consequat ut. Donec ipsum ex, accumsan
+                    auctor tincidunt vitae, rhoncus vitae ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit.
+                    Aliquam commodo erat a nibh venenatis blandit. Etiam non eros sed felis euismod sagittis. Nulla
+                    facilisi.
+
+
+                    Curabitur efficitur fringilla efficitur. Nam leo nisi, dignissim et quam sed, mollis maximus dolor.
+                    Ut
+                    ut risus in sem faucibus rutrum. Sed et sapien tincidunt, varius diam quis, interdum nisl. Praesent
+                    bibendum ligula quis gravida elementum. Morbi elementum faucibus feugiat. Nunc quam quam, aliquet
+                    eget
+                    faucibus ut, scelerisque vitae lectus. Pellentesque feugiat id erat sed dapibus. Donec quam sapien,
+                    interdum nec velit ac, ultrices vestibulum libero. Mauris vestibulum consequat tempus. Vivamus
+                    tortor
+                    metus, blandit sit amet risus quis, aliquam pulvinar turpis. Maecenas eget ex sed est tempus
+                    vehicula.
+                    Mauris in enim vitae elit lobortis mollis. Vivamus feugiat dui sed purus euismod, vel aliquet ante
+                    blandit. Nunc sollicitudin commodo metus ut vestibulum. Phasellus ac semper mi.
+
+                </P>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>

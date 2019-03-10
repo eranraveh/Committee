@@ -17,4 +17,7 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
         });
     }
 
+    $scope.onSignup = function() {
+        $("#loginForm").modal("hide");
+    }
 })

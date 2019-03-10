@@ -13,12 +13,14 @@
 
 
 1. signup
+2. login from signup page
+3. votes
+4. dashboard
+
+
+
 2. issues - when update message , to unread the message from all users?
 3. issues - by spec only tenant can add new issue, actually everyone can
 4. issues - by spec only committe can comment issue, actually everyone can
-5. issues - add/update/delete
-6. dashboard
-7. format dates - ddd, hh:mm -> ddd dd/mm
-8. LoadUsersNames
-7.Isuu
+6. 
 

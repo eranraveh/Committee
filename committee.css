@@ -111,3 +111,23 @@ body {
 .btn-secondary:not(:disabled):not(.disabled).active {
     background-color: black !important;
 }
+
+#signupForm {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border-radius: 3rem!important;
+
+}
+
+.field-icon {
+    float: right;
+    margin-right: 5px;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+  }
+
+fieldset {
+    border-style: groove;
+    border-width: 2px;
+}
