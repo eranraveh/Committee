@@ -6,7 +6,7 @@
                 ng-class="{'font-weight-bolder': message.wasRead == false }">
                 <i class="fas fa-fw mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
                     class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
-                <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
+                <span class="float-right messageDate">{{message.postingDate | myDate}}</span>
             </button>
         </h5>
     </div>
@@ -19,7 +19,7 @@
             <!-- comments -->
             <div ng-repeat="comment in message.commentsObject.comments">
                 <div class="border border-dark rounded-lg rounded px-2">
-                    <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | date: "d MMMM"}}</span>
+                    <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | myDate}}</span>
                         <span class="font-weight-bold text-primary">{{comment.username}} :</span> {{comment.text}}</p>
                 </div>
             </div>

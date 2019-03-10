@@ -14,7 +14,7 @@
                     </span>
                     <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
                         <span class="font-italic small ">{{issue.status}}</span>
-                        <span class="">{{issue.postingDate | date: "d MMM"}}</span>
+                        <span class="">{{issue.postingDate | myDate}}</span>!!!!!
                     </div>
                 </div>
             </button>
@@ -30,7 +30,7 @@
             <!-- comments -->
             <div ng-repeat="comment in issue.commentsObject.comments">
                 <div class="border border-dark rounded-lg rounded px-2">
-                    <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | date: "d MMMM"}}</span>
+                    <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | myDate}}</span>
                         <span class="font-weight-bold text-primary">{{comment.username}} :</span> {{comment.text}}</p>
                 </div>
             </div>
