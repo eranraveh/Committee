@@ -1,11 +1,15 @@
 committeeApp.factory("userSrv", function ($q, $log) {
 
     var activeUser = null;
+    let allUsersNames = [];
 
     class User {
-        constructor(parseUser) {
-            this.username = parseUser.get("username");
+        constructor(parseUser, isNameResolver = false) {
             this.name = parseUser.get("name");
+            this.id = parseUser.id;
+            if (isNameResolver)
+                return;
+            this.username = parseUser.get("username");
             this.isCommitteeMember = parseUser.get("isCommitteeMember");
             this.email = parseUser.get("email");
             this.apartment = parseUser.get("apartment");
@@ -22,8 +26,9 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
         Parse.User.logIn(email, pwd).then((user) => {
             activeUser = new User(user);
-            LoadUsersNames();
-            async.resolve(activeUser);
+            LoadUsersNames().then(() => {
+                async.resolve(activeUser);
+            });
         }).catch((error) => {
             $log.error('Error while logging in user', error);
             async.reject(error);
@@ -33,14 +38,21 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function LoadUsersNames() {
-        const MessageComment = Parse.Object.extend('User');
-        const query = new Parse.Query(MessageComment);
+        var async = $q.defer();
+
+        const ParseUser = Parse.Object.extend('User');
+        const query = new Parse.Query(ParseUser);
         query.equalTo("committeId", activeUser.committeeId);
         query.find().then((results) => {
-            console.log('MessageComment found', results);
+            allUsersNames = results.map(user => new User(user, true));
+            // console.log('Users fetched', results);
+            async.resolve();
         }, (error) => {
-            console.error('Error while fetching MessageComment', error);
+            console.error('Error while fetching User', error);
+            async.resolve();
         });
+
+        return async.promise;
     }
 
     function isLoggedIn() {
@@ -89,6 +101,10 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return async.promise;
     }
 
+    function GetUsername(userId) {
+        return allUsersNames.find(user => user.id === userId).name;
+    }
+
     function getMessages(currentUser) {
         var messages = currentUser.get("messagesRead");
         if (messages === undefined)
@@ -110,7 +126,8 @@ committeeApp.factory("userSrv", function ($q, $log) {
         getActiveUserCommitteeId: getActiveUserCommitteeId,
         addOpenedMessages: addOpenedMessages,
         addOpenedIssues: addOpenedIssues,
-        isCommitteeMember: isCommitteeMember
+        isCommitteeMember: isCommitteeMember,
+        GetUsername: GetUsername
     }
 
 });

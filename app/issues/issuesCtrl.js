@@ -46,7 +46,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
                 // show only unread issue
                 (!$scope.unread || !issue.wasRead) &&
                 // show only my issue
-                (!$scope.myIssues || !issue.isMyIssue)) {
+                (!$scope.myIssues || issue.isMyIssue)) {
                 checkIssueCounters(issue);
                 return true;
             } else {

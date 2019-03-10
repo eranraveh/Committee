@@ -9,7 +9,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.isActive = parseMessage.get("isActive");
             this.parseUser = parseMessage.get("userId");
             this.postingDate = parseMessage.get("updatedAt");
-            this.posterName = this.parseUser.get("name");
+            this.posterName = userSrv.GetUsername(this.parseUser.id);
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
             this.commentsObject = {
                 wasLoaded: false,

@@ -8,7 +8,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
             this.status = parseIssue.get("status");
             this.parseUser = parseIssue.get("userId");
             this.postingDate = parseIssue.get("updatedAt");
-            this.posterName = this.parseUser.get("name");
+            this.posterName = userSrv.GetUsername(this.parseUser.id);
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseIssue.id) > -1);
             this.isMyIssue = (userSrv.getActiveUser().username === this.parseUser.get("username"));
             this.commentsObject = {
