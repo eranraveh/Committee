@@ -22,6 +22,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
         Parse.User.logIn(email, pwd).then((user) => {
             activeUser = new User(user);
+            LoadUsersNames();
             async.resolve(activeUser);
         }).catch((error) => {
             $log.error('Error while logging in user', error);
@@ -29,6 +30,17 @@ committeeApp.factory("userSrv", function ($q, $log) {
         });
 
         return async.promise;
+    }
+
+    function LoadUsersNames() {
+        const MessageComment = Parse.Object.extend('User');
+        const query = new Parse.Query(MessageComment);
+        query.equalTo("committeId", activeUser.committeeId);
+        query.find().then((results) => {
+            console.log('MessageComment found', results);
+        }, (error) => {
+            console.error('Error while fetching MessageComment', error);
+        });
     }
 
     function isLoggedIn() {

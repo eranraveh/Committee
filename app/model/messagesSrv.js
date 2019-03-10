@@ -7,8 +7,9 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             this.priority = parseMessage.get("priority");
             // for committee members, could contain false too
             this.isActive = parseMessage.get("isActive");
-            this.user = parseMessage.get("userId");
+            this.parseUser = parseMessage.get("userId");
             this.postingDate = parseMessage.get("updatedAt");
+            this.posterName = this.parseUser.get("name");
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseMessage.id) > -1);
             this.commentsObject = {
                 wasLoaded: false,

@@ -4,7 +4,7 @@
             <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
                 aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onMessageOpen(message,$index)"
                 ng-class="{'font-weight-bolder': message.wasRead == false }">
-                <i class="fas  mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
+                <i class="fas fa-fw mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
                     class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
                 <span class="float-right messageDate">{{message.postingDate | date: "d MMM"}}</span>
             </button>
@@ -15,7 +15,7 @@
         data-parent="#accordion">
         <div class="card-body">
             <p>{{message.details}}</p>
-
+            <p class="text-light">{{message.posterName}}</p>
             <!-- comments -->
             <div ng-repeat="comment in message.commentsObject.comments">
                 <div class="border border-dark rounded-lg rounded px-2">

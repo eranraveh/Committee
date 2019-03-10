@@ -18,6 +18,7 @@
 4. issues - by spec only committe can comment issue, actually everyone can
 5. issues - add/update/delete
 6. dashboard
-
+7. format dates - ddd, hh:mm -> ddd dd/mm
+8. LoadUsersNames
 7.Isuu
 

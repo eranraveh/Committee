@@ -1,11 +1,22 @@
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
-                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onIssueOpen(issue,$index)" ng-class="{'font-weight-bolder': issue.wasRead == false }">
-                <i class="fas  mr-1" ng-class="{'fa-exclamation text-danger': issue.priority == '1', 'fa-lightbulb text-warning': issue.priority == '2', 'fa-info': issue.arrow-down == '3'}"></i><i
-                    class="fas fa-envelope{{issue.wasRead ? '-open':''}} mr-2"></i>{{issue.title}}
-                <span class="float-right px-1">{{issue.status}}</span><span class="float-right px-1">{{issue.postingDate | date: "d MMM"}}</span>
+            <button class="btn btn-link w-100 text-left px-0" data-toggle="collapse" data-target="#collapse{{$index}}"
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onIssueOpen(issue,$index)" ng-class="{'font-weight-bolder': issue.wasRead == false, 'font-weight-light': issue.wasRead }">
+                <div class="row mx-0">
+                    <span class="col-sm-8 col-md-9 col-lg-10">
+                        <i class="fas fa-fw fa-exclamation text-danger mr-1" ng-show="issue.priority == '1'"
+                            data-toggle="tooltip" title="Urgent" tooltip></i><i class="fas fa-fw fa-lightbulb text-warning mr-1"
+                            ng-show="issue.priority == '2'" data-toggle="tooltip" title="Important" tooltip></i><i
+                            class="fas fa-fw fa-arrow-down text-primary mr-1" ng-show="issue.priority == '3'"
+                            data-toggle="tooltip" title="Normal" tooltip></i><i class="fas fa-envelope{{issue.wasRead ? '-open':''}} mr-2"></i>
+                        {{issue.title}}
+                    </span>
+                    <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
+                        <span class="font-italic small ">{{issue.status}}</span>
+                        <span class="">{{issue.postingDate | date: "d MMM"}}</span>
+                    </div>
+                </div>
             </button>
         </h5>
     </div>
@@ -14,6 +25,7 @@
         data-parent="#accordion">
         <div class="card-body">
             <p>{{issue.details}}</p>
+            <p class="text-light">{{issue.posterName}}</p>
 
             <!-- comments -->
             <div ng-repeat="comment in issue.commentsObject.comments">
@@ -26,11 +38,11 @@
             <!-- new comment , delete/edit meesage-->
             <div>
                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseComment{{$index}}">Comment</button>
-                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="canEditIssue()" data-toggle="tooltip"
+                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="canEditIssue(issue)" data-toggle="tooltip"
                     title="Edit issue" tooltip ng-click="editIssue(issue)">
                     <i class="fas fa-edit "></i>
                 </button>
-                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="isMyIsue()" data-toggle="tooltip"
+                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="issue.isMyIssue" data-toggle="tooltip"
                     title="Delete issue" tooltip ng-click="deleteIssue(issue)">
                     <i class="fas fa-trash-alt"></i>
                 </button>

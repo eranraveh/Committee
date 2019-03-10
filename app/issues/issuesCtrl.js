@@ -70,7 +70,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
             unreadIssues++;
         if (issue.status != issueStatus.CLOSE)
             openIssues++;
-        if (issue.createdBy === userSrv.getActiveUser().username)
+        if (issue.isMyIssue)
             myIssues++;
     }
 
@@ -130,12 +130,14 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         if ($scope.newIssue.priority === issueUrgency.URGENT)
             $("#priority > label:first-child").addClass("active");
         else if ($scope.newIssue.priority === issueUrgency.IMPORTANT)
-            $("#priority > label:nth-child(2)").removeClass("active");
+            $("#priority > label:nth-child(2)").addClass("active");
         else
             $("#priority > label:last-child").addClass("active");
-        $scope.editedIssue = issue;
 
         $scope.editMode = true;
+        $scope.editedIssue = issue;
+        $scope.isReadOnly = !issue.isMyIssue;
+
         $("#newIssueForm").modal("show");
     }
 
@@ -159,12 +161,13 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
 
     $scope.newIssueOpen = function () {
         $scope.editMode = false;
-        $scope.editedIssue = null
+        $scope.editedIssue = null;
+        $scope.isReadOnly = false;
         resetForm();
         // priority Normal is default
         $("#priority > label:last-child").addClass("active");
         $scope.newIssue.priority = issueUrgency.NORMAL;
-        $scope.newIssue.status = issueStatus.NEW; 
+        $scope.newIssue.status = issueStatus.NEW;
     }
 
     function resetForm() {
@@ -226,5 +229,10 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
 
     $scope.isCommitteeMember = function () {
         return userSrv.isCommitteeMember();
+    }
+
+    $scope.canEditIssue = function (issue) {
+        canEditIssue = (issue.isMyIssue || userSrv.isCommitteeMember());
+        return canEditIssue;
     }
 })

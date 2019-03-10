@@ -6,10 +6,11 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
             this.details = parseIssue.get("details");
             this.priority = parseIssue.get("priority");
             this.status = parseIssue.get("status");
-            this.user = parseIssue.get("userId");
+            this.parseUser = parseIssue.get("userId");
             this.postingDate = parseIssue.get("updatedAt");
+            this.posterName = this.parseUser.get("name");
             this.wasRead = (userSrv.getActiveUser().readMessages.indexOf(parseIssue.id) > -1);
-            this.isMyIssue = (Parse.User.current() === this.user);
+            this.isMyIssue = (userSrv.getActiveUser().username === this.parseUser.get("username"));
             this.commentsObject = {
                 wasLoaded: false,
                 comments: []
