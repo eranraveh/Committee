@@ -19,7 +19,7 @@
 5. hide signup from the menu if Im in signup page
 6. sort issues by priority
 7. improve signup messages with angularjs, password validity/strength
-8. email verification
+8. email verification, password reset
 
 
 2. issues - when update message , to unread the message from all users?
