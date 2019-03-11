@@ -1,22 +1,54 @@
-committeeApp.controller("signupCtrl", function ($scope, $location, userSrv) {
+committeeApp.controller("signupCtrl", function ($scope, $location, userSrv, committeeSrv) {
 
-    $scope.invalidLogin = false;
+    $scope.signup = function () {
 
-    // $scope.username = "xerave1";
-    // $scope.pwd = "123";
-    $scope.username = "luba";
-    $scope.pwd = "123";
+        if (!validPassword())
+            return;
 
-    $scope.login = function () {
-        userSrv.login($scope.username, $scope.pwd).then(function (user) {
-            $("#loginForm").modal("hide");
-            $location.path("/myCommittee/issues");
+        if ($scope.signupForm.$invalid)
+            return false;
 
-        }, function (error) {
-            $scope.invalidLogin = true;
+        committeeSrv.createCommittee(toTitleCase($scope.city), toTitleCase($scope.address), $scope.img).then((committee) => {
+
+            userSrv.signupUser($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, committee, $scope.password).then((user) => {
+                $location.path("/myCommittee/issues");
+            }, (error) => {
+                console.error("error signing up user", error);
+                committeeSrv.deleteCommittee(committee).then(() => {
+
+                }, (error) => {
+                    console.error("error consolidate committee after user signup failed", error);
+                });
+                alert("Creating account failed. Please try again.");
+            });
+        }, (error) => {
+            alert("Creating account failed. Please try again.");
         });
     }
 
+    function validPassword() {
+        if ($scope.password != $scope.confirmPassword) {
+            alert("Confirm Password not match");
+
+            return false;
+        }
+
+        if ($scope.password.match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/")) {
+            alert("password not comply with restrictions");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    // show/hide password
     $(".toggle-password").click(function () {
 
         // switch the eye <--> eye-slash

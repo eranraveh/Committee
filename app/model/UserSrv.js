@@ -55,6 +55,32 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return async.promise;
     }
 
+    function signupUser(username, email, name, apt, committee, password) {
+        var async = $q.defer();
+
+        const user = new Parse.User()
+        user.set('username', username);
+        user.set('email', email);
+        user.set('name', name);
+        user.set('apartment', apt);
+        user.set('committeId', committee);
+        user.set('messagesRead', []);
+        user.set('isCommitteeMember', true);
+        user.set('password', password);
+
+        user.signUp().then((user) => {
+            activeUser = new User(user);
+
+            console.log('User signed up', user);
+            async.resolve(activeUser);
+        }).catch(error => {
+            console.error('Error while signing up user', error);
+            async.reject(error);
+        });
+
+        return async.promise;
+    }
+
     function isLoggedIn() {
         return activeUser ? true : false;
     }
@@ -120,6 +146,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
     return {
         login: login,
+        signupUser: signupUser,
         isLoggedIn: isLoggedIn,
         logout: logout,
         getActiveUser: getActiveUser,

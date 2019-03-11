@@ -1,71 +1,82 @@
 <div class="container mb-5 col-sm-10 col-md-6 col-lg-5 col-xl-5 mx-auto rounded pb-4" id="signupForm">
     <h1 class="text-center mb-4 border-bottom pb-2">Signup and create your committee</h1>
 
-    <form class="container ">
+    <form class="container " name="signupForm">
+        <!-- Full name -->
         <div class="form-group row">
             <label for="inputName" class="col-sm-4 col-form-label">Full Name</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputName" required placeholder="Full Name">
+                <input type="text" class="form-control" id="inputName" ng-model="name" required placeholder="Full Name">
             </div>
         </div>
 
+        <!-- Password -->
         <div class="form-group row">
             <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
             <div class="col-sm-8 ">
-                <input id="password-field1" type="password" class="form-control" required name="password" placeholder="Password">
+                <input id="password-field1" type="password" class="form-control" ng-model="password" required name="password"
+                    placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                 <i toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
+                <small>Password must contain a capital letter, lowercase letter, a number and be at least 8 characters long.</small>
             </div>
         </div>
 
+        <!-- confirm Password -->
         <div class="form-group row">
             <label for="verificationPassword" class="col-sm-4 col-form-label">Confirm Password</label>
             <div class="col-sm-8 ">
-                <input id="password-field2" type="password" class="form-control" required name="verificationPassword"
-                    placeholder="Confirm Password">
+                <input id="password-field2" type="password" class="form-control" ng-model="confirmPassword" required
+                    name="verificationPassword" placeholder="Confirm Password">
                 <i toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
             </div>
         </div>
 
+        <!-- email -->
         <div class="form-group row">
             <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
             <div class="col-sm-8">
-                <input type="email" class="form-control" id="inputEmail" required placeholder="Email">
+                <input type="email" class="form-control" id="inputEmail" ng-model="email" required placeholder="Email">
             </div>
         </div>
 
+        <!-- username -->
         <div class="form-group row">
             <label for="userName" class="col-sm-4 col-form-label">Username</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="userName" placeholder="select your username">
-                <small>optional, otherwise your email will be used to login</small>
+                <input type="text" class="form-control" id="userName" ng-model="username" placeholder="select your username" pattern="[A-Za-z][A-Za-z\d]{5,}" title="At least 6 letters or digits, must start with a letter">
+                <small>optional with minimum 6 letters, otherwise your email will be used to login</small>
             </div>
         </div>
 
-
+        <!-- committee -->
         <fieldset class="form-group border-light px-2 rounded">
             <legend class="col-form-label col-sm-4 pt-0 text-muted">Your committee</legend>
 
+            <!-- city -->
             <div class="form-group row ">
                 <label for="city" class="col-sm-4 col-form-label">City</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="city" required placeholder="City">
+                    <input type="text" class="form-control" id="city" ng-model="city" required placeholder="City">
                 </div>
             </div>
 
+            <!-- address -->
             <div class="form-group row ">
                 <label for="address" class="col-sm-4 col-form-label">Address</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="address" required placeholder="Your building Address">
+                    <input type="text" class="form-control" id="address" ng-model="address" required placeholder="Your building Address">
                 </div>
             </div>
 
+            <!-- Apartment -->
             <div class="form-group row ">
                 <label for="apt" class="col-sm-4 col-form-label">Apartment</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="apt" required placeholder="Apartment">
+                    <input type="text" class="form-control" id="apt" ng-model="apt" required placeholder="Apartment">
                 </div>
             </div>
 
+            <!-- image -->
             <div class="form-group row " ng-show="false">
                 <label for="image" class="col-sm-4 col-form-label">Select image</label>
                 <div class="col-sm-8">
@@ -75,25 +86,23 @@
         </fieldset>
 
         <div class="form-group ">
-            <!-- <div class="col-sm-3"></div> -->
-            <!-- <div class=""> -->
             <div class="form-check">
                 <input class="form-check-input" required type="checkbox" value="" id="gridCheckConfirm">
                 <label class="form-check-label" for="gridCheckConfirm">
                     I read and agreed with the <a class="" href="javascript:void(0)" data-toggle="modal" data-target="#termsOfService"><strong>Terms
                             of Service</strong></a>,
-                    and <a class="" href="#" data-toggle="modal" data-target="#privacyPolicy"><strong>Privacy Policy</strong></a>.
+                    and <a class="" href="javascript:void(0)" data-toggle="modal" data-target="#privacyPolicy"><strong>Privacy
+                            Policy</strong></a>.
                 </label>
                 <div class="invalid-feedback">
                     You must agree before Signing-up.
                 </div>
             </div>
-            <!-- </div> -->
         </div>
 
         <div class="justify-content-between w-100">
-            <button type="submit" class="btn btn-primary">Sign-up</button>
-            <button type="reset" class="btn btn-secondary" value="Reset">Reset</button>
+            <button type="submit" class="btn btn-success " ng-click="signup()">Sign-up</button>
+            <button type="reset" class="btn btn-secondary float-right" value="Reset">Reset</button>
         </div>
     </form>
 
