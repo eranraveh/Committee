@@ -20,19 +20,25 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         trigger: "hover"
     });
 
+    $('.dropdown-menu').click(function(e) {
+        e.stopPropagation();
+    });
+
     let unreadIssues = 0;
     let openIssues = 0;
     let myIssues = 0;
     $scope.issues = [];
     $scope.newComment = []
     $scope.editMode = false;
+    // descending order
+    $scope.sort = "-postingDate";
 
     issuesSrv.getActiveUserIssues().then((issues) => {
         // resetCounters();
         $scope.issues = issues;
 
     }).catch((err) => {
-        $log.error(err);
+        console.error(err);
     });
 
     $scope.queryFilter = function (issue, index) {

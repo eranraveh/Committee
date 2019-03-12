@@ -1,9 +1,37 @@
 <div class="container mb-5">
     <h1 class="">Issues</h1>
-    <!-- <p class="lead">Jumbo helper text</p> -->
     <form class="form-inline  ">
-        <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
-        <div class="form-check ">
+        <input type="text" class="form-control col-sm-8 col-md-4 align-top align-self-baseline" placeholder="Search"
+            ng-model="query">
+        <nav class="navbar navbar-expand-md align-self-baseline">
+
+            <!-- navbar-toggler  - will hide button on right screen size-->
+            <a class="dropdown-toggle navbar-toggler d-lg-none bg-dark" href="javascript:void(0)" id="filterLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</a>
+            <div class="collapse navbar-collapse dropdown-menu pl-2 rounded appTextColor border-light" id="collapsibleNavId1"
+                aria-labelledby="filterLink">
+                <label class="form-check-label justify-content-start mr-3">
+                    <input type="checkbox" class="form-check-input" ng-model="importance">Urgent
+                </label>
+                <label class="form-check-label justify-content-start mr-3">
+                    <input type="checkbox" class="form-check-input" ng-model="unread">Unread
+                </label>
+                <label class="form-check-label justify-content-start mr-3">
+                    <input type="checkbox" class="form-check-input" ng-model="myIssues">My issues
+                </label>
+                <form>
+                    <div class="form-group justify-content-start mr-3">
+                        <label for="sort">Sort:</label>
+                        <select id="sort" ng-model="sort" class="form-control ml-2 bg-dark appTextColor border border-0" >
+                            <!-- descending order -->
+                            <option value="-postingDate" selected>Date</option>
+                            <option value="priority">Importance</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <!-- <div class="form-check ">
             <label class="form-check-label col-sm-3">
                 <input type="checkbox" class="form-check-input" ng-model="importance">Urgent
             </label>
@@ -13,7 +41,7 @@
             <label class="form-check-label col-sm-5">
                 <input type="checkbox" class="form-check-input" ng-model="myIssues">My issues
             </label>
-        </div>
+        </div> -->
     </form>
     <hr class="my-2">
 
@@ -31,7 +59,7 @@
 
     <div id="accordion" class="pb-5">
 
-        <issue-card ng-repeat="issue in issues | filter : queryFilter"></issue-card>
+        <issue-card ng-repeat="issue in issues | filter : queryFilter | orderBy : sort"></issue-card>
     </div>
 </div>
 
@@ -50,13 +78,16 @@
                 <div class="modal-body">
                     <div id="priority" class="btn-group1 btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-secondary " data-toggle="tooltip" title="Urgent" tooltip>
-                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="1" required name="priority" ><i class="fas fa-exclamation text-danger"></i>
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="1" required name="priority"><i
+                                class="fas fa-exclamation text-danger"></i>
                         </label>
                         <label class="btn btn-secondary ml-1" data-toggle="tooltip" title="Important" tooltip>
-                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="2" required name="priority" ><i class="fas fa-lightbulb text-warning"></i>
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="2" required name="priority"><i
+                                class="fas fa-lightbulb text-warning"></i>
                         </label>
-                        <label class="btn btn-secondary ml-1 active" data-toggle="tooltip" title="Normal" tooltip >
-                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="3" required name="priority" checked><i class="fas fa-arrow-down text-primary"></i>
+                        <label class="btn btn-secondary ml-1 active" data-toggle="tooltip" title="Normal" tooltip>
+                            <input type="radio" ng-model="newIssue.priority" autocomplete="off" value="3" required name="priority"
+                                checked><i class="fas fa-arrow-down text-primary"></i>
                         </label>
                     </div>
                     <div class="form-group" ng-show="editMode">
@@ -69,11 +100,13 @@
                     </div>
                     <div class="form-group">
                         <label for="title">Title:</label>
-                        <input type="text" class="form-control" id="title" ng-model="newIssue.title" required ng-readonly="isReadOnly">
+                        <input type="text" class="form-control" id="title" ng-model="newIssue.title" required
+                            ng-readonly="isReadOnly">
                     </div>
                     <div class="form-group">
                         <label for="message">Message:</label>
-                        <textarea class="form-control" rows="5" id="message" ng-model="newIssue.issueBody" required ng-readonly="isReadOnly"></textarea>
+                        <textarea class="form-control" rows="5" id="message" ng-model="newIssue.issueBody" required
+                            ng-readonly="isReadOnly"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary mr-auto" ng-click="postIssue()" ng-class="{'btn-block': !editMode}">Post</button>

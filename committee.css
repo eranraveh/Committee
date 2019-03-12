@@ -34,7 +34,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    color: rgba(255, 255, 255, 0.5) !important;
+    /* color: rgba(255, 255, 255, 0.5) !important; */
 }
 
 .solid-line {
@@ -114,7 +114,7 @@ body {
 
 #signupForm {
     background-color: rgba(0, 0, 0, 0.6) !important;
-    border-radius: 3rem!important;
+    border-radius: 3rem !important;
 
 }
 
@@ -125,9 +125,43 @@ body {
     margin-top: -25px;
     position: relative;
     z-index: 2;
-  }
+}
 
 fieldset {
     border-style: groove;
     border-width: 2px;
 }
+
+#collapsibleNavId1 {
+    z-index: 99;
+    color: rgba(255, 255, 255, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+#collapsibleNavId1>label {
+    margin-left: 1rem !important;
+}
+
+@media (max-width: 768px) {
+    #collapsibleNavId1>label {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+    #collapsibleNavId1 {
+        position: relative;
+        top: 0;
+        border: 0;
+        background-color: transparent !important;
+    }
+}
+
+.navbar .icon {
+    display: none;
+}
+
+.appTextColor {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
