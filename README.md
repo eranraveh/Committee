@@ -16,7 +16,7 @@
 2. 
 3. votes
 4. dashboard
-5. hide signup from the menu if Im in signup page
+5. 
 6. 
 7. optional - improve signup messages with angularjs, password validity/strength
 8. optional - email verification, password reset

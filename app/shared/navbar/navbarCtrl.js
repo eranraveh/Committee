@@ -9,7 +9,7 @@ committeeApp.controller("navbarCtrl", function ($scope, userSrv, $location) {
 
         return user == null ? "" : user.name;
     }
-    
+
     $scope.logout = function () {
         userSrv.logout();
         $location.path("/");
@@ -17,5 +17,13 @@ committeeApp.controller("navbarCtrl", function ($scope, userSrv, $location) {
 
     $scope.isCommitteeMember = function () {
         return userSrv.isCommitteeMember();
+    }
+
+    $scope.isSignupNeeded = function () {
+        if (userSrv.isLoggedIn() ||
+            $location.path() == "/myCommittee/signup")
+            return false;
+        else
+            return true;
     }
 })
