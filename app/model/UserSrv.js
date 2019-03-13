@@ -16,6 +16,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
             this.readMessages = parseUser.get("messagesRead");
             if (this.readMessages === undefined)
                 this.readMessages = [];
+            this.parseUser = parseUser;
 
             this.committeeId = parseUser.get("committeId");
         }
@@ -35,6 +36,12 @@ committeeApp.factory("userSrv", function ($q, $log) {
         //     async.reject(error);
         // });
         Parse.User.logIn(email, pwd).then((user) => {
+            if (!user.get("isActive")) {
+                async.reject({
+                    message: "User not in building. Contact your committee"
+                });
+            }
+
             activeUser = new User(user);
             return LoadUsersNames();
         }).catch((error) => {
@@ -51,10 +58,20 @@ committeeApp.factory("userSrv", function ($q, $log) {
     function LoadUsersNames(loadOnlyNames = true) {
         var async = $q.defer();
 
+        var promise;
+        // const params = {
+        //     committeeId: activeUser.committeeId
+        // };
+        // if (!loadOnlyNames)
+        //     promise = Parse.Cloud.run("getUsers", params);
+        // else {
         const ParseUser = Parse.Object.extend('User');
         const query = new Parse.Query(ParseUser);
         query.equalTo("committeId", activeUser.committeeId);
-        query.find().then((results) => {
+        promise = query.find()
+        // }
+
+        promise.then((results) => {
             allUsers = results.map(user => new User(user, loadOnlyNames));
             // console.log('Users fetched', results);
             async.resolve(allUsers);
@@ -140,24 +157,33 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function addOpenedMessages(messageId) {
-        return updateUser(messageId);
+        return updateUser(Parse.User.current(), null, null, null, null, messageId);
     }
 
     function addOpenedIssues(issueId) {
-        return updateUser(issueId);
+        return updateUser(Parse.User.current(), null, null, null, null, issueId);
     }
 
-    function updateUser(messageId = null) {
+    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, null) {
         var async = $q.defer();
 
-        const currentUser = Parse.User.current();
+        // const currentUser = Parse.User.current();
         if (typeof messageId == 'string' && messageId != "") {
-            var messages = getMessages(currentUser);
+            var messages = getMessages(parseUser);
             messages.push(messageId);
-            currentUser.set('messagesRead', messages);
+            parseUser.set('messagesRead', messages);
         }
+
+        ?????????
+        // const currentUser = Parse.User.current();
+        if (typeof messageId == 'string' && messageId != "") {
+            var messages = getMessages(parseUser);
+            messages.push(messageId);
+            parseUser.set('messagesRead', messages);
+        }
+
         // Saves the user with the updated data
-        currentUser.save().then((response) => {
+        parseUser.save().then((response) => {
             // console.log('Updated user', response);
 
             async.resolve(true);
@@ -167,6 +193,10 @@ committeeApp.factory("userSrv", function ($q, $log) {
         });
 
         return async.promise;
+    }
+
+    function deleteUser(user) {
+        return updateUser(user.parseUser, null, null, null, null, null, false);
     }
 
     function GetUsername(userId) {
@@ -191,6 +221,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         signup: signup,
         addUser: addUser,
         getUsers: getUsers,
+        deleteUser: deleteUser,
         isLoggedIn: isLoggedIn,
         logout: logout,
         getActiveUser: getActiveUser,

@@ -6,6 +6,9 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         return;
     }
 
+    $scope.sortType = "name";
+    $scope.sortReverse = false;
+
     userSrv.getUsers().then((users) => {
         shownUsers = 0;
         $scope.users = users;
@@ -48,7 +51,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
             name: null,
             password: null,
             email: null,
-            apt: null, 
+            apt: null,
             isCommitteeMember: false
         };
     }
@@ -56,9 +59,21 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         if ($scope.newTenantForm.$invalid)
             return false;
 
-        userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember).then((user) => {
-            // $location.path("/myCommittee/issues");
-            // add "new" message
+        var promise;
+        if ($scope.editMode)
+            userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
+        else
+            promise = user.updateUser(editedUser, $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember);
+
+        promise.then((user) => {
+            // remove "old" user
+            if ($scope.editedMode) {
+                var reomveIndex = $scope.issues.indexOf($scope.editedUser);
+                if (reomveIndex > -1)
+                    $scope.issues.splice(reomveIndex, 1);
+            }
+
+            // add new/updated user
             $scope.users.unshift(user);
 
             // open the message just been updated/added (located first in the array)
@@ -67,6 +82,31 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
             resetForm();
 
             $("#newTenantForm").modal("hide");
+        }, (error) => {
+            alert(error.message)
+        });
+    }
+
+    $scope.editUser = function (user) {
+        $scope.newTenant = {
+            username: user.username,
+            name: user.name,
+            password: user.password,
+            apt: user.apartment,
+            isCommitteeMember: user.isCommitteeMember
+        };
+
+        $scope.editMode = true;
+        $scope.editedUser = user;
+
+        $("#newTenantForm").modal("show");
+    }
+
+    $scope.deleteUser = function (user) {
+        userSrv.deleteUser(user).then((deletedUser) => {
+            var reomveIndex = $scope.users.indexOf(user);
+            if (reomveIndex > -1)
+                $scope.users.splice(reomveIndex, 1);
         }, (error) => {
             alert(error.message)
         });
@@ -95,5 +135,17 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
+    }
+
+    $scope.canDeleteUser = function (user) {
+        return (user.id != userSrv.getActiveUser().id)
+    }
+
+    $scope.sort = function (column) {
+        if ($scope.sortType != column) {
+            $scope.sortReverse = false;
+            $scope.sortType = column;
+        } else
+            $scope.sortReverse = !$scope.sortReverse;
     }
 })

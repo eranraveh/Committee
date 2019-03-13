@@ -14,6 +14,7 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
 
         }, function (error) {
             $scope.invalidLogin = true;
+            alert(error.message);
         });
     }
 

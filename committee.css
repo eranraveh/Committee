@@ -165,14 +165,18 @@ fieldset {
     color: rgba(255, 255, 255, 0.5) !important;
 }
 
-tr:hover {
-    color: #ddd !important;
+table {
+    cursor: default;
 }
 tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
-
-
 tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, 0.9) !important;
 }
+tr:hover {
+    color: #ddd !important;
+    background-color: rgba(200, 200, 200, 0.2) !important;
+}
+
+

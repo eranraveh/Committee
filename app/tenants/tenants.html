@@ -22,16 +22,30 @@
     <div class="table-responsive-sm">
         <table class="table table-hover ">
             <thead class="thead-dark">
-                <tr class="row">
-                    <th class="col-2">Committee member</th>
-                    <th class="col-3">Name</th>
-                    <th class="col-1">Apt.</th>
-                    <th class="col-4">E-Mail</th>
-                    <th class="col-2">Username</th>
+                <tr class="row no-marging">
+                    <!-- <sortable-column field="'isCommitteeMember'" header="'Committee member'"></sortable-column> -->
+                    <th class="col-2" ng-click="sort('isCommitteeMember')">Committee member
+                        <span ng-show="sortType == 'isCommitteeMember'" class="fa" ng-class="{'fa-caret-down':!sortReverse,'fa-caret-up':sortReverse}"></span>
+                    </th>
+                    <th class="col-2" ng-click="sort('name')">Name
+                        <span ng-show="sortType == 'name'" class="fa" ng-class="{'fa-caret-down':!sortReverse,'fa-caret-up':sortReverse}"></span>
+                    </th>
+                    <th class="col-1" ng-click="sort('apartment')">Apt.
+                        <span ng-show="sortType == 'apartment'" class="fa" ng-class="{'fa-caret-down':!sortReverse,'fa-caret-up':sortReverse}"></span>
+                    </th>
+                    <th class="col-3" ng-click="sort('email')">E-Mail
+                        <span ng-show="sortType == 'email'" class="fa" ng-class="{'fa-caret-down':!sortReverse,'fa-caret-up':sortReverse}"></span>
+                    </th>
+                    <th class="col-4" ng-click="sort('username')">Username
+                        <span ng-show="sortType == 'username'" class="fa" ng-class="{'fa-caret-down':!sortReverse,'fa-caret-up':sortReverse}"></span>
+                    </th>
+
+                    <!-- <th class="col-2"> </th> -->
+
                 </tr>
             </thead>
             <tbody class="appTextColor">
-                <tr class="row" ng-repeat="tenant in users | filter : queryFilter">
+                <tr class="row no-marging" ng-repeat="tenant in users | filter : queryFilter | orderBy : sortType : sortReverse">
                     <td class="col-2 text-center">
                         <div class="custom-control custom-checkbox ">
                             <input id="isCommitteeMember" type="checkbox" class="custom-control-input" ng-checked="tenant.isCommitteeMember"
@@ -39,10 +53,19 @@
                             <label class="custom-control-label" for="isCommitteeMember"></label>
                         </div>
                     </td>
-                    <td class="col-3">{{tenant.name}}</td>
+                    <td class="col-2">{{tenant.name}}</td>
                     <td class="col-1">{{tenant.apartment}}</td>
-                    <td class="col-4">{{tenant.email}}</td>
-                    <td class="col-2">{{tenant.username}}</td>
+                    <td class="col-3">{{tenant.email}}</td>
+                    <td class="col-4">{{tenant.username}}
+                    <!-- <td class="col-2 "> -->
+                        <button class="btn text-primary m-0 p-1 btn-edit float-right" data-toggle="tooltip" title="Edit user"
+                            tooltip ng-click="editUser(tenant)">
+                            <i class="fas fa-edit "></i>
+                        </button>
+                        <button class="btn  text-danger m-0 p-1 btn-trash float-right" ng-show="canDeleteUser(tenant)" data-toggle="tooltip"
+                            title="Delete user" tooltip ng-click="deleteUser(tenant)">
+                            <i class="fas fa-times"></i>
+                        </button></td>
                 </tr>
             </tbody>
         </table>
@@ -113,7 +136,8 @@
 
                     <div class="form-group ">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" ng-model="newTenant.isCommitteeMember" id="isCommitteeMember">
+                            <input class="form-check-input" type="checkbox" value="" ng-model="newTenant.isCommitteeMember"
+                                id="isCommitteeMember">
                             <label class="form-check-label" for="isCommitteeMember">Committee Member</label>
                         </div>
                     </div>

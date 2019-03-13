@@ -30,6 +30,8 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
     $scope.issues = [];
     $scope.newComment = []
     $scope.editMode = false;
+    let editedIssue = null;
+
     // descending order
     $scope.sort = "-postingDate";
 
@@ -141,7 +143,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
             $("#priority > label:last-child").addClass("active");
 
         $scope.editMode = true;
-        $scope.editedIssue = issue;
+        editedIssue = issue;
         $scope.isReadOnly = !issue.isMyIssue;
 
         $("#newIssueForm").modal("show");
@@ -167,7 +169,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
 
     $scope.newIssueOpen = function () {
         $scope.editMode = false;
-        $scope.editedIssue = null;
+        editedIssue = null;
         $scope.isReadOnly = false;
         resetForm();
         // priority Normal is default
@@ -191,12 +193,12 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         if ($scope.newIssueForm.$invalid)
             return;
 
-        var promise = issuesSrv.postIssue($scope.newIssue.title, $scope.newIssue.issueBody, $scope.newIssue.priority, $scope.newIssue.status, $scope.editedIssue);
+        var promise = issuesSrv.postIssue($scope.newIssue.title, $scope.newIssue.issueBody, $scope.newIssue.priority, $scope.newIssue.status, editedIssue);
 
         promise.then((issue) => {
             // remove "old" issue
-            if ($scope.editedIssue != null) {
-                var reomveIndex = $scope.issues.indexOf($scope.editedIssue);
+            if (editedIssue != null) {
+                var reomveIndex = $scope.issues.indexOf(editedIssue);
                 if (reomveIndex > -1)
                     $scope.issues.splice(reomveIndex, 1);
             }
