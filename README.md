@@ -21,6 +21,7 @@
 7. improve signup messages with angularjs, password validity/strength
 8. email verification, password reset
 9. user update his details
+10. https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
 
 
 2. issues - when update message , to unread the message from all users?

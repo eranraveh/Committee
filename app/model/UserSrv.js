@@ -96,16 +96,27 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function signup(username, email, name, apt, committee, password) {
-        var promise = signupUser(username, email, name, apt, committee, password, true);
-        promise.then((user) => {
-            activeUser = new User(user);
+        var async = $q.defer();
+        signupUser(username, email, name, apt, committee, password, true).then((parseUser) => {
+            activeUser = new User(parseUser);
+            async.resolve(activeUser);
+        }, (error) => {
+            async.reject(error);
         });
 
-        return promise;
+        return async.promise;
     }
 
     function addUser(username, email, name, apt, committee, password, isCommitteeMember) {
-        return signupUser(username, email, name, apt, committee, password, isCommitteeMember);
+        var async = $q.defer();
+        signupUser(username, email, name, apt, committee, password, isCommitteeMember).then((parseUser) => {
+            var user = new User(parseUser);
+            async.resolve(activeUser);
+        }, (error) => {
+            async.reject(error);
+        });
+
+        return async.promise;
     }
 
     function getUsers() {
