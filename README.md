@@ -12,16 +12,17 @@
 
 
 
-1. signup
-2. login from signup page
+1. 
+2. 
 3. votes
 4. dashboard
 5. hide signup from the menu if Im in signup page
-6. sort issues by priority
-7. improve signup messages with angularjs, password validity/strength
-8. email verification, password reset
-9. user update his details
+6. 
+7. optional - improve signup messages with angularjs, password validity/strength
+8. optional - email verification, password reset
+9. optional - user update his details
 10. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
+11. update other users details
 
 
 2. issues - when update message , to unread the message from all users?

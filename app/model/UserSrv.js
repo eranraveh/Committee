@@ -12,6 +12,8 @@ committeeApp.factory("userSrv", function ($q, $log) {
             this.username = parseUser.get("username");
             this.isCommitteeMember = parseUser.get("isCommitteeMember");
             this.email = parseUser.get("email");
+            if (this.email === undefined)
+                this.email = "";
             this.apartment = parseUser.get("apartment");
             this.readMessages = parseUser.get("messagesRead");
             if (this.readMessages === undefined)
@@ -164,7 +166,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(Parse.User.current(), null, null, null, null, issueId);
     }
 
-    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, null) {
+    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null) {
         var async = $q.defer();
 
         // const currentUser = Parse.User.current();
@@ -174,12 +176,15 @@ committeeApp.factory("userSrv", function ($q, $log) {
             parseUser.set('messagesRead', messages);
         }
 
-        ?????????
-        // const currentUser = Parse.User.current();
-        if (typeof messageId == 'string' && messageId != "") {
-            var messages = getMessages(parseUser);
-            messages.push(messageId);
-            parseUser.set('messagesRead', messages);
+        if (email != null) {
+            parseUser.set('email', email);
+            parseUser.set('name', name);
+            parseUser.set('apartment%', apt);
+            parseUser.set('isCommitteeMember', isCommitteeMember);
+        }
+
+        if (isActive != null) {
+            parseUser.set('isActive', isActive);
         }
 
         // Saves the user with the updated data

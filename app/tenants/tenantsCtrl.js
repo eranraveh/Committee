@@ -8,6 +8,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
 
     $scope.sortType = "name";
     $scope.sortReverse = false;
+    let activeUserId = userSrv.getActiveUser().id;
 
     userSrv.getUsers().then((users) => {
         shownUsers = 0;
@@ -31,7 +32,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
             }
         } else if ((user.name.toLowerCase().includes($scope.query.toLowerCase()) ||
                 user.email.toLowerCase().includes($scope.query.toLowerCase()) ||
-                user.apt.toLowerCase().includes($scope.query.toLowerCase())) &&
+                user.apartment.toLowerCase().includes($scope.query.toLowerCase())) &&
             (!$scope.isCommitteeOnly || user.isCommitteeMember)) {
             shownUsers++;
             return true;
@@ -61,9 +62,9 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
 
         var promise;
         if ($scope.editMode)
-            userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
-        else
             promise = user.updateUser(editedUser, $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember);
+        else
+            userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
 
         promise.then((user) => {
             // remove "old" user
@@ -138,7 +139,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
     }
 
     $scope.canDeleteUser = function (user) {
-        return (user.id != userSrv.getActiveUser().id)
+        return (user.id != activeUserId)
     }
 
     $scope.sort = function (column) {
