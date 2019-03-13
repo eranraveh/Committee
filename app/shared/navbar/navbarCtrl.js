@@ -14,4 +14,8 @@ committeeApp.controller("navbarCtrl", function ($scope, userSrv, $location) {
         userSrv.logout();
         $location.path("/");
     }
+
+    $scope.isCommitteeMember = function () {
+        return userSrv.isCommitteeMember();
+    }
 })

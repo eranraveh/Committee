@@ -1,0 +1,130 @@
+<div class="container">
+    <h1 class="">Tenants</h1>
+    <form class="form-inline  ">
+        <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
+        <div class="form-check ml-3">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" ng-model="isCommitteeOnly">Only Committee
+            </label>
+        </div>
+    </form>
+    <hr class="my-2">
+
+    <div class="mb-1">
+
+        <button class="btn btn-new text-danger py-0 px-1 " data-toggle="modal" rel="tooltip" title="Add new tenant"
+            tooltip type="button" data-target="#newTenantForm" ng-click="newTenantOpen()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <span class="align-middle mb-0">{{getTenantsCount()}} tenants</span>
+    </div>
+
+    <div class="table-responsive-sm">
+        <table class="table table-hover ">
+            <thead class="thead-dark">
+                <tr class="row">
+                    <th class="col-2">Committee member</th>
+                    <th class="col-3">Name</th>
+                    <th class="col-1">Apt.</th>
+                    <th class="col-4">E-Mail</th>
+                    <th class="col-2">Username</th>
+                </tr>
+            </thead>
+            <tbody class="appTextColor">
+                <tr class="row" ng-repeat="tenant in users | filter : queryFilter">
+                    <td class="col-2 text-center">
+                        <div class="custom-control custom-checkbox ">
+                            <input id="isCommitteeMember" type="checkbox" class="custom-control-input" ng-checked="tenant.isCommitteeMember"
+                                onclick="return false;" />
+                            <label class="custom-control-label" for="isCommitteeMember"></label>
+                        </div>
+                    </td>
+                    <td class="col-3">{{tenant.name}}</td>
+                    <td class="col-1">{{tenant.apartment}}</td>
+                    <td class="col-4">{{tenant.email}}</td>
+                    <td class="col-2">{{tenant.username}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-repeat="tenant in users | filter : queryFilter">
+        <div class="row">
+
+        </div>
+    </div>
+    <!-- <div id="accordion">
+
+        <tenant-card ng-repeat="tenant in users | filter : queryFilter"></tenant-card>
+    </div> -->
+</div>
+
+
+<div id="newTenantForm" class="container modal ">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+
+            <div class="modal-header jumbotron">
+                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Post new tenant</h4>
+                <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit tenant</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <form role="form" name="newTenantForm">
+                <div class="modal-body">
+                    <!-- Full name -->
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-4 col-form-label">Full Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputName" ng-model="newTenant.name" required
+                                placeholder="Full Name">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+                        <div class="col-sm-8 ">
+                            <input id="password-field1" type="password" class="form-control" ng-model="newTenant.password"
+                                required name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                            <i toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
+                            <small>Password must contain a capital letter, lowercase letter, a number and be at least 8
+                                characters long.</small>
+                        </div>
+                    </div>
+
+                    <!-- email -->
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputEmail" ng-model="newTenant.email"
+                                required placeholder="Email">
+                        </div>
+                    </div>
+
+                    <!-- Apartment -->
+                    <div class="form-group row ">
+                        <label for="apt" class="col-sm-4 col-form-label">Apartment</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="apt" ng-model="newTenant.apt" required
+                                placeholder="Apartment">
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" ng-model="newTenant.isCommitteeMember" id="isCommitteeMember">
+                            <label class="form-check-label" for="isCommitteeMember">Committee Member</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- <button type="submit" class="btn btn-primary mr-auto " ng-click="createTenant()" ng-class="{'btn-block': !editMode}">Create</button> -->
+                        <button type="submit" class="btn btn-primary mr-auto btn-block" ng-click="createTenant()">Create</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode">Cancel</button> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -14,7 +14,7 @@ committeeApp.factory("committeeSrv", function ($q) {
 
         myNewObject.save().then(
             (result) => {
-                console.log('Committee created', result);
+                // console.log('Committee created', result);
                 activeCommittee = result;
                 async.resolve(activeCommittee);
             },
@@ -35,7 +35,7 @@ committeeApp.factory("committeeSrv", function ($q) {
         // here you put the objectId that you want to delete
         query.get(committee.id).then((object) => {
             object.destroy().then((response) => {
-                console.log('Deleted Committee', response);
+                // console.log('Deleted Committee', response);
                 async.resolve(activeCommittee);
             }, (error) => {
                 console.error('Error while deleting Committee', error);

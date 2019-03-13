@@ -10,19 +10,21 @@ committeeApp.controller("signupCtrl", function ($scope, $location, userSrv, comm
 
         committeeSrv.createCommittee(toTitleCase($scope.city), toTitleCase($scope.address), $scope.img).then((committee) => {
 
-            userSrv.signupUser($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, committee, $scope.password).then((user) => {
+            userSrv.signup($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, committee, $scope.password).then((user) => {
                 $location.path("/myCommittee/issues");
             }, (error) => {
-                console.error("error signing up user", error);
+                // console.error("error signing up user", error);
+                alert(error.message)
                 committeeSrv.deleteCommittee(committee).then(() => {
 
                 }, (error) => {
                     console.error("error consolidate committee after user signup failed", error);
+                    alert(error.message);
                 });
-                alert("Creating account failed. Please try again.");
+                // alert("Creating account failed. Please try again.");
             });
         }, (error) => {
-            alert("Creating account failed. Please try again.");
+            alert(error.message);
         });
     }
 
@@ -33,17 +35,18 @@ committeeApp.controller("signupCtrl", function ($scope, $location, userSrv, comm
             return false;
         }
 
-        if ($scope.password.match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/")) {
-            alert("password not comply with restrictions");
+            // obsolite after added password pattern attr
+        // if ($scope.password.match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/")) {
+        //     alert("password not comply with restrictions");
 
-            return false;
-        }
+        //     return false;
+        // }
 
         return true;
     }
 
     function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){
+        return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     }

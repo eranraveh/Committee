@@ -70,7 +70,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
 
         newIssue.save().then(
             (result) => {
-                console.log('Issue created', result);
+                // console.log('Issue created', result);
                 var newIssueObj = new Issue(result);
                 async.resolve(newIssueObj);
             },
@@ -97,7 +97,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
             updatedIssue.set('status', status );
             updatedIssue.save().then(
                 (result) => {
-                    console.log('Issue created', result);
+                    // console.log('Issue created', result);
                     var newIssueObj = new Issue(result);
                     async.resolve(newIssueObj);
                 },
@@ -123,7 +123,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
         query.get(issue.parseIssue.id).then((object) => {
 
             object.destroy().then((response) => {
-                console.log('Deleted Issue', response);
+                // console.log('Deleted Issue', response);
                 async.resolve(issue);
                 // object.destroy promise error
             }, (error) => {

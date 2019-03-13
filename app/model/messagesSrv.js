@@ -70,7 +70,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
 
         newMessage.save().then(
             (result) => {
-                console.log('Message created', result);
+                // console.log('Message created', result);
                 var newMessageObj = new Message(result);
                 async.resolve(newMessageObj);
             },
@@ -97,7 +97,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
             updatedMessage.set('userId', Parse.User.current());
             updatedMessage.save().then(
                 (result) => {
-                    console.log('Message created', result);
+                    // console.log('Message created', result);
                     var newMessageObj = new Message(result);
                     async.resolve(newMessageObj);
                 },
@@ -123,8 +123,9 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         query.get(message.messageId).then((object) => {
 
             object.destroy().then((response) => {
-                console.log('Deleted Message', response);
+                // console.log('Deleted Message', response);
                 async.resolve(message);
+                
                 // object.destroy promise error
             }, (error) => {
                 console.error('Error while deleting Message', error);

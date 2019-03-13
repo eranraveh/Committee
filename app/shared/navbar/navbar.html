@@ -7,6 +7,12 @@
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto  mt-lg-0" ng-show="isUserLoggedIn()">
+            <!-- <li class="dropdown" ng-show="isCommitteeMember()">
+                <a class="dropdown-toggle" href="#!/myCommittee/users" data-toggle="dropdown">Tenants</a>
+            </li> -->
+            <li class="nav-item" ng-show="isCommitteeMember()">
+                <a class="nav-link" href="#!/myCommittee/tenants" >Tenants</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#!/myCommittee/messages">Messages</a>
             </li>
@@ -23,8 +29,8 @@
             </li>
 
             <li class="nav-item dropdown" ng-show="isUserLoggedIn()">
-                <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">Hello, {{getUserName()}}</a>
+                <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="dropdownId" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Hello, {{getUserName()}}</a>
                 <div class="dropdown-menu bg-dark myNavbar" aria-labelledby="dropdownId">
                     <a class="dropdown-item myNavbar" href="javascript:void(0)" ng-click="logout()">Logout</a>
                 </div>
@@ -32,8 +38,3 @@
         </ul>
     </div>
 </nav>
-
-
-
-
-

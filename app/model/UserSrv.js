@@ -24,40 +24,53 @@ committeeApp.factory("userSrv", function ($q, $log) {
     function login(email, pwd) {
         var async = $q.defer();
 
+        // Parse.User.logIn(email, pwd).then((user) => {
+        //     activeUser = new User(user);
+        //     LoadUsersNames().then((allUsers) => {
+        //         allUsersNames = allUsers;
+        //         async.resolve(activeUser);
+        //     });
+        // }).catch((error) => {
+        //     $log.error('Error while logging in user', error);
+        //     async.reject(error);
+        // });
         Parse.User.logIn(email, pwd).then((user) => {
             activeUser = new User(user);
-            LoadUsersNames().then(() => {
-                async.resolve(activeUser);
-            });
+            return LoadUsersNames();
         }).catch((error) => {
             $log.error('Error while logging in user', error);
             async.reject(error);
-        });
+        }).then((allUsers) => {
+            allUsersNames = allUsers;
+            async.resolve(activeUser);
+        });;
 
         return async.promise;
     }
 
-    function LoadUsersNames() {
+    function LoadUsersNames(loadOnlyNames = true) {
         var async = $q.defer();
 
         const ParseUser = Parse.Object.extend('User');
         const query = new Parse.Query(ParseUser);
         query.equalTo("committeId", activeUser.committeeId);
         query.find().then((results) => {
-            allUsersNames = results.map(user => new User(user, true));
+            allUsers = results.map(user => new User(user, loadOnlyNames));
             // console.log('Users fetched', results);
-            async.resolve();
+            async.resolve(allUsers);
         }, (error) => {
             console.error('Error while fetching User', error);
-            async.resolve();
+            async.resolve([]);
         });
 
         return async.promise;
     }
 
-    function signupUser(username, email, name, apt, committee, password) {
+    function signupUser(username, email, name, apt, committee, password, isCommitteeMember = true) {
         var async = $q.defer();
 
+        if (username === "")
+            username = email;
         const user = new Parse.User()
         user.set('username', username);
         user.set('email', email);
@@ -65,20 +78,38 @@ committeeApp.factory("userSrv", function ($q, $log) {
         user.set('apartment', apt);
         user.set('committeId', committee);
         user.set('messagesRead', []);
-        user.set('isCommitteeMember', true);
+        user.set('isCommitteeMember', isCommitteeMember);
         user.set('password', password);
 
         user.signUp().then((user) => {
-            activeUser = new User(user);
+            // activeUser = new User(user);
 
-            console.log('User signed up', user);
-            async.resolve(activeUser);
+            allUsersNames.unshift(new User(user, true));
+            // console.log('User signed up', user);
+            async.resolve(user);
         }).catch(error => {
             console.error('Error while signing up user', error);
             async.reject(error);
         });
 
         return async.promise;
+    }
+
+    function signup(username, email, name, apt, committee, password) {
+        var promise = signupUser(username, email, name, apt, committee, password, true);
+        promise.then((user) => {
+            activeUser = new User(user);
+        });
+
+        return promise;
+    }
+
+    function addUser(username, email, name, apt, committee, password, isCommitteeMember) {
+        return signupUser(username, email, name, apt, committee, password, isCommitteeMember);
+    }
+
+    function getUsers() {
+        return LoadUsersNames(false);
     }
 
     function isLoggedIn() {
@@ -116,7 +147,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         }
         // Saves the user with the updated data
         currentUser.save().then((response) => {
-            console.log('Updated user', response);
+            // console.log('Updated user', response);
 
             async.resolve(true);
         }).catch((error) => {
@@ -146,7 +177,9 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
     return {
         login: login,
-        signupUser: signupUser,
+        signup: signup,
+        addUser: addUser,
+        getUsers: getUsers,
         isLoggedIn: isLoggedIn,
         logout: logout,
         getActiveUser: getActiveUser,

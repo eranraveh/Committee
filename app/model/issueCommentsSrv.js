@@ -98,7 +98,7 @@ committeeApp.factory("issueCommentsSrv", function ($q) {
         // here you put the objectId that you want to delete
         query.get(commentId).then((object) => {
             object.destroy().then((response) => {
-                console.log('Deleted IssueComment', response);
+                // console.log('Deleted IssueComment', response);
                 async.resolve(commentId);
             }, (error) => {
                 console.error('Error while deleting IssueComment', error);

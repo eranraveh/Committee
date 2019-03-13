@@ -15,7 +15,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         return;
     }
 
-    // trigger tooltip on hover only
+    // trigger tooltip on hover only when data-toggle in use for other then tooltip
     $('[rel="tooltip"]').tooltip({
         trigger: "hover"
     });

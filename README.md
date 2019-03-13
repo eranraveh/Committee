@@ -20,10 +20,11 @@
 6. sort issues by priority
 7. improve signup messages with angularjs, password validity/strength
 8. email verification, password reset
+9. user update his details
 
 
 2. issues - when update message , to unread the message from all users?
 3. issues - by spec only tenant can add new issue, actually everyone can
 4. issues - by spec only committe can comment issue, actually everyone can
-6. 
+6. users - delete messages/issues/comments when deleting user?
 
