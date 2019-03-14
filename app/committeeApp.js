@@ -29,6 +29,10 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
             templateUrl: "/app/issues/issues.html",
             controller: "issuesCtrl"
         })
+        .when("/myCommittee/polls", {
+            templateUrl: "/app/polls/polls.html",
+            controller: "pollsCtrl"
+        })
 //         .when("/about", {
 //             templateUrl: "/app/about/about.html",
 //         })

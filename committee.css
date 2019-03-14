@@ -168,15 +168,134 @@ fieldset {
 table {
     cursor: default;
 }
+
 tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
+
 tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, 0.9) !important;
 }
+
 tr:hover {
     color: #ddd !important;
     background-color: rgba(200, 200, 200, 0.2) !important;
 }
 
+
+
+
+.poll-answer-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.poll-answer-container button.classic.light.selected .count-bar {
+    background-color: #fff;
+}
+
+.poll-result .count-bar {
+    left: 0;
+}
+
+
+.poll-answer-container button.classic.light {
+    color: #000;
+    background-color: rgba(255, 255, 255, .55);
+}
+
+.poll-answer-container button.poll-voted {
+    cursor: default;
+}
+
+.poll-answer-container button {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,.1);
+    border: 0;
+    border-bottom: 0 solid #dbdbdb;
+    min-height: 60px;
+    padding: 20px;
+    margin: 0 3% 10px;
+    position: relative;
+    width: 94%;
+    outline: 0;
+    cursor: pointer;
+}
+
+/* button {
+    overflow: visible;
+} */
+
+.poll-answer-container button .text {
+    z-index: 100;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.poll-answer-container button.classic.light {
+    color: #000;
+    background-color: rgba(255,255,255,.55);
+}
+
+.poll-result {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: content-box;
+}
+
+.poll-result.show {
+    opacity: 1;
+}
+.poll-answer-container button .poll-result {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.show {
+    display: block !important;
+}
+
+.poll-answer-container button.classic.light.selected .count-bar {
+    background-color: #fff;
+}
+
+
+.poll-result .count-bar.animated {
+    transition: width 2s ease-out,height 2s ease-out;
+}
+
+.poll-result .count-bar {
+    position: absolute;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    background: #dbdbdb;
+}
+
+.poll-result .count-bar.horizontal {
+    width: 0;
+    height: 100%;
+}
+
+.poll-answer-container button .poll-result .count-bar-number {
+    font-size: 16px;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.poll-answer-container button .poll-result .count-bar {
+    visibility: visible;
+}
+
+.poll-answer-container button.classic .count-bar-number {
+    right: 20px;
+}
 
