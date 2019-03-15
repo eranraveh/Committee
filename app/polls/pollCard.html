@@ -1,0 +1,37 @@
+
+<div class="card">
+    <div class="card-header" id="heading{{$index}}">
+        <h5 class="mb-0">
+            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll,$index)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
+                <div class="row mx-0">
+                    <span class="col-sm-8 col-md-9 col-lg-10">
+                        {{poll.title}}
+                    </span>
+                    <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
+                        <span>Due Date:{{poll.dueDate | myDate}}</span>
+                        <span>{{poll.postingDate | myDate}}</span>
+                    </div>
+                </div>
+            </button>
+        </h5>
+    </div>
+
+    <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
+        data-parent="#accordion">
+        <div class="card-body">
+            <p>{{poll.details}}</p>
+            <div class="container col-4">
+                <poll-answer ng-repeat="answer in poll.answers"></poll-answer>
+            </div>
+            <p class="text-light">{{poll.posterName}}</p>
+
+            <div>
+                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember()" data-toggle="tooltip"
+                    title="Edit poll" tooltip ng-click="editPoll(poll)">
+                    <i class="fas fa-edit "></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

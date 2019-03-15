@@ -6,7 +6,7 @@
                 ng-class="{'font-weight-bolder': message.wasRead == false }">
                 <i class="fas fa-fw mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
                     class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
-                <span class="float-right messageDate">{{message.postingDate | myDate}}</span>
+                <span class="float-right">{{message.postingDate | myDate}}</span>
             </button>
         </h5>
     </div>

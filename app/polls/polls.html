@@ -1,25 +1,76 @@
+<div class="container">
+    <h1 class="">Polls</h1>
+    <form class="form-inline  ">
+        <input type="text" class="form-control col-sm-4" placeholder="Search" ng-model="query">
+        <div class="form-check ml-3">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" ng-model="isActive">Active
+            </label>
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="isEnded">Ended
+            </label>
+            <label class="form-check-label ml-3">
+                <input type="checkbox" class="form-check-input" ng-model="isUnvoted">Not voted
+            </label>
+        </div>
+    </form>
+    <hr class="my-2">
 
-
-<div class="col-4">
-
-    <div class="poll-answer-container with-text">
-        <button class="classic light "  ng-click="onVote($event)">
-            <div class="text">my choice</div>
-            <div class="poll-result show">
-                <div class="count-bar horizontal animated"></div>
-                <div class="count-bar-number"></div>
-            </div>
+    <div class="mb-1">
+        <button class="btn btn-new text-danger py-0 px-1 " ng-show="isCommitteeMember()" data-toggle="modal" rel="tooltip"
+            title="Add new poll" tooltip type="button" data-target="#newPollForm" ng-click="newPollOpen()">
+            <i class="fas fa-plus"></i>
         </button>
+        <span class="align-middle mb-0">{{getUnvotedPollsCount()}} unvoted active polls</span>
     </div>
 
-    <div class="poll-answer-container with-text">
-        <button class="classic light " ng-click="onVote($event)">
-            <div class="text">not my choice</div>
-            <div class="poll-result show">
-                <div class="count-bar horizontal animated"></div>
-                <div class="count-bar-number"></div>
-            </div>
-        </button>
+    <div id="accordion">
+        <poll-card ng-repeat="poll in polls | filter : queryFilter"></poll-card>
     </div>
+</div>
 
+
+<div id="newPollForm" class="container modal ">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+
+            <div class="modal-header jumbotron">
+                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Create new poll</h4>
+                <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit poll</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <form role="form" name="newPollForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" ng-model="newPoll.title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="poll">Details:</label>
+                        <textarea class="form-control" rows="5" id="poll" ng-model="newPoll.details" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="poll">Due Date:</label>
+                        <date class="form-control" rows="5" id="poll" ng-model="newPoll.dueDate" required></textarea>
+                    </div>
+                    <div class="form-group" ng-repeat="option in newPoll.options track by $index">
+                        <div class="form-group row w-100 mx-0">
+                            <label for="title{{$index}}" class="col-sm-3 col-form-label px-0">Option {{$index + 1}}:</label>
+                            <input type="text" class="form-control col-sm-9 px-0" id="title{{$index}}" ng-model="newPoll.options[$index]"
+                                ng-required="$index < 2">
+                            <button class="btn btn-new text-danger my-2 px-1 py-0" rel="tooltip" title="Add new option"
+                                tooltip type="button" ng-click="addNewOption()" ng-show="$last && !editMode">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mr-auto" ng-click="createPoll()" ng-class="{'btn-block': !editMode}"><span>{{editMode ? 'Update' : 'Create'}}</span></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
