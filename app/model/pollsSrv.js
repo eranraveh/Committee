@@ -4,12 +4,14 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         constructor(parsePoll) {
             this.title = parsePoll.get("title");
             this.details = parsePoll.get("details");
-            this.priority = parsePoll.get("priority");
+            this.dueDate = parsePoll.get("dueDate");
             // for committee members, could contain false too
             this.isActive = parsePoll.get("isActive");
-            this.parseUser = parsePoll.get("userId");
-            this.postingDate = parsePoll.get("updatedAt");
-            this.posterName = userSrv.GetUsername(this.parseUser.id);
+            this.creatorId = parsePoll.get("creatorId");
+            this.postingDate = parsePoll.get("createdAt");
+            this.posterName = userSrv.GetUsername(this.creatorId.id);
+
+            this.posterName = parsePoll.get("votes");
             this.wasVoted = (userSrv.getActiveUser().readPolls.indexOf(parsePoll.id) > -1);
             this.commentsObject = {
                 wasLoaded: false,
@@ -51,7 +53,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function postPoll(title, pollBody, priority, oldPoll) {
+    function createPoll(title, details, dueDate, options, oldPoll) {
         if (oldPoll != null) {
             return updatePoll(title, pollBody, priority, oldPoll);
         }
@@ -62,11 +64,11 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         const newPoll = new ParsePoll();
 
         newPoll.set('title', title);
-        newPoll.set('details', pollBody);
-        newPoll.set('priority', priority ? '1' : '2');
-        newPoll.set('userId', Parse.User.current());
-        newPoll.set('committeeId', userSrv.getActiveUserCommitteeId());
-        newPoll.set('isActive', true);
+        newPoll.set('details', details);
+        newPoll.set('dueDate', dueDate);
+        newPoll.set('creatorId', Parse.User.current());
+        newPoll.set('options', options);
+        newPoll.set('votes', []);
 
         newPoll.save().then(
             (result) => {
@@ -114,36 +116,10 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function deletePoll(poll) {
-        var async = $q.defer();
-
-        const Poll = Parse.Object.extend('Poll');
-        const query = new Parse.Query(Poll);
-        // here you put the objectId that you want to delete
-        query.get(poll.pollId).then((object) => {
-
-            object.destroy().then((response) => {
-                // console.log('Deleted Poll', response);
-                async.resolve(poll);
-                
-                // object.destroy promise error
-            }, (error) => {
-                console.error('Error while deleting Poll', error);
-                (error) => async.reject(error);
-            })
-            // query.get promise error
-        }, (error) => {
-            console.error('Error while getting Poll', error);
-            async.reject(error)
-        });
-
-        return async.promise;
-    }
-
     return {
         getPolls: getPolls,
-        postPoll: postPoll,
-        deletePoll: deletePoll
+        createPoll: createPoll,
+        updatePoll: updatePoll
     }
 
 })
