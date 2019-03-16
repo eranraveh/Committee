@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/eranraveh/Committee#readme",
   "dependencies": {
+    "angular-ui-bootstrap": "^2.5.6",
     "moment": "^2.24.0",
-    "parse": "^2.2.1"
+    "parse": "^2.2.1",
+    "ui-bootstrap4": "^3.0.6"
   }
 }

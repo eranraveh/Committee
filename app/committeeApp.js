@@ -1,4 +1,4 @@
-var committeeApp = angular.module("committeeApp", ["ngRoute"]);
+var committeeApp = angular.module("committeeApp", ["ngRoute", "ngAnimate", "ngTouch", "ui.bootstrap"]);
 
 // parse initialization
 Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL

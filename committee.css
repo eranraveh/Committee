@@ -172,15 +172,15 @@ table {
     cursor: default;
 }
 
-tr:nth-of-type(odd) {
+.tenants-table tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
-tr:nth-of-type(even) {
+.tenants-table tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, 0.9) !important;
 }
 
-tr:hover {
+.tenants-table tr:hover {
     color: #ddd !important;
     background-color: rgba(200, 200, 200, 0.2) !important;
 }
@@ -302,3 +302,7 @@ tr:hover {
     right: 20px;
 }
 
+/* date picker */
+.uib-datepicker-popup.dropdown-menu {
+    background-color: #222222 ;
+}

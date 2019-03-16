@@ -12,21 +12,25 @@
 
 
 
-1. 
-2. 
-3. votes - https://www.jqueryscript.net/chart-graph/HTML-Table-Based-Column-Chart-Plugin-For-jQuery-graph-js.html
-4. dashboard
-5. 
-6. 
-7. optional - improve signup messages with angularjs, password validity/strength
-8. optional - email verification, password reset
-9. optional - user update his details
-10. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
-11. update other users details
+todo
+=====
+1. votes
+2. dashboard
 
 
+optional
+=========
+1. optional - improve signup messages with angularjs, password validity/strength
+2. optional - email verification, password reset
+3. optional - user update his details
+4. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
+5. update other users details
+
+spec Changes and assumptions
+=============================
+1. no more then 6 options for polls
 2. issues - when update message , to unread the message from all users?
 3. issues - by spec only tenant can add new issue, actually everyone can
 4. issues - by spec only committe can comment issue, actually everyone can
-6. users - delete messages/issues/comments when deleting user?
+6. users - not deleting users, but marking it as inactive, therefore no delete messages/issues/comments when deleting user
 
