@@ -5,20 +5,18 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
             this.title = parsePoll.get("title");
             this.details = parsePoll.get("details");
             this.dueDate = parsePoll.get("dueDate");
-            // for committee members, could contain false too
-            this.isActive = parsePoll.get("isActive");
+            this.isActive = this.dueDate > new Date();
             this.creatorId = parsePoll.get("creatorId");
             this.postingDate = parsePoll.get("createdAt");
             this.posterName = userSrv.GetUsername(this.creatorId.id);
+            this.options = parsePoll.get("options");
+            this.votes = parsePoll.get("votes");
+            this.optionVoted = getOptionVoted(this.votes);
+            this.wasVoted = this.optionVoted > -1;
 
-            this.posterName = parsePoll.get("votes");
-            this.wasVoted = (userSrv.getActiveUser().readPolls.indexOf(parsePoll.id) > -1);
-            this.commentsObject = {
-                wasLoaded: false,
-                comments: []
-            };
             this.parsePoll = parsePoll;
         }
+
     }
 
     function getPolls() {
@@ -69,6 +67,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         newPoll.set('creatorId', Parse.User.current());
         newPoll.set('options', options);
         newPoll.set('votes', []);
+        newPoll.set("committeeId", userSrv.getActiveUserCommitteeId());
 
         newPoll.save().then(
             (result) => {
@@ -85,8 +84,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-
-    function updatePoll(title, pollBody, priority, oldPoll) {
+    function updatePoll(title, details, dueDate, options, votes, oldPoll) {
         var async = $q.defer();
 
         const ParsePoll = Parse.Object.extend('Poll');
@@ -94,9 +92,10 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
 
         query.get(oldPoll.parsePoll.id).then((updatedPoll) => {
             updatedPoll.set('title', title);
-            updatedPoll.set('details', pollBody);
-            updatedPoll.set('priority', priority ? '1' : '2');
-            updatedPoll.set('userId', Parse.User.current());
+            updatedPoll.set('details', details);
+            updatedPoll.set('dueDate', dueDate);
+            updatedPoll.set('options', options);
+            updatedPoll.set('votes', votes);
             updatedPoll.save().then(
                 (result) => {
                     // console.log('Poll created', result);
@@ -116,10 +115,53 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
+    function addVote(oldPoll) {
+        var async = $q.defer();
+
+        const ParsePoll = Parse.Object.extend('Poll');
+        const query = new Parse.Query(ParsePoll);
+
+        query.get(oldPoll.parsePoll.id).then((updatedPoll) => {
+            updatedPoll.set('votes', oldPoll.votes);
+            updatedPoll.save().then(
+                (result) => {
+                    oldPoll.votes = result.get("votes");
+                    oldPoll.optionVoted = getOptionVoted(oldPoll.votes);
+                    oldPoll.wasVoted = true;
+
+                    // console.log('Poll created', result);
+                    // var newPollObj = new Poll(result);
+                    async.resolve();
+                },
+                (error) => {
+                    console.error('Error while updating Poll: ', error);
+                    async.reject(error);
+                }
+            );
+        }, (error) => {
+            console.error('Error while getting Poll', error);
+            async.reject(error);
+        });
+
+        return async.promise;
+    }
+
+    function getOptionVoted(votes) {
+        var currentUserId = userSrv.getActiveUser().id;
+        for (let index = 0; index < votes.length; index++) {
+            const optionVotes = votes[index];
+            if (optionVotes.findIndex(voterId => voterId === currentUserId) > -1)
+                return index;
+        }
+
+        return -1;
+    }
+
     return {
         getPolls: getPolls,
         createPoll: createPoll,
-        updatePoll: updatePoll
+        updatePoll: updatePoll,
+        addVote: addVote
     }
 
 })

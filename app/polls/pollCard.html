@@ -3,14 +3,14 @@
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
             <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
-                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll,$index)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
                 <div class="row mx-0">
                     <span class="col-sm-8 col-md-9 col-lg-10">
                         {{poll.title}}
                     </span>
-                    <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
-                        <span>Due Date:{{poll.dueDate | myDate}}</span>
-                        <span>{{poll.postingDate | myDate}}</span>
+                    <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0 small">
+                        <span>Due date: {{poll.dueDate | myDate}}</span>
+                        <span>Created at: {{poll.postingDate | myDate}}</span>
                     </div>
                 </div>
             </button>
@@ -22,7 +22,7 @@
         <div class="card-body">
             <p>{{poll.details}}</p>
             <div class="container col-4">
-                <poll-answer ng-repeat="answer in poll.answers"></poll-answer>
+                <poll-answer ng-repeat="answer in poll.options"></poll-answer>
             </div>
             <p class="text-light">{{poll.posterName}}</p>
 

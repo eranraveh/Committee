@@ -1,6 +1,6 @@
 <div class="poll-answer-container with-text">
-    <button class="classic light " ng-click="onVote(poll, answer, $event)">
-        <div class="text">{{answer.description}}</div>
+    <button class="classic light " ng-click="poll.wasVoted || onVote(poll, answer, $event)">
+        <div class="text">{{answer}}</div>
         <div class="poll-result show">
             <div class="count-bar horizontal animated"></div>
             <div class="count-bar-number"></div>

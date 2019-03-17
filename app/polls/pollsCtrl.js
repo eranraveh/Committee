@@ -24,15 +24,17 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
 
   $scope.queryFilter = function (poll, index) {
     if (index === 0) {
-      unread = 0;
+      unvoted = 0;
     }
 
     if (!$scope.query) {
       // show only important poll
-      if ((!$scope.importance || poll.priority === "1") &&
-        // show only unread poll
-        (!$scope.unread || !poll.wasRead)) {
-        isPollUnread(poll);
+      if ((!$scope.isActive || poll.isActive) &&
+        // show only done polls
+        (!$scope.isEnded || !poll.isActive) &&
+        // show only unvoted poll
+        (!$scope.unvoted || !poll.wasVoted)) {
+        isPollUnvoted(poll);
         return true;
       } else {
         return false;
@@ -41,9 +43,9 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         poll.details.toLowerCase().includes($scope.query.toLowerCase())) &&
       // show only active polls
       (!$scope.isActive || poll.isActive) &&
-      // show only active polls
+      // show only done polls
       (!$scope.isEnded || !poll.isActive) &&
-      // show only unread poll
+      // show only unvoted poll
       (!$scope.unvoted || !poll.wasVoted)) {
       isPollUnvoted(poll);
       return true;
@@ -127,23 +129,97 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
   //     }
   // }, 1000);
 
+  $scope.onPollOpen = function (poll) {
+    if (!poll.wasVoted)
+      return;
 
-  $scope.onVote = function (event) {
+    setVotingResults(poll);
+  }
+
+  $scope.onVote = function (poll, answer, event) {
+
+    // add vote to db
+    var currentUser = userSrv.getActiveUser();
+    var optionIx = poll.options.indexOf(answer);
+    if (!poll.votes[optionIx])
+      poll.votes[optionIx] = [];
+    poll.votes[optionIx].push(currentUser.id)
+
+    pollsSrv.addVote(poll).then(() => {
+
+    }, (error) => {
+
+    });
+
+    setVotingResults(poll, event);
+  }
+
+  function setVotingResults(poll, event = null) {
+    // calc all options voting percentage
+    var votesPcnt = [];
+    var totalVotes = poll.votes.reduce((accumulator, optionVotes) => accumulator + optionVotes.length, 0);
+    for (let index = 0; index < poll.options.length; index++) {
+      var pollVotes = poll.votes[index];
+      if (pollVotes === undefined)
+        votesPcnt[index] = 0;
+      else
+        votesPcnt[index] = Math.round(pollVotes.length / totalVotes * 100);
+    }
+
+    // mark poll as voted
     var result = $(".poll-answer-container>button");
     for (let index = 0; index < result.length; index++) {
       const element = angular.element(result[index]);
 
       angular.element(element).addClass("poll-voted");
+      // mark selected option
+      if (index === poll.optionVoted)
+        angular.element(element).addClass("selected");
     }
 
-    $(event.currentTarget).addClass("selected");
+    // mark selected option
+    if (event != null)
+      $(event.currentTarget).addClass("selected");
 
-    $(".poll-answer-container>button.selected>.poll-result>.animated").width("86%");
-    $(".poll-answer-container>button.selected>.poll-result>.count-bar-number").text("86%");
+    // set bars width
+    var barsDivs = $(".poll-answer-container>button>.poll-result>.animated");
+    for (let index = 0; index < barsDivs.length; index++) {
+      const bar = barsDivs[index];
+      bar.style.width = votesPcnt[index] + "%";
+    }
+    // set bars text
+    var barsDivs = $(".poll-answer-container>button>.poll-result>.count-bar-number");
+    for (let index = 0; index < barsDivs.length; index++) {
+      var bar = barsDivs[index];
+      bar.innerHTML = votesPcnt[index] + "%";
+    }
 
-    $(".poll-answer-container>button:not(.selected)>.poll-result>.animated").width("14%");
-    $(".poll-answer-container>button:not(.selected)>.poll-result>.count-bar-number").text("14%");
+    // $(".poll-answer-container>button.selected>.poll-result>.animated").width("86%");
+    // $(".poll-answer-container>button.selected>.poll-result>.count-bar-number").text("86%");
+
+    // $(".poll-answer-container>button:not(.selected)>.poll-result>.animated").width("14%");
+    // $(".poll-answer-container>button:not(.selected)>.poll-result>.count-bar-number").text("14%");
   }
+
+  $scope.editPoll = function (poll) {
+    $scope.newPoll = {
+        title: poll.title,
+        details: poll.details,
+        dueDate: poll.dueDate
+    };
+
+    if ($scope.newMessage.priority === "high") {
+        $("#priority > label:first-child").addClass("active");
+        $("#priority > label:last-child").removeClass("active");
+    } else {
+        $("#priority > label:first-child").removeClass("active");
+        $("#priority > label:last-child").addClass("active");
+    }
+    $scope.editedMessage = message;
+
+    $scope.editMode = true;
+    $("#newMessageForm").modal("show");
+}
 
   $scope.isCommitteeMember = function () {
     return userSrv.isCommitteeMember();
@@ -175,37 +251,19 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
   $scope.inlineOptions = {
     customClass: getDayClass,
     minDate: new Date()
-    // showWeeks: true
   };
 
-  // $scope.dateOptions = {
-  //   dateDisabled: disabled,
-  //   formatYear: 'yy',
-  //   maxDate: new Date(2020, 5, 22),
-  //   minDate: new Date()
-  // };
 
-  // Disable weekend selection
-  // function disabled(data) {
-  //   var date = data.date,
-  //     mode = data.mode;
-  //   return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-  // }
 
   $scope.toggleMin = function () {
     $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
     $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
   };
 
-  // $scope.toggleMin();
-
   $scope.setDate = function (year, month, day) {
     $scope.newPoll.dueDate = new Date(year, month, day);
   };
 
-  // $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  // $scope.format = $scope.formats[0];
-  // $scope.altInputFormats = ['M!/d!/yyyy'];
 
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
