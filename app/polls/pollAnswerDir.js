@@ -1,20 +1,71 @@
-committeeApp.directive("pollAnswer", function () {
+committeeApp.directive("pollAnswer", ["$timeout", function ($timeout) {
 
     function link(scope, element, attrs) {
-        if (attrs.showResult === "false")
-            return;
+        // if (attrs.showResult === "false")
+        //     return;
 
-        var animatedElem = element[0].getElementsByClassName('animated');
-        // var animatedElem = element[0].querySelector('.animate');
+        // // start the UI update process; save the timeoutId for canceling
+        // timeoutId = $interval(function () {
+        //     updateElement(); // update DOM
+        // }, 1000);
 
-        // animatedElem[0].css("width", attrs.answerPcnt);
-        animatedElem[0].style.width = attrs.answerPcnt + "%";
+        // var animatedElem = element[0].getElementsByClassName('animated');
+        // // var animatedElem = element[0].querySelector('.animate');
+
+        // // animatedElem[0].css("width", attrs.answerPcnt);
+        // animatedElem[0].style.width = attrs.answerPcnt + "%";
         // var format,
         //     timeoutId;
 
-        // function updateTime() {
-        //     element.text(dateFilter(new Date(), format));
-        // }
+        var animatedElem = element[0].getElementsByClassName('animated');
+
+        function updateElement() {
+            $timeout.cancel(timeoutId);
+            animatedElem[0].style.width = attrs.answerPcnt + "%";
+        }
+
+
+        // on expanding collapse set the proper width
+        scope.$watch(function () {
+            var collapseParent = element.closest(".collapse");
+            return collapseParent.attr("class");
+                var collapseParent = element[0].closest(".collapse");
+                // var isShown = collapseParent.classList.contains("show");
+                // return isShown;
+                return collapseParent.className;
+            },
+            function (newValue, oldValue) {
+                var myOldValue = newValue;
+                setTimeout(function () {
+                    var collapseParent = element[0].closest(".collapse");
+                    var isShown = collapseParent.classList.contains("show");
+                    if (!isShown)
+                        return;
+
+                    animatedElem[0].style.width = "0%";
+
+                    timeoutId = $timeout(function () {
+                        updateElement(); // update DOM
+                    }, 1000);
+                }, 0)
+            });
+
+        // watch here on voting action......
+
+
+        // scope.$watch(attrs.answerPcnt, function () {
+        //     if (attrs.showResult === "false")
+        //         return;
+
+        //     var collapseParent = element[0].closest(".collapse");
+        //     var isShown = collapseParent.classList.contains("show");
+        //     if (!isShown)
+        //         return;
+
+        //     timeoutId = $interval(function () {
+        //         updateElement(); // update DOM
+        //     }, 1000);
+        // });
 
         // scope.$watch(attrs.answerPcnt, function () {
         //     var animatedElem = element[0].getElementsByClassName('animated');
@@ -27,7 +78,7 @@ committeeApp.directive("pollAnswer", function () {
         //     $interval.cancel(timeoutId);
         // });
 
-        // // start the UI update process; save the timeoutId for canceling
+        // start the UI update process; save the timeoutId for canceling
         // timeoutId = $interval(function () {
         //     updateTime(); // update DOM
         // }, 1000);
@@ -42,4 +93,4 @@ committeeApp.directive("pollAnswer", function () {
         // },
         link: link
     }
-})
+}]);

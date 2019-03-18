@@ -163,7 +163,17 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
 
     }
 
+    var isOpen = [];
     $scope.onPollOpen = function (poll) {
+        var ix = $scope.polls.indexOf(poll);
+        if (isOpen[ix] == undefined)
+            isOpen[ix] = false;
+        isOpen[ix] = !isOpen[ix];
+        if (!isOpen[ix])
+            return;
+
+        $scope.$apply();
+
         if (!poll.wasVoted)
             return;
 
