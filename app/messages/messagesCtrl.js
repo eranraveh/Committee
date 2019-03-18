@@ -30,9 +30,9 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
         if (!$scope.query) {
             // show only important message
-            if ((!$scope.importance || message.priority === "1") && 
-            // show only unread message
-            (!$scope.unread || !message.wasRead)) {
+            if ((!$scope.importance || message.priority === "1") &&
+                // show only unread message
+                (!$scope.unread || !message.wasRead)) {
                 isMessageUnread(message);
                 return true;
             } else {
@@ -44,7 +44,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             (!$scope.importance || message.priority === "1") &&
             // show only unread message
             (!$scope.unread || !message.wasRead)) {
-                isMessageUnread(message);
+            isMessageUnread(message);
             return true;
         } else {
             return false;

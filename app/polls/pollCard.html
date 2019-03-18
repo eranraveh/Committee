@@ -1,4 +1,3 @@
-
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
@@ -22,14 +21,18 @@
         <div class="card-body">
             <p>{{poll.details}}</p>
             <div class="container col-4">
-                <poll-answer ng-repeat="answer in poll.options"></poll-answer>
+                <poll-answer answer-pcnt="{{answer.optionVotesPcnt}}" show-result="{{ poll.wasVoted || !poll.isActive }}" ng-repeat="answer in poll.votes"></poll-answer>
             </div>
             <p class="text-light">{{poll.posterName}}</p>
 
             <div>
-                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember()" data-toggle="tooltip"
+                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember() && poll.isActive" data-toggle="tooltip"
                     title="Edit poll" tooltip ng-click="editPoll(poll)">
                     <i class="fas fa-edit "></i>
+                </button>
+                <button class="btn float-right text-danger m-0 p-1 btn-end-poll" ng-show="isCommitteeMember() && poll.isActive" data-toggle="tooltip"
+                    title="End poll" tooltip ng-click="endPoll(poll)">
+                    <i class="fas fa-hourglass-end"></i>
                 </button>
             </div>
         </div>

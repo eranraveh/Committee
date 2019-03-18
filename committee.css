@@ -85,6 +85,7 @@ body {
 
 .btn-edit>i,
 .btn-trash>i,
+.btn-end-poll>i,
 #priority i {
     font-size: 2em;
 }
@@ -101,13 +102,15 @@ body {
 }
 
 .btn-trash:hover,
-.btn-new:hover {
+.btn-new:hover,
+.btn-end-poll:hover {
     color: coral !important;
 }
 
 .btn-new,
 .btn-edit,
-.btn-trash {
+.btn-trash,
+.btn-end-poll {
     border-color: gray !important;
 }
 
@@ -305,4 +308,8 @@ table {
 /* date picker */
 .uib-datepicker-popup.dropdown-menu {
     background-color: #222222 ;
+}
+
+.w-0 {
+    width: 0% !important;
 }

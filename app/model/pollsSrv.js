@@ -10,13 +10,29 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
             this.postingDate = parsePoll.get("createdAt");
             this.posterName = userSrv.GetUsername(this.creatorId.id);
             this.options = parsePoll.get("options");
-            this.votes = parsePoll.get("votes");
+            this.votes = getVotesObj(parsePoll.get("votes"), this.options);
             this.optionVoted = getOptionVoted(this.votes);
             this.wasVoted = this.optionVoted > -1;
 
             this.parsePoll = parsePoll;
         }
+    }
 
+    function getVotesObj(votes, options) {
+        let votesObj = []
+        var totalVotes = votes.reduce((accumulator, optionVotes) => accumulator + optionVotes.length, 0);
+
+        for (let index = 0; index < votes.length; index++) {
+            // const option = options[index];
+            votesObj[index] = {
+                optionText: options[index],
+                optionVoters: votes[index],
+                optionVotesCount: votes[index].length,
+                optionVotesPcnt: totalVotes > 0 ? Math.round(votes[index].length / totalVotes * 100) : 0
+            };
+        }
+
+        return votesObj;
     }
 
     function getPolls() {
@@ -66,7 +82,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         newPoll.set('dueDate', dueDate);
         newPoll.set('creatorId', Parse.User.current());
         newPoll.set('options', options);
-        newPoll.set('votes', []);
+        newPoll.set('votes', createVotesArray(options));
         newPoll.set("committeeId", userSrv.getActiveUserCommitteeId());
 
         newPoll.save().then(
@@ -84,20 +100,23 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function updatePoll(title, details, dueDate, options, votes, oldPoll) {
+    function updatePoll(dueDate, oldPoll) {
         var async = $q.defer();
 
         const ParsePoll = Parse.Object.extend('Poll');
         const query = new Parse.Query(ParsePoll);
 
         query.get(oldPoll.parsePoll.id).then((updatedPoll) => {
-            updatedPoll.set('title', title);
-            updatedPoll.set('details', details);
+            // updatedPoll.set('title', title);
+            // updatedPoll.set('details', details);
             updatedPoll.set('dueDate', dueDate);
-            updatedPoll.set('options', options);
-            updatedPoll.set('votes', votes);
+            // updatedPoll.set('options', options);
+            // updatedPoll.set('votes', votes);
             updatedPoll.save().then(
                 (result) => {
+                    oldPoll.dueDate = result.get("dueDate");
+                    oldPoll.isActive = (oldPoll.dueDate > new Date());
+
                     // console.log('Poll created', result);
                     var newPollObj = new Poll(result);
                     async.resolve(newPollObj);
@@ -122,15 +141,14 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         const query = new Parse.Query(ParsePoll);
 
         query.get(oldPoll.parsePoll.id).then((updatedPoll) => {
-            updatedPoll.set('votes', oldPoll.votes);
+            let votes = oldPoll.votes.map(option => option.optionVoters)
+            updatedPoll.set('votes', votes);
             updatedPoll.save().then(
                 (result) => {
-                    oldPoll.votes = result.get("votes");
+                    oldPoll.votes = getVotesObj(result.get("votes"), oldPoll.options);
                     oldPoll.optionVoted = getOptionVoted(oldPoll.votes);
                     oldPoll.wasVoted = true;
 
-                    // console.log('Poll created', result);
-                    // var newPollObj = new Poll(result);
                     async.resolve();
                 },
                 (error) => {
@@ -149,12 +167,21 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
     function getOptionVoted(votes) {
         var currentUserId = userSrv.getActiveUser().id;
         for (let index = 0; index < votes.length; index++) {
-            const optionVotes = votes[index];
+            const optionVotes = votes[index].optionVoters;
             if (optionVotes.findIndex(voterId => voterId === currentUserId) > -1)
                 return index;
         }
 
         return -1;
+    }
+
+    function createVotesArray(options) {
+        let votes = [];
+        for (let index = 0; index < options.length; index++) {
+            votes.push([]);
+        }
+
+        return votes;
     }
 
     return {
