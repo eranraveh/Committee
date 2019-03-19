@@ -27,7 +27,6 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         const ParseMessage = Parse.Object.extend('Message');
         const query = new Parse.Query(ParseMessage);
 
-        // query.equalTo("isActive", true);
         query.equalTo("committeeId", userSrv.getActiveUserCommitteeId());
         query.find().then((results) => {
             results.forEach(parseMessage => {
@@ -70,7 +69,6 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
 
         newMessage.save().then(
             (result) => {
-                // console.log('Message created', result);
                 var newMessageObj = new Message(result);
                 async.resolve(newMessageObj);
             },
