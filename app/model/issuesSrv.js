@@ -19,7 +19,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
         }
     }
 
-    function getActiveUserIssues() {
+    function getIssues() {
         var async = $q.defer();
 
         var issues = [];
@@ -140,7 +140,7 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
     }
 
     return {
-        getActiveUserIssues: getActiveUserIssues,
+        getIssues: getIssues,
         postIssue: postIssue,
         deleteIssue: deleteIssue
     }

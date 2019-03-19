@@ -26,4 +26,16 @@ committeeApp.controller("navbarCtrl", function ($scope, userSrv, $location) {
         else
             return true;
     }
+
+    $scope.navigate = function () {
+        if (userSrv.isLoggedIn()) {
+            if (userSrv.isCommitteeMember()) {
+                $location.path("/myCommittee/dashboard/committee");
+            } else {
+                $location.path("/myCommittee/dashboard/tenant");
+            }
+        } else {
+            $location.path("/");
+        }
+    }
 })

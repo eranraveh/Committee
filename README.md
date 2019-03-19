@@ -14,9 +14,7 @@
 
 todo
 =====
-1. votes
 2. dashboard
-3. votes - width - link directive
 
 
 optional

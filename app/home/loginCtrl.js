@@ -9,16 +9,21 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
 
     $scope.login = function () {
         userSrv.login($scope.username, $scope.pwd).then(function (user) {
-            $("#loginForm").modal("hide");
-            $location.path("/myCommittee/polls");
+                $("#loginForm").modal("hide");
 
-        }, function (error) {
-            $scope.invalidLogin = true;
-            alert(error.message);
-        });
+                if (userSrv.isCommitteeMember()) {
+                    $location.path("/myCommittee/dashboard/committee");
+                } else {
+                    $location.path("/myCommittee/dashboard/tenant");
+                }
+            },
+            function (error) {
+                $scope.invalidLogin = true;
+                alert(error.message);
+            });
     }
 
-    $scope.onSignup = function() {
+    $scope.onSignup = function () {
         $("#loginForm").modal("hide");
     }
 })
