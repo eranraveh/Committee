@@ -174,23 +174,12 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         if (prevPollIx > -1 && prevPollIx != ix)
             $scope.isOpen[prevPollIx] = false;
         prevPollIx = ix;
-
-        // if (!$scope.isOpen[ix])
-        //     return;
-
-        // if (!poll.wasVoted)
-        //     return;
-
-        // setVotingResults(poll);
     }
 
     $scope.onVote = function (poll, answer, event) {
-
         // add vote to db
         var currentUser = userSrv.getActiveUser();
         var optionIx = poll.options.indexOf(answer.optionText);
-        // if (!poll.votes[optionIx])
-        //     poll.votes[optionIx] = [];
         poll.votes[optionIx].optionVoters.push(currentUser.id)
 
         pollsSrv.addVote(poll).then(() => {

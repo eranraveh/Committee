@@ -17,11 +17,6 @@
 
 }
 
-
-/* .jumbotron {
-    background:transparent !important;
-} */
-
 .list-group-item,
 .jumbotron,
 .card {
@@ -313,8 +308,4 @@ table {
 
 .w-0 {
     width: 0% !important;
-}
-
-.shown-card {
-    color:red;
 }
