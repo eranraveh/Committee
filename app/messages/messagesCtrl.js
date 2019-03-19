@@ -62,7 +62,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
     $scope.onMessageOpen = function (message, index) {
         $scope.newComment[index] = "";
-        $('#collapseComment' + index).collapse("hide");
+        $('#msgCollapseComment' + index).collapse("hide");
 
         if (!message.wasRead) {
             var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
@@ -179,7 +179,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         messageCommentsSrv.createComment(text, message).then((comment) => {
             message.commentsObject.comments.unshift(comment);
             $scope.newComment[index] = "";
-            $('#collapseComment' + index).collapse("hide");
+            $('#msgCollapseComment' + index).collapse("hide");
         }, (error) => {
             alert("Failed post comment to server. Please try again");
         });

@@ -114,9 +114,6 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
             // add "new" poll
             $scope.polls.unshift(poll);
 
-            // open the poll just been updated/added (located first in the array)
-            // $('#collapse' + 0).collapse("show");
-
             resetForm();
 
             $("#newPollForm").modal("hide");
@@ -124,20 +121,6 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
             alert("Posting poll failed");
         });
     }
-    // $timeout(function () {
-    //     var result = $(".poll-answer-container>button.selected>.poll-result>.animated");
-    //     for (let index = 0; index < result.length; index++) {
-    //         const element = angular.element(result[index]);
-
-    //         angular.element(element).css('width', '86%');
-    //     }
-    //     var result = $(".poll-answer-container>button:not(.selected)>.poll-result>.animated");
-    //     for (let index = 0; index < result.length; index++) {
-    //         const element = angular.element(result[index]);
-
-    //         angular.element(element).css('width', '14%');
-    //     }
-    // }, 1000);
 
     $scope.updatePoll = () => {
         if ($scope.newPollForm.$invalid)
@@ -187,55 +170,6 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         }, (error) => {
 
         });
-
-        setVotingResults(poll, event);
-    }
-
-    function setVotingResults(poll, event = null) {
-        // calc all options voting percentage
-        // var votesPcnt = [];
-        // var totalVotes = poll.votes.filter(arr => arr).reduce((accumulator, optionVotes) => accumulator + optionVotes.length, 0);
-        // for (let index = 0; index < poll.options.length; index++) {
-        //     var pollVotes = poll.votes[index];
-        //     if (!pollVotes)
-        //         votesPcnt[index] = 0;
-        //     else
-        //         votesPcnt[index] = Math.round(pollVotes.length / totalVotes * 100);
-        // }
-
-        // // mark poll as voted
-        // var result = $(".poll-answer-container>button");
-        // for (let index = 0; index < result.length; index++) {
-        //   const element = angular.element(result[index]);
-
-        //   angular.element(element).addClass("poll-voted");
-        //   // mark selected option
-        //   if (index === poll.optionVoted)
-        //     angular.element(element).addClass("selected");
-        // }
-
-        // // mark selected option
-        // if (event != null)
-        //   $(event.currentTarget).addClass("selected");
-
-        // // set bars width
-        // var barsDivs = $(".poll-answer-container>button>.poll-result>.animated");
-        // for (let index = 0; index < barsDivs.length; index++) {
-        //     const bar = barsDivs[index];
-        //     bar.style.width = votesPcnt[index] + "%";
-        // }
-        // // set bars text
-        // var barsDivs = $(".poll-answer-container>button>.poll-result>.count-bar-number");
-        // for (let index = 0; index < barsDivs.length; index++) {
-        //     var bar = barsDivs[index];
-        //     bar.innerHTML = votesPcnt[index] + "%";
-        // }
-
-        // $(".poll-answer-container>button.selected>.poll-result>.animated").width("86%");
-        // $(".poll-answer-container>button.selected>.poll-result>.count-bar-number").text("86%");
-
-        // $(".poll-answer-container>button:not(.selected)>.poll-result>.animated").width("14%");
-        // $(".poll-answer-container>button:not(.selected)>.poll-result>.count-bar-number").text("14%");
     }
 
     $scope.editPoll = function (poll) {
@@ -297,36 +231,4 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         $scope.newPoll.dueDate = new Date(year, month, day);
     };
 
-
-    // var tomorrow = new Date();
-    // tomorrow.setDate(tomorrow.getDate() + 1);
-    // var afterTomorrow = new Date();
-    // afterTomorrow.setDate(tomorrow.getDate() + 1);
-    // $scope.events = [{
-    //         date: tomorrow,
-    //         status: 'full'
-    //     },
-    //     {
-    //         date: afterTomorrow,
-    //         status: 'partially'
-    //     }
-    // ];
-
-    // function getDayClass(data) {
-    //     var date = data.date,
-    //         mode = data.mode;
-    //     if (mode === 'day') {
-    //         var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-
-    //         for (var i = 0; i < $scope.events.length; i++) {
-    //             var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
-
-    //             if (dayToCheck === currentDay) {
-    //                 return $scope.events[i].status;
-    //             }
-    //         }
-    //     }
-
-    //     return '';
-    // }
 });

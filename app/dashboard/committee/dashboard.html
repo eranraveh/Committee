@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">My Dashboard</h1>
+            <hr class="my-2">
+            <p>New issues</p>
+            <div id="issueAccordion" class="pb-5 col-sm-6 col-md-5 col-lg-4">
+                <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort"></issue-card>
+            </div>
+        </div>
+    </div>
+</div>

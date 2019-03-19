@@ -23,7 +23,7 @@
         <span class="align-middle mb-0">{{getUnreadMessagesCount()}} unread messages</span>
     </div>
 
-    <div id="accordion" class="pb-5">
+    <div id="messageAccordion" class="pb-5">
 
         <message-card ng-repeat="message in messages | filter : queryFilter"></message-card>
     </div>

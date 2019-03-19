@@ -77,9 +77,6 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
             // add new/updated user
             $scope.users.unshift(user);
 
-            // open the message just been updated/added (located first in the array)
-            // $('#collapse' + 0).collapse("show");
-
             resetForm();
 
             $("#newTenantForm").modal("hide");

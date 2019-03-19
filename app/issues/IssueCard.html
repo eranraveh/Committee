@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link w-100 text-left px-0" data-toggle="collapse" data-target="#collapse{{$index}}"
+            <button class="btn btn-link w-100 text-left px-0" data-toggle="collapse" data-target="#issueCollapse{{$index}}"
                 aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onIssueOpen(issue,$index)" ng-class="{'font-weight-bolder': issue.wasRead == false, 'font-weight-light': issue.wasRead }">
                 <div class="row mx-0">
                     <span class="col-sm-8 col-md-9 col-lg-10">
@@ -21,8 +21,8 @@
         </h5>
     </div>
 
-    <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
-        data-parent="#accordion">
+    <div id="issueCollapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
+        data-parent="#issueAccordion">
         <div class="card-body">
             <p>{{issue.details}}</p>
             <p class="text-light">{{issue.posterName}}</p>
@@ -37,7 +37,7 @@
 
             <!-- new comment , delete/edit meesage-->
             <div>
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseComment{{$index}}">Comment</button>
+                <button class="btn btn-link" data-toggle="collapse" data-target="#issueCollapseComment{{$index}}">Comment</button>
                 <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="canEditIssue(issue)" data-toggle="tooltip"
                     title="Edit issue" tooltip ng-click="editIssue(issue)">
                     <i class="fas fa-edit "></i>
@@ -47,7 +47,7 @@
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
-            <div id="collapseComment{{$index}}" class="collapse ">
+            <div id="issueCollapseComment{{$index}}" class="collapse ">
                 <div class="form-group ">
                     <textarea class="form-control" rows="5" ng-model="newComment[$index]" placeholder="Add comment"></textarea>
                     <button class="btn btn-primary mt-1" ng-click="postComment($index, issue)">Post</button>
