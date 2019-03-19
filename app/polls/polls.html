@@ -24,6 +24,7 @@
         <span class="align-middle mb-0">{{getUnvotedPollsCount()}} unvoted active polls</span>
     </div>
 
+    <!-- <uib-accordion close-others="false"> -->
     <div id="accordion" class="pb-5">
         <poll ng-repeat="poll in polls | filter : queryFilter"></poll>
     </div>

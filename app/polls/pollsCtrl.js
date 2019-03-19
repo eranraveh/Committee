@@ -163,21 +163,25 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
 
     }
 
-    var isOpen = [];
+    $scope.isOpen = [];
+    var prevPollIx = -1;
     $scope.onPollOpen = function (poll) {
         var ix = $scope.polls.indexOf(poll);
-        if (isOpen[ix] == undefined)
-            isOpen[ix] = false;
-        isOpen[ix] = !isOpen[ix];
-        if (!isOpen[ix])
-            return;
+        if ($scope.isOpen[ix] == undefined)
+            $scope.isOpen[ix] = false;
+        $scope.isOpen[ix] = !$scope.isOpen[ix];
 
-        $scope.$apply();
+        if (prevPollIx > -1 && prevPollIx != ix)
+            $scope.isOpen[prevPollIx] = false;
+        prevPollIx = ix;
 
-        if (!poll.wasVoted)
-            return;
+        // if (!$scope.isOpen[ix])
+        //     return;
 
-        setVotingResults(poll);
+        // if (!poll.wasVoted)
+        //     return;
+
+        // setVotingResults(poll);
     }
 
     $scope.onVote = function (poll, answer, event) {

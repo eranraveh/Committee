@@ -274,6 +274,7 @@ table {
 
 .poll-result .count-bar.animated {
     transition: width 2s ease-out,height 2s ease-out;
+    /* transition-delay: 2000ms; */
 }
 
 .poll-result .count-bar {
@@ -312,4 +313,8 @@ table {
 
 .w-0 {
     width: 0% !important;
+}
+
+.shown-card {
+    color:red;
 }

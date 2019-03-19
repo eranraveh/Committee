@@ -4,9 +4,10 @@
             <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
                 aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
                 <div class="row mx-0">
-                    <span class="col-sm-8 col-md-9 col-lg-10">
+                    <span class="col-sm-8 col-md-9 col-lg-10" ng-class="{'shown-card': isOpen[$index]}">
                         {{poll.title}}
                     </span>
+                    <div>test = {{isOpen[$index]}}</div>
                     <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0 small">
                         <span>Due date: {{poll.dueDate | myDate}}</span>
                         <span>Created at: {{poll.postingDate | myDate}}</span>
@@ -21,20 +22,74 @@
         <div class="card-body">
             <p>{{poll.details}}</p>
             <div class="container col-4">
-                <poll-answer answer-pcnt="{{answer.optionVotesPcnt}}" show-result="{{ poll.wasVoted || !poll.isActive }}" ng-repeat="answer in poll.votes"></poll-answer>
+                <section ng-repeat="answer in poll.votes">
+                    <poll-answer id="{{'ans_' +  $parent.$index+ '_' + $index}}" is-opened="isOpen[$parent.$index]"
+                        answer-pcnt="{{answer.optionVotesPcnt}}" poll-answer-x="answer" show-result="{{ poll.wasVoted || !poll.isActive }}"
+                        ng-class="{'shown-card': isOpen[$parent.$index]}"></poll-answer>
+
+                </section>
+                <!-- <poll-answer id="{{'ans_' +  $parent.$index+ '_' + $index}}" is-opened="isOpen[$parent.$index]" answer-pcnt="{{answer.optionVotesPcnt}}" poll-answer="answer"
+                    show-result="{{ poll.wasVoted || !poll.isActive }}" ng-repeat="answer in poll.votes" ng-class="{'shown-card': isOpen[$parent.$index]}"></poll-answer> -->
             </div>
             <p class="text-light">{{poll.posterName}}</p>
 
             <div>
-                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember() && poll.isActive" data-toggle="tooltip"
-                    title="Edit poll" tooltip ng-click="editPoll(poll)">
+                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember() && poll.isActive"
+                    data-toggle="tooltip" title="Edit poll" tooltip ng-click="editPoll(poll)">
                     <i class="fas fa-edit "></i>
                 </button>
-                <button class="btn float-right text-danger m-0 p-1 btn-end-poll" ng-show="isCommitteeMember() && poll.isActive" data-toggle="tooltip"
-                    title="End poll" tooltip ng-click="endPoll(poll)">
+                <button class="btn float-right text-danger m-0 p-1 btn-end-poll" ng-show="isCommitteeMember() && poll.isActive"
+                    data-toggle="tooltip" title="End poll" tooltip ng-click="endPoll(poll)">
                     <i class="fas fa-hourglass-end"></i>
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- <uib-accordion close-others="false">
+
+    <div uib-accordion-group class="mt-1" heading="Dynamic Body Content" is-open="foo.isOpen" is-disabled="foo.isDisabled">
+        <uib-accordion-heading>
+            <h5 class="mb-0">
+                <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
+                    aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
+                    <div class="row mx-0">
+                        <span class="col-sm-8 col-md-9 col-lg-10" ng-class="{'shown-card': isOpen[$index]}">
+                            {{poll.title}}
+                        </span>
+                        <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0 small">
+                            <span>Due date: {{poll.dueDate | myDate}}</span>
+                            <span>Created at: {{poll.postingDate | myDate}}</span>
+                        </div>
+                    </div>
+                </button>
+            </h5>
+        </uib-accordion-heading>
+        
+        <div id="collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
+            data-parent="#accordion">
+            <div class="card-body">
+                <p>{{poll.details}}</p>
+                <div class="container col-4">
+                    <poll-answer id="{{'ans_' +  $parent.$index+ '_' + $index}}" answer-pcnt="{{answer.optionVotesPcnt}}"
+                        show-result="{{ poll.wasVoted || !poll.isActive }}" ng-repeat="answer in poll.votes" ng-class="{'shown-card': isOpen[$parent.$index]}"></poll-answer>
+                </div>
+                <p class="text-light">{{poll.posterName}}</p>
+
+                <div>
+                    <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember() && poll.isActive"
+                        data-toggle="tooltip" title="Edit poll" tooltip ng-click="editPoll(poll)">
+                        <i class="fas fa-edit "></i>
+                    </button>
+                    <button class="btn float-right text-danger m-0 p-1 btn-end-poll" ng-show="isCommitteeMember() && poll.isActive"
+                        data-toggle="tooltip" title="End poll" tooltip ng-click="endPoll(poll)">
+                        <i class="fas fa-hourglass-end"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</uib-accordion> -->

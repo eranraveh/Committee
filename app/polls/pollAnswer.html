@@ -1,15 +1,23 @@
 <div class="poll-answer-container with-text">
+        <div>test ,parentix = {{$parent.$index}}, innerIx={{$parent.$index}}, isopen= {{isOpen[$parent.$index]}}</div>
+
     <!-- disable click if user voted on this poll, or poll is ended!!!! -->
     <button class="classic light " ng-click="poll.wasVoted || !poll.isActive || onVote(poll, answer, $event)" ng-class="{'poll-voted':poll.wasVoted || !poll.isActive, 'selected':poll.optionVoted== $index}">
-        <div class="text">{{answer.optionText}}</div>
+        <div class="text">{{pollAnswer.optionText}}</div>
+
         <div class="poll-result show">
             <!-- show poll results if user voted on this poll, or poll is ended!!!! -->
 
             <!-- <div class="count-bar horizontal animated" ng-style="{'width': {{poll.wasVoted || !poll.isActive}} ? '{{answer.optionVotesPcnt}}%' : '0%'}"></div>
             <div class="count-bar-number">{{poll.wasVoted || !poll.isActive ? answer.optionVotesPcnt + '%' : ''}}</div> -->
 
-            <div class="count-bar horizontal animated" ></div>
-            <div class="count-bar-number">{{poll.wasVoted || !poll.isActive ? answer.optionVotesPcnt + '%' : ''}}</div>
+            <div>
+                    pollAnswer ={{JSON.Stringify(pollAnswer)}}
+            </div>
+            <div id="{{'ani_' +  $parent.$index+ '_' + $index}}" class="count-bar horizontal animated "></div>
+            <!-- <div id="
+                {{'ani_' +  $parent.$index+ '_' + $index}}" class=" count-bar horizontal animated"></div> -->
+            <div class="count-bar-number">{{poll.wasVoted || !poll.isActive ? pollAnswer.optionVotesPcnt + '%' : ''}}</div>
         </div>
     </button>
 </div>

@@ -17,37 +17,67 @@ committeeApp.directive("pollAnswer", ["$timeout", function ($timeout) {
         // var format,
         //     timeoutId;
 
-        var animatedElem = element[0].getElementsByClassName('animated');
+        // var animatedElem = element[0].getElementsByClassName('animated');
+        var animatedElem = element.find('.animated');
 
         function updateElement() {
             $timeout.cancel(timeoutId);
-            animatedElem[0].style.width = attrs.answerPcnt + "%";
+            animatedElem.width(attrs.answerPcnt + "%");
+            // animatedElem[0].style.width = attrs.answerPcnt + "%";
         }
 
 
         // on expanding collapse set the proper width
-        scope.$watch(function () {
-            var collapseParent = element.closest(".collapse");
-            return collapseParent.attr("class");
-                var collapseParent = element[0].closest(".collapse");
-                // var isShown = collapseParent.classList.contains("show");
-                // return isShown;
-                return collapseParent.className;
-            },
-            function (newValue, oldValue) {
-                var myOldValue = newValue;
+        scope.$watch("isOpened",
+
+            // scope.$parent.$parent.$watch("isOpen",
+            // scope.$watch(function () {
+            //         console.log("watched");
+            //         return element.attr("class");
+            // var collapseParent = element.closest(".collapse");
+            // return collapseParent.attr("class");
+            // var collapseParent = element[0].closest(".collapse");
+            // var isShown = collapseParent.classList.contains("show");
+            // return isShown;
+            // return collapseParent.className;
+            // },
+            function () {
+                //note that, don't use angular $timeout it may cause recursive stack
                 setTimeout(function () {
-                    var collapseParent = element[0].closest(".collapse");
-                    var isShown = collapseParent.classList.contains("show");
-                    if (!isShown)
+                    if (!scope.isOpened) {
+                        animatedElem.width("0%");
                         return;
 
-                    animatedElem[0].style.width = "0%";
+                    }
+                    // // element.is('.shown-card, .shown-card-add')
+                    // var isShown = element.hasClass('shown-card');
+                    // console.log(isShown)
+                    // //do staff here
+
+                    // if (!isShown)
+                    //     return;
+
+                    // animatedElem.width("0%");
+                    // animatedElem[0].style.width = "0%";
 
                     timeoutId = $timeout(function () {
                         updateElement(); // update DOM
-                    }, 1000);
+                    }, 250);
+
                 }, 0)
+
+                // setTimeout(function () {
+                //     var collapseParent = element[0].closest(".collapse");
+                //     var isShown = collapseParent.classList.contains("show");
+                //     if (!isShown)
+                //         return;
+
+                //     animatedElem[0].style.width = "0%";
+
+                //     timeoutId = $timeout(function () {
+                //         updateElement(); // update DOM
+                //     }, 1000);
+                // }, 0)
             });
 
         // watch here on voting action......
@@ -87,6 +117,10 @@ committeeApp.directive("pollAnswer", ["$timeout", function ($timeout) {
     return {
         templateUrl: "app/polls/pollAnswer.html",
         restrcit: "E",
+        scope: {
+            isOpened: "@",
+            pollAnswerX: "="
+        },
         // replace:true,
         // scope: {
         //     showResult: '@'
