@@ -10,24 +10,20 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         IN_PROGRESS: "In progress",
         CLOSE: "Closed"
     }
-    const issueUrgency = {
-        URGENT: "1",
-        IMPORTANT: "2",
-        NORMAL: "3"
-    }
-
 
     // descending order
+    var oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
     $scope.issuesSort = "-postingDate";
     $scope.pollsSort = "dueDate";
+    $scope.messagesSort = "postingDate";
 
     function loadData() {
-        $scope.issues = [];
+        $scope.newIssues = [];
         issuesSrv.getIssues().then((issues) => {
             $scope.newIssues = issues.filter(issue => !issue.wasRead);
 
-            var oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 2);
             $scope.weekOldIssues = issues.filter(issue => issue.status != issueStatus.CLOSE && issue.postingDate < oneWeekAgo);
 
         }).catch((err) => {
@@ -48,6 +44,14 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
     // =============================================
     // issues code - start
     // =============================================
+    // $scope.newIssueQueryFilter = function (issue) {
+    //     return (!issue.wasRead);
+    // }
+
+    // $scope.openOldIssueQueryFilter = function (issue) {
+    //     return (issue.status != issueStatus.CLOSE && issue.postingDate < oneWeekAgo);
+    // }
+
     $scope.newComment = [];
     $scope.onIssueOpen = function (issue, index, parent) {
         $scope.newComment[index] = "";
@@ -75,24 +79,6 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         }
     }
 
-    $scope.deleteIssue = function (issue) {
-        issuesSrv.deleteIssue(issue).then(() => {
-
-            issueCommentsSrv.deleteIssueComments(issue.commentsObject.comments).then(([successCounter, failCounter]) => {
-                console.log(successCounter + " comments deleted and " + failCounter + " comments failed")
-            }, (error) => {
-
-            });
-
-            var reomveIndex = $scope.issues.indexOf(issue);
-            if (reomveIndex > -1)
-                $scope.issues.splice(reomveIndex, 1);
-        }, () => {
-            alert("Failed delete issue from server. Please try again");
-        });
-
-    }
-
     $scope.postComment = function (index, issue, parent) {
         var text = $scope.newComment[index];
         if (!text) {
@@ -109,14 +95,9 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         });
     }
 
-
-    // $scope.isCommitteeMember = function () {
-    //     return userSrv.isCommitteeMember();
+    // $scope.canEditIssue = function () {
+    //     return false;
     // }
-
-    $scope.canEditIssue = function () {
-        return false;
-    }
     // =============================================
     // issues code - end
     // =============================================
@@ -125,6 +106,10 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
     // =============================================
     // polls code - start
     // =============================================
+    // $scope.openPollQueryFilter = function (poll) {
+    //     return (poll.isActive);
+    // }
+
     $scope.endPoll = function (poll) {
         var promise = pollsSrv.updatePoll(new Date(), poll);
 
@@ -134,11 +119,6 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
 
     }
 
-
-
-    $scope.getIndex = function (poll) {
-        return $scope.openPolls.indexOf(poll);
-    }
     // hide edit button on dashboard
     $scope.isDashboard = true;
 
@@ -154,8 +134,6 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
     var prevPollIx = -1;
     $scope.onPollOpen = function (poll) {
         var ix = $scope.openPolls.indexOf(poll);
-        // if (isOpenPoll[ix] == undefined)
-        //     isOpenPoll[ix] = false;
         isOpenPoll[ix] = !isOpenPoll[ix];
 
         if (prevPollIx > -1 && prevPollIx != ix)
@@ -176,6 +154,9 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         });
     }
 
+    $scope.isCommitteeMember = function() {
+        return true;
+    }
     // =============================================
     // polls code - end
     // =============================================

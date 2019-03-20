@@ -13,6 +13,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
             this.votes = getVotesObj(parsePoll.get("votes"), this.options);
             this.optionVoted = getOptionVoted(this.votes);
             this.wasVoted = this.optionVoted > -1;
+            this.sawResult = (userSrv.getActiveUser().readMessages.indexOf(parsePoll.id) > -1);
 
             this.parsePoll = parsePoll;
         }

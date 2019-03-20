@@ -158,8 +158,6 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
     var prevPollIx = -1;
     $scope.onPollOpen = function (poll) {
         var ix = $scope.polls.indexOf(poll);
-        // if (isOpenPoll[ix] == undefined)
-        //     isOpenPoll[ix] = false;
         isOpenPoll[ix] = !isOpenPoll[ix];
 
         if (prevPollIx > -1 && prevPollIx != ix)

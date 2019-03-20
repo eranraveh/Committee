@@ -1,39 +1,110 @@
 <div class="container dashboard">
-        <div class="jumbotron jumbotron-fluid">
-<Accordion 
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3 text-center">My Dashboard</h1>
+            <div class="container pb-5 row">
 
+                <!-- new issues -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1" ng-hide="newIssues.length === 0">
+                    <hr class="my-2">
+                    <h4 class="text-center">New issues</h4>
+                    <div id="newIssueAccordion">
+                        <!-- <issue-card ng-repeat="issue in newIssues | filter : newIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
+                        <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort | limitTo: 5" parent-id="newIssueAccordion"></issue-card>
+                    </div>
+                </div>
 
+                <!-- new resolved issues -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1 " ng-hide="resolvedIssues.length === 0">
+                    <hr class="my-2">
+                    <h4 class="text-center">New resolved issues</h4>
+                    <div id="oldIssueAccordion" class="mx-2">
+                        <!-- <issue-card ng-repeat="issue in resolvedIssues | filter : resolvedIssueQueryFilter  | orderBy : issuesSort | limitTo: 5" -->
+                        <issue-card ng-repeat="issue in resolvedIssues | orderBy : issuesSort | limitTo: 5" parent-id="oldIssueAccordion"></issue-card>
+                    </div>
+                </div>
 
-            <div class="container">
-                <h1 class="display-3 text-center">My Dashboard</h1>
-                <div class="container pb-5 row">
+                <!-- new messages -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1" ng-hide="newMessages.length === 0">
+                    <hr class="my-2">
+                    <h4 class="text-center">New messages</h4>
+                    <div id="newMsgAccordion">
+                        <!-- <message-card ng-repeat="message in newMessages | filter : msgQueryFilter | orderBy : messagesSort | limitTo: 5" -->
+                        <message-card ng-repeat="message in newMessages | orderBy : messagesSort | limitTo: 5"
+                            parent-id="newMsgAccordion"></message-card>
+                    </div>
+                </div>
+
+                <!-- open votes -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1" ng-hide="openPolls.length === 0">
+                    <hr class="my-2">
+                    <h4 class="text-center">Active polls</h4>
+                    <div id="openPollsAccordion" class="">
+                        <!-- <poll ng-repeat="poll in openPolls  | filter : openPollQueryFilter | orderBy : pollsSort"></poll> -->
+                        <poll ng-repeat="poll in openPolls | orderBy : pollsSort" parent-id="openPollsAccordion"></poll>
+                    </div>
+                </div>
+
+                <!-- closed votes -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1" ng-hide="closedPolls.length === 0">
+                    <hr class="my-2">
+                    <h4 class="text-center">Closed polls</h4>
+                    <div id="closedPollsAccordion" class="">
+                        <!-- <poll ng-repeat="poll in closedPolls | filter : closedPollQueryFilter  | orderBy : pollsSort"></poll> -->
+                        <poll ng-repeat="poll in closedPolls | orderBy : pollsSort" parent-id="closedPollsAccordion"></poll>
+                    </div>
+                </div>
+
+                <!-- no data      -->
+                <div class="col-sm-6 col-md-5 col-lg-4 p-1">
                     <!-- new issues -->
-                    <div class="col-sm-6 col-md-5 col-lg-4 p-1">
+                    <div class="mb-5" ng-show="newIssues.length === 0">
                         <hr class="my-2">
                         <h4 class="text-center">New issues</h4>
-                        <div id="newIssueAccordion" class="">
-                            <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort" parent-id="newIssueAccordion"></issue-card>
+                        <div class="font-weight-bolder text-primary text-center">
+                            No new issues
                         </div>
                     </div>
-    
-                    <!-- new issues -->
-                    <div class="col-sm-6 col-md-5 col-lg-4 p-1 ">
+
+                    <!-- new resolved issues -->
+                    <div class="mb-5" ng-show="resolvedIssues.length === 0">
                         <hr class="my-2">
                         <h4 class="text-center">New resolved issues</h4>
-                        <div id="oldIssueAccordion" class="mx-2">
-                            <issue-card ng-repeat="issue in resolvedIssues | orderBy : issuesSort" parent-id="oldIssueAccordion"></issue-card>
+                        <div class="font-weight-bolder text-primary text-center">
+                            No new resolved issues
                         </div>
                     </div>
-    
-                    <!-- open votes -->
-                    <div class="col-sm-6 col-md-5 col-lg-4 p-1">
+
+
+                    <!-- new messages -->
+                    <div class="mb-5" ng-show="newMessages.length === 0">
                         <hr class="my-2">
-                        <h4 class="text-center">Open votes</h4>
-                        <div id="pollsAccordion" class="">
-                            <poll ng-repeat="poll in openPolls | orderBy : pollsSort"></poll>
+                        <h4 class="text-center">New messages</h4>
+                        <div class="font-weight-bolder text-primary text-center">
+                            No new messages
+                        </div>
+                    </div>
+
+                    <!-- open votes -->
+                    <div class="mb-5" ng-show="openPolls.length === 0">
+                        <hr class="my-2">
+                        <h4 class="text-center">Active polls</h4>
+                        <div class="font-weight-bolder text-primary text-center">
+                            No active polls you havn't voted yet
+                        </div>
+                    </div>
+
+                    <!-- closed votes -->
+                    <div class="mb-5" ng-show="closedPolls.length === 0">
+                        <hr class="my-2">
+                        <h4 class="text-center">Closed polls</h4>
+                        <div class="font-weight-bolder text-primary text-center">
+                            No new closed polls
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+</div>

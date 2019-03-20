@@ -19,7 +19,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         }
     }
 
-    function getActiveUserMessages() {
+    function getMessages() {
         var async = $q.defer();
 
         var messages = [];
@@ -139,7 +139,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
     }
 
     return {
-        getActiveUserMessages: getActiveUserMessages,
+        getMessages: getMessages,
         postMessage: postMessage,
         deleteMessage: deleteMessage
     }

@@ -1,8 +1,8 @@
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#collapse{{$index}}"
-                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
+            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#{{parentId}}collapse{{$index}}"
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onPollOpen(poll, parentId)" ng-class="{'font-weight-bolder': poll.wasVoted == false }">
                 <div class="row mx-0" ng-show="!isDashboard">
                     <span class="col-sm-8 col-md-9 col-lg-10">
                         {{poll.title}}
@@ -25,12 +25,12 @@
         </h5>
     </div>
 
-    <div id="collapse{{$index}}" class="collapse " aria-labelledby="heading{{$index}}"
-        data-parent="#pollsAccordion">
+    <div id="{{parentId}}collapse{{$index}}" class="collapse " aria-labelledby="heading{{$index}}"
+        data-parent="#{{parentId}}">
         <div class="card-body">
             <p>{{poll.details}}</p>
             <div class="container " ng-class="{'col-sm-6 col-md-5 col-lg-4':!isDashboard}">
-                <poll-answer is-opened="isOpen(poll)" answer-pcnt="{{answer.optionVotesPcnt}}" poll-data="poll"
+                <poll-answer is-opened="isOpen(poll, parentId)" answer-pcnt="{{answer.optionVotesPcnt}}" poll-data="poll"
                     poll-answer-data="answer" is-selected-answer="poll.optionVoted== $index" show-result="poll.wasVoted || !poll.isActive || isDashboard "
                     vote="onVote(poll, answer)" ng-repeat="answer in poll.votes"></poll-answer>
             </div>

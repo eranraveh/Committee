@@ -46,18 +46,18 @@
             <div ng-repeat="comment in issue.commentsObject.comments">
                 <div class="border border-dark rounded-lg rounded px-2">
                     <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | myDate}}</span>
-                        <span class="font-weight-bold text-primary">{{comment.username}} :</span> {{comment.text}}</p>
+                        <span class=" text-primary small">, {{comment.username}} :</span> {{comment.text}}</p>
                 </div>
             </div>
 
             <!-- new comment , delete/edit meesage-->
             <div>
                 <button class="btn btn-link" data-toggle="collapse" data-target="#{{parentId}}CollapseComment{{$index}}">Comment</button>
-                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="canEditIssue(issue)" data-toggle="tooltip"
+                <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="canEditIssue(issue) && !isDashboard" data-toggle="tooltip"
                     title="Edit issue" tooltip ng-click="editIssue(issue)">
                     <i class="fas fa-edit "></i>
                 </button>
-                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="issue.isMyIssue" data-toggle="tooltip"
+                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="issue.isMyIssue && !isDashboard" data-toggle="tooltip"
                     title="Delete issue" tooltip ng-click="deleteIssue(issue)">
                     <i class="fas fa-trash-alt"></i>
                 </button>
@@ -65,7 +65,7 @@
             <div id="{{parentId}}CollapseComment{{$index}}" class="collapse ">
                 <div class="form-group ">
                     <textarea class="form-control" rows="5" ng-model="newComment[$index]" placeholder="Add comment"></textarea>
-                    <button class="btn btn-primary mt-1" ng-click="postComment($index, issue,parentId)">Post</button>
+                    <button class="btn btn-primary mt-1" ng-click="postComment($index, issue, parentId)">Post</button>
                 </div>
             </div>
         </div>

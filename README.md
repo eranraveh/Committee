@@ -15,6 +15,10 @@
 todo
 =====
 2. dashboard - tenant
+3. vote from dashboard
+4. mark that user saw the final poll result
+5. update closed issue.....
+6. postComment dashBoard issues and messages methods
 
 
 optional

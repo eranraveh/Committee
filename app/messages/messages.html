@@ -24,8 +24,7 @@
     </div>
 
     <div id="messageAccordion" class="pb-5">
-
-        <message-card ng-repeat="message in messages | filter : queryFilter"></message-card>
+        <message-card ng-repeat="message in messages | filter : queryFilter" parent-id="messageAccordion"></message-card>
     </div>
 </div>
 

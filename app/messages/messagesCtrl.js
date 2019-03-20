@@ -15,7 +15,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     $scope.newComment = []
     $scope.editMode = false;
 
-    messagesSrv.getActiveUserMessages().then((messages) => {
+    messagesSrv.getMessages().then((messages) => {
         unread = 0;
         $scope.messages = messages;
 
@@ -60,14 +60,15 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         return unread;
     };
 
-    $scope.onMessageOpen = function (message, index) {
+    $scope.onMessageOpen = function (message, index, parent) {
         $scope.newComment[index] = "";
-        $('#msgCollapseComment' + index).collapse("hide");
+        $('#' + parent + 'CollapseComment' + index).collapse("hide");
 
         if (!message.wasRead) {
             var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
             addMessagePromise.then(wasAdded => {
-                if (wasAdded) {
+                // if the unread filter is on, the issue will disapear when open it
+                if (wasAdded && !$scope.unread) {
                     message.wasRead = true;
                 }
             }, error => {
@@ -169,7 +170,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
     }
 
-    $scope.postComment = function (index, message) {
+    $scope.postComment = function (index, message, parent) {
         var text = $scope.newComment[index];
         if (!text) {
             alert("Enter a comment text");
@@ -179,7 +180,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         messageCommentsSrv.createComment(text, message).then((comment) => {
             message.commentsObject.comments.unshift(comment);
             $scope.newComment[index] = "";
-            $('#msgCollapseComment' + index).collapse("hide");
+            $('#' + parent + 'CollapseComment' + index).collapse("hide");
         }, (error) => {
             alert("Failed post comment to server. Please try again");
         });

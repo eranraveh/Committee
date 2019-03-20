@@ -1,8 +1,8 @@
 <div class="card">
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
-            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#messageCollapse{{$index}}"
-                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onMessageOpen(message,$index)"
+            <button class="btn btn-link w-100 text-left" data-toggle="collapse" data-target="#{{parentId}}Collapse{{$index}}"
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onMessageOpen(message,$index, parentId)"
                 ng-class="{'font-weight-bolder': message.wasRead == false }">
                 <i class="fas fa-fw mr-1" ng-class="{'fa-exclamation text-danger': message.priority == '1','fa-info': message.priority != '1'}"></i><i
                     class="fas fa-envelope{{message.wasRead ? '-open':''}} mr-2"></i>{{message.title}}
@@ -11,8 +11,8 @@
         </h5>
     </div>
 
-    <div id="messageCollapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
-        data-parent="#messageAccordion">
+    <div id="{{parentId}}Collapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
+        data-parent="#{{parentId}}">
         <div class="card-body">
             <p>{{message.details}}</p>
             <p class="text-light">{{message.posterName}}</p>
@@ -20,26 +20,26 @@
             <div ng-repeat="comment in message.commentsObject.comments">
                 <div class="border border-dark rounded-lg rounded px-2">
                     <p class="mb-0"><span class="font-italic small text-primary">{{comment.date | myDate}}</span>
-                        <span class="font-weight-bold text-primary">{{comment.username}} :</span> {{comment.text}}</p>
+                        <span class=" text-primary small">, {{comment.username}} :</span> {{comment.text}}</p>
                 </div>
             </div>
 
             <!-- new comment , delete/edit meesage-->
             <div>
-                <button class="btn btn-link" data-toggle="collapse" data-target="#msgCollapseComment{{$index}}">Comment</button>
+                <button class="btn btn-link" data-toggle="collapse" data-target="#{{parentId}}CollapseComment{{$index}}">Comment</button>
                 <button class="btn float-right text-primary m-0 p-1 btn-edit" ng-show="isCommitteeMember()" data-toggle="tooltip"
                     title="Edit message" tooltip ng-click="editMessage(message)">
                     <i class="fas fa-edit "></i>
                 </button>
-                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="isCommitteeMember()" data-toggle="tooltip"
+                <button class="btn float-right text-danger m-0 p-1 btn-trash" ng-show="isCommitteeMember() " data-toggle="tooltip"
                     title="Delete message" tooltip ng-click="deleteMessage(message)">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
-            <div id="msgCollapseComment{{$index}}" class="collapse ">
+            <div id="{{parentId}}CollapseComment{{$index}}" class="collapse ">
                 <div class="form-group ">
                     <textarea class="form-control" rows="5" ng-model="newComment[$index]" placeholder="Add comment"></textarea>
-                    <button class="btn btn-primary mt-1" ng-click="postComment($index, message)">Post</button>
+                    <button class="btn btn-primary mt-1" ng-click="postComment($index, message, parentId)">Post</button>
                 </div>
             </div>
         </div>
