@@ -10,7 +10,7 @@
                             ng-show="issue.priority == '2'" data-toggle="tooltip" title="Important" tooltip></i><i
                             class="fas fa-fw fa-arrow-down text-primary mr-1" ng-show="issue.priority == '3'"
                             data-toggle="tooltip" title="Normal" tooltip></i><i class="fas fa-envelope{{issue.wasRead ? '-open':''}} mr-2"></i>
-                        {{issue.title}}
+                        {{issue.title}} text-{{parentId}}
                     </span>
                     <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
                         <span class="font-italic small ">{{issue.status}}</span>
@@ -22,7 +22,7 @@
     </div>
 
     <div id="issueCollapse{{$index}}" class="collapse " ng-class="{show: $index == -1}" aria-labelledby="heading{{$index}}"
-        data-parent="#issueAccordion">
+        data-parent="{{'#' + parentId}}">
         <div class="card-body">
             <p>{{issue.details}}</p>
             <p class="text-light">{{issue.posterName}}</p>
