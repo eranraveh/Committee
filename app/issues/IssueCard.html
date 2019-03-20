@@ -2,8 +2,9 @@
     <div class="card-header" id="heading{{$index}}">
         <h5 class="mb-0">
             <button class="btn btn-link w-100 text-left px-0" data-toggle="collapse" data-target="#{{parentId}}Collapse{{$index}}"
-                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onIssueOpen(issue,$index, parentId)" ng-class="{'font-weight-bolder': issue.wasRead == false, 'font-weight-light': issue.wasRead }">
-                <div class="row mx-0">
+                aria-expanded="true" aria-controls="collapse{{$index}}" ng-click="onIssueOpen(issue,$index, parentId)"
+                ng-class="{'font-weight-bolder': issue.wasRead == false, 'font-weight-light': issue.wasRead }">
+                <div class="row mx-0" ng-show="!isDashboard">
                     <span class="col-sm-8 col-md-9 col-lg-10">
                         <i class="fas fa-fw fa-exclamation text-danger mr-1" ng-show="issue.priority == '1'"
                             data-toggle="tooltip" title="Urgent" tooltip></i><i class="fas fa-fw fa-lightbulb text-warning mr-1"
@@ -13,6 +14,20 @@
                         {{issue.title}}
                     </span>
                     <div class="row col-sm-4 col-md-3 col-lg-2 justify-content-between pl-3 mx-0 pr-0">
+                        <span class="font-italic small " ng-class="{'color-coral': issue.status == 'New'}">{{issue.status}}</span>
+                        <span class="">{{issue.postingDate | myDate}}</span>
+                    </div>
+                </div>
+                <div class="mx-0" ng-show="isDashboard">
+                    <span class="col-sm-8 col-md-9 col-lg-10">
+                        <i class="fas fa-fw fa-exclamation text-danger mr-1" ng-show="issue.priority == '1'"
+                            data-toggle="tooltip" title="Urgent" tooltip></i><i class="fas fa-fw fa-lightbulb text-warning mr-1"
+                            ng-show="issue.priority == '2'" data-toggle="tooltip" title="Important" tooltip></i><i
+                            class="fas fa-fw fa-arrow-down text-primary mr-1" ng-show="issue.priority == '3'"
+                            data-toggle="tooltip" title="Normal" tooltip></i><i class="fas fa-envelope{{issue.wasRead ? '-open':''}} mr-2"></i>
+                        {{issue.title}}
+                    </span>
+                    <div class="row justify-content-between pl-3 mx-0 pr-0">
                         <span class="font-italic small " ng-class="{'color-coral': issue.status == 'New'}">{{issue.status}}</span>
                         <span class="">{{issue.postingDate | myDate}}</span>
                     </div>

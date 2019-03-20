@@ -1,4 +1,4 @@
-committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, pollsSrv, $timeout) {
+committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, pollsSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -146,20 +146,28 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
 
     }
 
-    $scope.isOpen = [];
+    var isOpenPoll = [];
+    $scope.isOpen = function (poll) {
+        var ix = $scope.polls.indexOf(poll)
+        if (isOpenPoll[ix] == undefined)
+            isOpenPoll[ix] = false;
+
+        return isOpenPoll[ix];
+    }
+
     var prevPollIx = -1;
     $scope.onPollOpen = function (poll) {
         var ix = $scope.polls.indexOf(poll);
-        if ($scope.isOpen[ix] == undefined)
-            $scope.isOpen[ix] = false;
-        $scope.isOpen[ix] = !$scope.isOpen[ix];
+        // if (isOpenPoll[ix] == undefined)
+        //     isOpenPoll[ix] = false;
+        isOpenPoll[ix] = !isOpenPoll[ix];
 
         if (prevPollIx > -1 && prevPollIx != ix)
-            $scope.isOpen[prevPollIx] = false;
+            isOpenPoll[prevPollIx] = false;
         prevPollIx = ix;
     }
 
-    $scope.onVote = function (poll, answer, event) {
+    $scope.onVote = function (poll, answer) {
         // add vote to db
         var currentUser = userSrv.getActiveUser();
         var optionIx = poll.options.indexOf(answer.optionText);

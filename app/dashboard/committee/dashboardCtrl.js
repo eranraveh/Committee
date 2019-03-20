@@ -1,4 +1,4 @@
-committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $controller, userSrv, messagesSrv, issuesSrv, issueCommentsSrv) {
+committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, userSrv, issuesSrv, issueCommentsSrv, pollsSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -19,6 +19,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
 
     // descending order
     $scope.issuesSort = "-postingDate";
+    $scope.pollsSort = "dueDate";
 
     function loadData() {
         $scope.issues = [];
@@ -32,11 +33,21 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
         }).catch((err) => {
             console.error(err);
         });
+
+        $scope.openPolls = [];
+        pollsSrv.getPolls().then((polls) => {
+            $scope.openPolls = polls.filter(poll => poll.isActive);
+
+        }).catch((err) => {
+            console.error(err);
+        });
     }
 
-    // from issuesCtrl :
     loadData();
 
+    // =============================================
+    // issues code - start
+    // =============================================
     $scope.newComment = [];
     $scope.onIssueOpen = function (issue, index, parent) {
         $scope.newComment[index] = "";
@@ -99,118 +110,73 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
     }
 
 
-    $scope.isCommitteeMember = function () {
-        return userSrv.isCommitteeMember();
-    }
+    // $scope.isCommitteeMember = function () {
+    //     return userSrv.isCommitteeMember();
+    // }
 
     $scope.canEditIssue = function () {
         return false;
     }
+    // =============================================
+    // issues code - end
+    // =============================================
 
+
+    // =============================================
+    // polls code - start
+    // =============================================
+    $scope.endPoll = function (poll) {
+        var promise = pollsSrv.updatePoll(new Date(), poll);
+
+        promise.then((poll) => {}, (error) => {
+            alert("Posting poll failed");
+        });
+
+    }
+
+
+
+    $scope.getIndex = function (poll) {
+        return $scope.openPolls.indexOf(poll);
+    }
+    // hide edit button on dashboard
+    $scope.isDashboard = true;
+
+    var isOpenPoll = [];
+    $scope.isOpen = function (poll) {
+        var ix = $scope.openPolls.indexOf(poll)
+        if (isOpenPoll[ix] == undefined)
+            isOpenPoll[ix] = false;
+
+        return isOpenPoll[ix];
+    }
+
+    var prevPollIx = -1;
+    $scope.onPollOpen = function (poll) {
+        var ix = $scope.openPolls.indexOf(poll);
+        // if (isOpenPoll[ix] == undefined)
+        //     isOpenPoll[ix] = false;
+        isOpenPoll[ix] = !isOpenPoll[ix];
+
+        if (prevPollIx > -1 && prevPollIx != ix)
+            isOpenPoll[prevPollIx] = false;
+        prevPollIx = ix;
+    }
+
+    $scope.onVote = function (poll, answer) {
+        // add vote to db
+        var currentUser = userSrv.getActiveUser();
+        var optionIx = poll.options.indexOf(answer.optionText);
+        poll.votes[optionIx].optionVoters.push(currentUser.id)
+
+        pollsSrv.addVote(poll).then(() => {
+
+        }, (error) => {
+
+        });
+    }
+
+    // =============================================
+    // polls code - end
+    // =============================================
 });
-
-
-
-//=================================================================
-
-
-
-// function DashboardCommitteeCtrl($scope, $location, userSrv, messagesSrv, issuesSrv, issueCommentsSrv) {
-//     IssuesCtrl.call(this, $scope, $location, userSrv, issuesSrv, issueCommentsSrv);
-
-//     if (!userSrv.isLoggedIn()) {
-//         $location.path("/");
-//         return;
-//     }
-
-// $controller("issuesCtrl", {
-//     $scope: $scope
-// });
-//     const issueStatus = {
-//         NEW: "New",
-//         IN_PROGRESS: "In progress",
-//         CLOSE: "Closed"
-//     }
-//     const issueUrgency = {
-//         URGENT: "1",
-//         IMPORTANT: "2",
-//         NORMAL: "3"
-//     }
-
-
-//     // descending order
-//     $scope.issuesSort = "-postingDate";
-
-//     $scope.issues = [];
-
-//     // function loadData() {
-//     //     issuesSrv.getIssues().then((issues) => {
-//     //         $scope.newIssues = issues.filter(issue => !issue.wasRead);
-
-//     //         var oneWeekAgo = new Date();
-//     //         oneWeekAgo.setDate(oneWeekAgo.getDate() - 2);
-//     //         $scope.weekOldIssues = issues.filter(issue => issue.status != issueStatus.CLOSE && issue.postingDate < oneWeekAgo);
-
-//     //     }).catch((err) => {
-//     //         console.error(err);
-//     //     });
-//     // }
-
-// }
-// DashboardCommitteeCtrl.prototype = Object.create(IssuesCtrl.prototype);
-// DashboardCommitteeCtrl.prototype.loadData = function () {
-//     issuesSrv.getIssues().then((issues) => {
-//         $scope.newIssues = issues.filter(issue => !issue.wasRead);
-
-//         var oneWeekAgo = new Date();
-//         oneWeekAgo.setDate(oneWeekAgo.getDate() - 2);
-//         $scope.weekOldIssues = issues.filter(issue => issue.status != issueStatus.CLOSE && issue.postingDate < oneWeekAgo);
-
-//     }).catch((err) => {
-//         console.error(err);
-//     });
-//     //     this.commonMethod1();
-// };
-
-// committeeApp.controller("dashboardCommitteeCtrl", DashboardCommitteeCtrl);
-
-
-
-// ==================================================
-
-
-// committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, userSrv, messagesSrv, issuesSrv) {
-
-//     if (!userSrv.isLoggedIn()) {
-//         $location.path("/");
-//         return;
-//     }
-
-//     const issueStatus = {
-//         NEW: "New",
-//         IN_PROGRESS: "In progress",
-//         CLOSE: "Closed"
-//     }
-//     const issueUrgency = {
-//         URGENT: "1",
-//         IMPORTANT: "2",
-//         NORMAL: "3"
-//     }
-
-
-//     // descending order
-//     $scope.issuesSort = "-postingDate";
-
-//     $scope.issues = [];
-//     issuesSrv.getIssues().then((issues) => {
-//         $scope.newIssues = issues.filter(issue => !issue.wasRead);
-
-//         var oneWeekAgo = new Date();
-//         oneWeekAgo.setDate(oneWeekAgo.getDate() - 2);
-//         $scope.weekOldIssues = issues.filter(issue => issue.status != issueStatus.CLOSE && issue.postingDate < oneWeekAgo);
-
-//     }).catch((err) => {
-//         console.error(err);
-//     });
-
-// });

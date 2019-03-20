@@ -14,7 +14,7 @@
 
 todo
 =====
-2. dashboard
+2. dashboard - tenant
 
 
 optional
@@ -24,6 +24,9 @@ optional
 3. optional - user update his details
 4. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
 5. update other users details
+6. fixed top nav
+7. dashboard- controler within controller
+8. on closing poll, create new message
 
 spec Changes and assumptions
 =============================

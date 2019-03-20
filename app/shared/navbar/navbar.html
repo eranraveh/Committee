@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    
+
     <button class="btn btn-link navbar-brand iCommittee " ng-click="navigate()">
         <img class="rounded-circle " id="brand" src="/assets/images/Infrastructure-Committee.jpg" /> iCommittee</button>
     <!-- <a class="navbar-brand iCommittee " href="/">
@@ -13,6 +13,9 @@
             <!-- <li class="dropdown" ng-show="isCommitteeMember()">
                 <a class="dropdown-toggle" href="#!/myCommittee/users" data-toggle="dropdown">Tenants</a>
             </li> -->
+            <li class="nav-item" >
+                <a class="nav-link" href="#!/myCommittee/dashboard/{{isCommitteeMember()? 'committee' : 'tenant'}}">Dashboard</a>
+            </li>
             <li class="nav-item" ng-show="isCommitteeMember()">
                 <a class="nav-link" href="#!/myCommittee/tenants">Tenants</a>
             </li>
