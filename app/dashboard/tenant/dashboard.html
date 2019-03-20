@@ -1,0 +1,39 @@
+<div class="container dashboard">
+        <div class="jumbotron jumbotron-fluid">
+<Accordion 
+
+
+
+            <div class="container">
+                <h1 class="display-3 text-center">My Dashboard</h1>
+                <div class="container pb-5 row">
+                    <!-- new issues -->
+                    <div class="col-sm-6 col-md-5 col-lg-4 p-1">
+                        <hr class="my-2">
+                        <h4 class="text-center">New issues</h4>
+                        <div id="newIssueAccordion" class="">
+                            <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort" parent-id="newIssueAccordion"></issue-card>
+                        </div>
+                    </div>
+    
+                    <!-- new issues -->
+                    <div class="col-sm-6 col-md-5 col-lg-4 p-1 ">
+                        <hr class="my-2">
+                        <h4 class="text-center">New resolved issues</h4>
+                        <div id="oldIssueAccordion" class="mx-2">
+                            <issue-card ng-repeat="issue in resolvedIssues | orderBy : issuesSort" parent-id="oldIssueAccordion"></issue-card>
+                        </div>
+                    </div>
+    
+                    <!-- open votes -->
+                    <div class="col-sm-6 col-md-5 col-lg-4 p-1">
+                        <hr class="my-2">
+                        <h4 class="text-center">Open votes</h4>
+                        <div id="pollsAccordion" class="">
+                            <poll ng-repeat="poll in openPolls | orderBy : pollsSort"></poll>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
