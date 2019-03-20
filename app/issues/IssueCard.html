@@ -27,7 +27,7 @@
                             data-toggle="tooltip" title="Normal" tooltip></i><i class="fas fa-envelope{{issue.wasRead ? '-open':''}} mr-2"></i>
                         {{issue.title}}
                     </span>
-                    <div class="row justify-content-between pl-3 mx-0 pr-0">
+                    <div class="row justify-content-between pl-3 mx-0 pr-0 small">
                         <span class="font-italic small " ng-class="{'color-coral': issue.status == 'New'}">{{issue.status}}</span>
                         <span class="">{{issue.postingDate | myDate}}</span>
                     </div>

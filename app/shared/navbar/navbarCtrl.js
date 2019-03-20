@@ -38,4 +38,25 @@ committeeApp.controller("navbarCtrl", function ($scope, userSrv, $location) {
             $location.path("/");
         }
     }
+
+    $scope.isOnDashboard = function () {
+        return $location.path().startsWith("/myCommittee/dashboard/");
+    }
+
+    $scope.isOnTenants = function () {
+        return $location.path().startsWith("/myCommittee/tenants");
+    }
+
+    $scope.isOnMessages = function () {
+        return $location.path().startsWith("/myCommittee/messages");
+    }
+
+    $scope.isOnIssues = function () {
+        return $location.path().startsWith("/myCommittee/issues");
+    }
+
+    $scope.isOnPolls = function () {
+        return $location.path().startsWith("/myCommittee/polls");
+    }
+
 })
