@@ -38,9 +38,9 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
     loadData();
 
     $scope.newComment = [];
-    $scope.onIssueOpen = function (issue, index) {
+    $scope.onIssueOpen = function (issue, index, parent) {
         $scope.newComment[index] = "";
-        $('#issueCollapseComment' + index).collapse("hide");
+        $('#' + parent + 'CollapseComment' + index).collapse("hide");
 
         if (!issue.wasRead) {
             var addIssuePromise = userSrv.addOpenedIssues(issue.parseIssue.id);
@@ -82,7 +82,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
 
     }
 
-    $scope.postComment = function (index, issue) {
+    $scope.postComment = function (index, issue, parent) {
         var text = $scope.newComment[index];
         if (!text) {
             alert("Enter a comment text");
@@ -92,7 +92,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, $
         issueCommentsSrv.createComment(text, issue).then((comment) => {
             issue.commentsObject.comments.unshift(comment);
             $scope.newComment[index] = "";
-            $('#issueCollapseComment' + index).collapse("hide");
+            $('#' + parent + 'CollapseComment' + index).collapse("hide");
         }, (error) => {
             alert("Failed post comment to server. Please try again");
         });

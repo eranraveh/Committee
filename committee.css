@@ -69,6 +69,9 @@ body {
 .card {
     border-color: rgba(0, 0, 0, 1)
 }
+.dashboard .card {
+    border-color: inherit;
+}
 
 .fa-exclamation {
     color: coral;
@@ -99,6 +102,10 @@ body {
 .btn-trash:hover,
 .btn-new:hover,
 .btn-end-poll:hover {
+    color: coral !important;
+}
+
+.color-coral {
     color: coral !important;
 }
 
