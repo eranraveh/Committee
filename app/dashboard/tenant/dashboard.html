@@ -41,7 +41,7 @@
                     <h4 class="text-center">Active polls</h4>
                     <div id="openPollsAccordion" class="">
                         <!-- <poll ng-repeat="poll in openPolls  | filter : openPollQueryFilter | orderBy : pollsSort"></poll> -->
-                        <poll ng-repeat="poll in openPolls | orderBy : pollsSort" parent-id="openPollsAccordion"></poll>
+                        <poll ng-repeat="poll in openPolls | orderBy : pollsSort | limitTo: 5" parent-id="openPollsAccordion"></poll>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                     <h4 class="text-center">Closed polls</h4>
                     <div id="closedPollsAccordion" class="">
                         <!-- <poll ng-repeat="poll in closedPolls | filter : closedPollQueryFilter  | orderBy : pollsSort"></poll> -->
-                        <poll ng-repeat="poll in closedPolls | orderBy : pollsSort" parent-id="closedPollsAccordion"></poll>
+                        <poll ng-repeat="poll in closedPolls | orderBy : pollsSort | limitTo: 5" parent-id="closedPollsAccordion"></poll>
                     </div>
                 </div>
 

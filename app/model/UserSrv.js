@@ -146,7 +146,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(Parse.User.current(), null, null, null, null, issueId);
     }
 
-    function addSeenPoll(issueId) {
+    function addSeenPoll(pollId) {
         return updateUser(Parse.User.current(), null, null, null, null, pollId);
     }
 

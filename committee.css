@@ -29,6 +29,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+
+    padding-top: 80px; 
     /* color: rgba(255, 255, 255, 0.5) !important; */
 }
 
@@ -315,4 +317,16 @@ table {
 
 .w-0 {
     width: 0% !important;
+}
+
+.dashboard .card-header button:first-of-type {
+    padding: 0 0.75rem
+}
+
+.dashboard .card-header {
+    padding: 0 0.25rem;
+}
+
+.dashboard .jumbotron {
+    padding: 0 2rem;
 }

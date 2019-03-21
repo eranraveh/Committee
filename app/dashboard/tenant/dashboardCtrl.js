@@ -150,6 +150,21 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
         if (prevPollIx[parent] != null && prevPollIx[parent] != poll.parsePoll.id)
             isOpenPoll[parent][prevPollIx[parent]] = false;
         prevPollIx[parent] = poll.parsePoll.id;
+
+        if (poll.isActive || poll.sawResult) {
+            return
+        }
+
+        // set poll as result been see by the user
+        var addPollPromise = userSrv.addSeenPoll(poll.parsePoll.id);
+        addPollPromise.then(wasAdded => {
+            // if the unread filter is on, the Poll will disapear when open it
+            if (wasAdded) {
+                poll.sawResult = true;
+            }
+        }, error => {
+
+        });
     }
 
     // var isOpenPoll = {};
