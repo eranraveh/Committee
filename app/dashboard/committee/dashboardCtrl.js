@@ -79,7 +79,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         }
     }
 
-    $scope.postComment = function (index, issue, parent) {
+    $scope.postIssueComment = function (index, issue, parent) {
         var text = $scope.newComment[index];
         if (!text) {
             alert("Enter a comment text");
@@ -122,23 +122,26 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
     // hide edit button on dashboard
     $scope.isDashboard = true;
 
-    var isOpenPoll = [];
-    $scope.isOpen = function (poll) {
-        var ix = $scope.openPolls.indexOf(poll)
-        if (isOpenPoll[ix] == undefined)
-            isOpenPoll[ix] = false;
+    // this is not an array because user might add new item and then the inxeding might change
+    var isOpenPoll = {};
+    $scope.isOpen = function (poll, parent) {
+        if (!isOpenPoll.hasOwnProperty(parent))
+            isOpenPoll[parent] = {};
+        if (!isOpenPoll[parent].hasOwnProperty(poll.parsePoll.id))
+            isOpenPoll[parent][poll.parsePoll.id] = false;
 
-        return isOpenPoll[ix];
+        return isOpenPoll[parent][poll.parsePoll.id];
     }
+    var prevPollIx = {};
+    $scope.onPollOpen = function (poll, parent) {
+        if (!prevPollIx.hasOwnProperty(parent))
+            prevPollIx[parent] = null;
 
-    var prevPollIx = -1;
-    $scope.onPollOpen = function (poll) {
-        var ix = $scope.openPolls.indexOf(poll);
-        isOpenPoll[ix] = !isOpenPoll[ix];
+        isOpenPoll[parent][poll.parsePoll.id] = !isOpenPoll[parent][poll.parsePoll.id];
 
-        if (prevPollIx > -1 && prevPollIx != ix)
-            isOpenPoll[prevPollIx] = false;
-        prevPollIx = ix;
+        if (prevPollIx[parent] != null && prevPollIx[parent] != poll.parsePoll.id)
+            isOpenPoll[parent][prevPollIx[parent]] = false;
+        prevPollIx[parent] = poll.parsePoll.id;
     }
 
     $scope.onVote = function (poll, answer) {

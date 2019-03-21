@@ -34,7 +34,7 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
                 // show only done polls
                 (!$scope.isEnded || !poll.isActive) &&
                 // show only unvoted poll
-                (!$scope.isUnvoted || !poll.wasVoted)) {
+                (!$scope.isUnvoted || !poll.wasVoted || (votedPoll != null && votedPoll == poll))) {
                 isPollUnvoted(poll);
                 return true;
             } else {
@@ -47,7 +47,7 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
             // show only done polls
             (!$scope.isEnded || !poll.isActive) &&
             // show only unvoted poll
-            (!$scope.isUnvoted || !poll.wasVoted)) {
+            (!$scope.isUnvoted || !poll.wasVoted || (votedPoll != null && votedPoll == poll))) {
             isPollUnvoted(poll);
             return true;
         } else {
@@ -146,26 +146,68 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
 
     }
 
-    var isOpenPoll = [];
-    $scope.isOpen = function (poll) {
-        var ix = $scope.polls.indexOf(poll)
-        if (isOpenPoll[ix] == undefined)
-            isOpenPoll[ix] = false;
+    // this is not an array because user might add new item and then the inxeding might change
+    var isOpenPoll = {};
+    $scope.isOpen = function (poll, parent) {
+        if (!isOpenPoll.hasOwnProperty(parent))
+            isOpenPoll[parent] = {};
+        if (!isOpenPoll[parent].hasOwnProperty(poll.parsePoll.id))
+            isOpenPoll[parent][poll.parsePoll.id] = false;
 
-        return isOpenPoll[ix];
+        return isOpenPoll[parent][poll.parsePoll.id];
     }
 
-    var prevPollIx = -1;
-    $scope.onPollOpen = function (poll) {
-        var ix = $scope.polls.indexOf(poll);
-        isOpenPoll[ix] = !isOpenPoll[ix];
+    var prevPollIx = {};
+    $scope.onPollOpen = function (poll, parent) {
+        // setting the directive trigger for openning poll card to start animation if necessary
+        if (!prevPollIx.hasOwnProperty(parent))
+            prevPollIx[parent] = null;
 
-        if (prevPollIx > -1 && prevPollIx != ix)
-            isOpenPoll[prevPollIx] = false;
-        prevPollIx = ix;
+        isOpenPoll[parent][poll.parsePoll.id] = !isOpenPoll[parent][poll.parsePoll.id];
+
+        if (prevPollIx[parent] != null && prevPollIx[parent] != poll.parsePoll.id)
+            isOpenPoll[parent][prevPollIx[parent]] = false;
+        prevPollIx[parent] = poll.parsePoll.id;
+
+        if (poll.isActive || poll.sawResult) {
+            return
+        }
+
+        // set poll as result been see by the user
+        var addPollPromise = userSrv.addSeenPoll(poll.parsePoll.id);
+        addPollPromise.then(wasAdded => {
+            // if the unread filter is on, the Poll will disapear when open it
+            if (wasAdded) {
+                poll.sawResult = true;
+            }
+        }, error => {
+
+        });
     }
 
+    // var isOpenPoll = [];
+    // $scope.isOpen = function (poll) {
+    //     var ix = $scope.polls.indexOf(poll)
+    //     if (isOpenPoll[ix] == undefined)
+    //         isOpenPoll[ix] = false;
+
+    //     return isOpenPoll[ix];
+    // }
+
+    // var prevPollIx = -1;
+    // $scope.onPollOpen = function (poll) {
+    //     var ix = $scope.polls.indexOf(poll);
+    //     isOpenPoll[ix] = !isOpenPoll[ix];
+
+    //     if (prevPollIx > -1 && prevPollIx != ix)
+    //         isOpenPoll[prevPollIx] = false;
+    //     prevPollIx = ix;
+    // }
+
+    var votedPoll = null;
     $scope.onVote = function (poll, answer) {
+        votedPoll = poll;
+
         // add vote to db
         var currentUser = userSrv.getActiveUser();
         var optionIx = poll.options.indexOf(answer.optionText);

@@ -28,7 +28,7 @@
                     <hr class="my-2">
                     <h4 class="text-center">Open polls</h4>
                     <div id="pollsAccordion" class="">
-                        <poll ng-repeat="poll in openPolls | filter : openPollQueryFilter | orderBy : pollsSort | limitTo: 5"
+                        <poll ng-repeat="poll in openPolls | orderBy : pollsSort | limitTo: 5"
                             parent-id="pollsAccordion"></poll>
                     </div>
                 </div>

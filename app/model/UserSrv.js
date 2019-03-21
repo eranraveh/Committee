@@ -146,6 +146,10 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(Parse.User.current(), null, null, null, null, issueId);
     }
 
+    function addSeenPoll(issueId) {
+        return updateUser(Parse.User.current(), null, null, null, null, pollId);
+    }
+
     function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null) {
         var async = $q.defer();
 
@@ -225,6 +229,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         getActiveUserCommitteeId: getActiveUserCommitteeId,
         addOpenedMessages: addOpenedMessages,
         addOpenedIssues: addOpenedIssues,
+        addSeenPoll: addSeenPoll,
         isCommitteeMember: isCommitteeMember,
         GetUsername: GetUsername
     }

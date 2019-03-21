@@ -32,7 +32,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             // show only important message
             if ((!$scope.importance || message.priority === "1") &&
                 // show only unread message
-                (!$scope.unread || !message.wasRead)) {
+                (!$scope.unread || !message.wasRead || (openReadMsg != null && openReadMsg == message))) {
                 isMessageUnread(message);
                 return true;
             } else {
@@ -43,7 +43,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             // show only important message
             (!$scope.importance || message.priority === "1") &&
             // show only unread message
-            (!$scope.unread || !message.wasRead)) {
+            (!$scope.unread || !message.wasRead || (openReadMsg != null && openReadMsg == message))) {
             isMessageUnread(message);
             return true;
         } else {
@@ -60,6 +60,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         return unread;
     };
 
+    var openReadMsg = null;
+    var prevMsg = null;
     $scope.onMessageOpen = function (message, index, parent) {
         $scope.newComment[index] = "";
         $('#' + parent + 'CollapseComment' + index).collapse("hide");
@@ -67,9 +69,18 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         if (!message.wasRead) {
             var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
             addMessagePromise.then(wasAdded => {
-                // if the unread filter is on, the issue will disapear when open it
-                if (wasAdded && !$scope.unread) {
+                // if the unread filter is on, the msg will disapear when open it
+                if (wasAdded) {
                     message.wasRead = true;
+
+                    if (prevMsg != message) {
+                        openReadMsg = message;
+
+                        prevMsg = message;
+                    } else {
+                        openReadMsg = null;
+                        prevMsg = null;
+                    }
                 }
             }, error => {
 
@@ -170,7 +181,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
 
     }
 
-    $scope.postComment = function (index, message, parent) {
+    $scope.postMsgComment = function (index, message, parent) {
         var text = $scope.newComment[index];
         if (!text) {
             alert("Enter a comment text");

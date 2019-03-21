@@ -14,11 +14,7 @@
 
 todo
 =====
-2. dashboard - tenant
-3. vote from dashboard
 4. mark that user saw the final poll result
-5. update closed issue.....
-6. postComment dashBoard issues and messages methods
 
 
 optional
@@ -31,6 +27,8 @@ optional
 6. fixed top nav
 7. dashboard- controler within controller
 8. on closing poll, create new message
+9. dashboard - there are x more polls/issues/messages
+
 
 spec Changes and assumptions
 =============================

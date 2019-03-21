@@ -1,6 +1,6 @@
 <div class="poll-answer-container with-text">
     <!-- disable click if user voted on this poll, or poll is ended!!!! -->
-    <button class="classic light " ng-click="vote({poll:pollData, answer:pollAnswerData})" ng-class="{'poll-voted':showResult, 'selected':isSelectedAnswer}">
+    <button class="classic light " ng-click="pollData.wasVoted || vote({poll:pollData, answer:pollAnswerData})" ng-class="{'poll-voted':showResult, 'selected':isSelectedAnswer}">
         <div class="text">{{pollAnswerData.optionText}}</div>
 
         <div class="poll-result show">

@@ -54,7 +54,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
             // show only important issue
             if ((!$scope.importance || issue.priority === issueUrgency.URGENT) &&
                 // show only unread issue
-                (!$scope.unread || !issue.wasRead) &&
+                (!$scope.unread || !issue.wasRead || (openReadIssue != null && openReadIssue == issue)) &&
                 // show only my issue
                 (!$scope.myIssues || issue.isMyIssue)) {
                 checkIssueCounters(issue);
@@ -66,6 +66,8 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
                 issue.details.toLowerCase().includes($scope.query.toLowerCase())) &&
             // show only important issue
             (!$scope.importance || issue.priority === issueUrgency.URGENT) &&
+            // show only unread issue
+            (!$scope.unread || !issue.wasRead || (openReadIssue != null && openReadIssue == issue)) &&
             // show only unread issue
             (!$scope.unread || !issue.isMyIssue)) {
             checkIssueCounters(issue);
@@ -102,8 +104,8 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         return myIssues;
     };
 
-    // var issueWasRead = {};
-    // var prevIssue = null;
+    var openReadIssue = null;
+    var prevIssue = null;
     $scope.onIssueOpen = function (issue, index, parent) {
 
         $scope.newComment[index] = "";
@@ -114,11 +116,17 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
             addIssuePromise.then(wasAdded => {
 
                 // if the unread filter is on, the issue will disapear when open it
-                if (wasAdded && !$scope.unread) {
+                if (wasAdded) {
                     issue.wasRead = true;
 
+                    if (prevIssue != issue) {
+                        openReadIssue = issue;
 
-                    // issueWasRead[issue.parseIssue.id] = true;
+                        prevIssue = issue;
+                    } else {
+                        openReadIssue = null;
+                        prevIssue = null;
+                    }
                 }
             }, error => {
 
@@ -135,15 +143,6 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
             });
         }
 
-        // if (prevIssue != issue) {
-        //     if (prevIssue != null)
-        //         prevIssue.wasRead = issueWasRead[prevIssue.parseIssue.id];
-
-        //     prevIssue = issue;
-        // } else {
-        //     prevIssue.wasRead = issueWasRead[prevIssue.parseIssue.id];
-        //     prevIssue = null;
-        // }
     }
 
     $scope.editIssue = function (issue) {
@@ -238,7 +237,7 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
 
     }
 
-    $scope.postComment = function (index, issue, parent) {
+    $scope.postIssueComment = function (index, issue, parent) {
         var text = $scope.newComment[index];
         if (!text) {
             alert("Enter a comment text");
