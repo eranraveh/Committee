@@ -14,11 +14,12 @@
 
 todo
 =====
+1. dbl clik on poll card
 
 optional
 =========
 1. optional - improve signup messages with angularjs, password validity/strength
-2. optional - email verification, password reset
+2. optional - email verification
 4. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
 10. reactivate users
 7. dashboard- controler within controller

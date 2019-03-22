@@ -9,8 +9,6 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
 
     $scope.login = function () {
         userSrv.login($scope.username, $scope.pwd).then(function (user) {
-                $("#loginForm").modal("hide");
-
                 if (userSrv.isCommitteeMember()) {
                     $location.path("/myCommittee/dashboard/committee");
                 } else {
@@ -21,9 +19,5 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
                 $scope.invalidLogin = true;
                 alert(error.message);
             });
-    }
-
-    $scope.onSignup = function () {
-        $("#loginForm").modal("hide");
     }
 })

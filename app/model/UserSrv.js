@@ -223,6 +223,15 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return async.promise;
     }
 
+    function resetPassword(email) {
+        return Parse.User.requestPasswordReset(email);
+        // .then(() => {
+        //     // Password reset request was sent successfully
+        //     console.log('Reset password email sent successfully');
+        //   }).catch((error) => {
+        //     console.error('Error while creating request to reset user password', error);
+        //   })
+    }
     function deleteUser(user) {
         return updateUser(user.parseUser, null, null, null, null, null, false);
     }
@@ -253,6 +262,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         getUsers: getUsers,
         deleteUser: deleteUser,
         isLoggedIn: isLoggedIn,
+        resetPassword:resetPassword,
         logout: logout,
         getActiveUser: getActiveUser,
         getActiveUserCommitteeId: getActiveUserCommitteeId,

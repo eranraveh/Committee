@@ -55,10 +55,6 @@ body {
     z-index: -1;
 }
 
-.modal-body>#signup {
-    width: 100%;
-}
-
 .myNavbar {
     color: rgba(255, 255, 255, .5) !important;
 }
@@ -125,7 +121,7 @@ body {
     background-color: black !important;
 }
 
-#signupForm {
+#signupForm, #loginForm, #resetForm {
     background-color: rgba(0, 0, 0, 0.6) !important;
     border-radius: 3rem !important;
 
