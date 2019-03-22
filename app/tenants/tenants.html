@@ -55,7 +55,7 @@
                     </td>
                     <td class="col-2">{{tenant.name}}</td>
                     <td class="col-1">{{tenant.apartment}}</td>
-                    <td class="col-3">{{tenant.email}}</td>
+                    <td class="col-3"><a href="mailto:{{tenant.email}}">{{tenant.email}}</a></td>
                     <td class="col-4">{{tenant.username}}
                     <!-- <td class="col-2 "> -->
                         <button class="btn text-primary m-0 p-1 btn-edit float-right" data-toggle="tooltip" title="Edit user"
@@ -100,7 +100,7 @@
                     </div>
 
                     <!-- Password -->
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
                         <div class="col-sm-8 ">
                             <input id="password-field1" type="password" class="form-control" ng-model="newTenant.password"
@@ -110,7 +110,7 @@
                             <small>Password must contain a capital letter, lowercase letter, a number and be at least 8
                                 characters long.</small>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- email -->
                     <div class="form-group row">

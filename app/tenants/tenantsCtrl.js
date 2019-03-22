@@ -49,6 +49,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
 
     function resetForm() {
         $scope.newTenant = {
+            username: null,
             name: null,
             password: null,
             email: null,
@@ -60,11 +61,12 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         if ($scope.newTenantForm.$invalid)
             return false;
 
+        var email = $scope.newTenant.email.toLowerCase();
         var promise;
         if ($scope.editMode)
-            promise = user.updateUser(editedUser, $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember, null, null, null, $scope.newTenant.password);
+            promise = userSrv.updateUser(editedUser, email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember, null, null, null, null);
         else
-            promise = userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
+            promise = userSrv.addUser("", email, toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), "a1a1a1A1", $scope.newTenant.isCommitteeMember)
 
         promise.then((user) => {
             // remove "old" user
@@ -76,6 +78,8 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
 
             // add new/updated user
             $scope.users.unshift(user);
+
+            userSrv.resetPassword(email);
 
             resetForm();
 
@@ -89,7 +93,8 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         $scope.newTenant = {
             username: user.username,
             name: user.name,
-            password: user.password,
+            email: user.email,
+            password: null,
             apt: user.apartment,
             isCommitteeMember: user.isCommitteeMember
         };
@@ -114,20 +119,20 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         return shownUsers;
     }
 
-    $(".toggle-password").click(function () {
+    // $(".toggle-password").click(function () {
 
-        // switch the eye <--> eye-slash
-        $(this).toggleClass("fa-eye fa-eye-slash");
-        // can the field the eye is toggling
-        var input = $($(this).attr("toggle"));
+    //     // switch the eye <--> eye-slash
+    //     $(this).toggleClass("fa-eye fa-eye-slash");
+    //     // can the field the eye is toggling
+    //     var input = $($(this).attr("toggle"));
 
-        // toggle the type attr   password <--> text
-        if (input.attr("type") == "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-    });
+    //     // toggle the type attr   password <--> text
+    //     if (input.attr("type") == "password") {
+    //         input.attr("type", "text");
+    //     } else {
+    //         input.attr("type", "password");
+    //     }
+    // });
 
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {

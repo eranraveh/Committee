@@ -191,6 +191,10 @@ table {
     background-color: rgba(200, 200, 200, 0.2) !important;
 }
 
+.tenants-table th {
+    cursor: pointer;
+}
+
 
 
 
@@ -329,4 +333,9 @@ table {
 .btn-link:hover{
     text-decoration: none;
     color:#17a2b8;
+}
+
+ /* forms validation */
+ input.ng-invalid.ng-dirty {
+    background-color:pink;
 }

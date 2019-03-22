@@ -29,6 +29,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
         Parse.User.logIn(email, pwd).then((user) => {
             if (!user.get("isActive")) {
+                Parse.User.logOut();
                 async.reject({
                     message: "User not in building. Contact your committee"
                 });
@@ -50,18 +51,28 @@ committeeApp.factory("userSrv", function ($q, $log) {
     function LoadUsersNames(loadOnlyNames = true) {
         var async = $q.defer();
 
-        const ParseUser = Parse.Object.extend('User');
-        const query = new Parse.Query(ParseUser);
-        query.equalTo("committeId", activeUser.committeeId);
-        query.equalTo("isActive", true);
+        if (activeUser.isCommitteeMember && !loadOnlyNames) {
+            Parse.Cloud.run("getUsers", {}).then((results) => {
+                allUsers = results.map(user => new User(user, loadOnlyNames));
+                async.resolve(allUsers);
+            }, (error) => {
+                console.error('Error while fetching User', error);
+                async.resolve([]);
+            });
+        } else {
+            const ParseUser = Parse.Object.extend('User');
+            const query = new Parse.Query(ParseUser);
+            query.equalTo("committeId", activeUser.committeeId);
+            query.equalTo("isActive", true);
 
-        query.find().then((results) => {
-            allUsers = results.map(user => new User(user, loadOnlyNames));
-            async.resolve(allUsers);
-        }, (error) => {
-            console.error('Error while fetching User', error);
-            async.resolve([]);
-        });
+            query.find().then((results) => {
+                allUsers = results.map(user => new User(user, loadOnlyNames));
+                async.resolve(allUsers);
+            }, (error) => {
+                console.error('Error while fetching User', error);
+                async.resolve([]);
+            });
+        }
 
         return async.promise;
     }
@@ -211,7 +222,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
                 if (username != null) {
                     activeUser.username = response.get('username');
-                }        
+                }
             }
 
             async.resolve(true);
@@ -232,6 +243,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         //     console.error('Error while creating request to reset user password', error);
         //   })
     }
+
     function deleteUser(user) {
         return updateUser(user.parseUser, null, null, null, null, null, false);
     }
@@ -262,7 +274,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         getUsers: getUsers,
         deleteUser: deleteUser,
         isLoggedIn: isLoggedIn,
-        resetPassword:resetPassword,
+        resetPassword: resetPassword,
         logout: logout,
         getActiveUser: getActiveUser,
         getActiveUserCommitteeId: getActiveUserCommitteeId,
