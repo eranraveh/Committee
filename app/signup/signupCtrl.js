@@ -1,7 +1,43 @@
-committeeApp.controller("signupCtrl", function ($scope, $location, userSrv, committeeSrv) {
+committeeApp.controller("signupCtrl", function ($scope, $location, $route, userSrv, committeeSrv) {
+
+    $scope.isSignup = $route.current.$$route.isSignup;
+    $scope.isSuccessSubmit = !!$route.current.$$route.isSignup;
+
+    // (is update account)
+    if (!$scope.isSignup) {
+        if (!userSrv.isLoggedIn()) {
+            $location.path("/");
+            return;
+        }
+
+        var user = userSrv.getActiveUser();
+
+        $scope.username = user.username;
+        $scope.email = user.email;
+        $scope.name = user.name;
+        $scope.apt = user.apartment;
+        $scope.password = null;
+        $scope.confirmPassword = null;
+
+    }
+
+    $scope.update = function () {
+        if (!validPassword())
+            return;
+
+        if ($scope.signupForm.$invalid)
+            return false;
+
+        $scope.isSuccessSubmit = true;
+
+        userSrv.update($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, $scope.password).then((user) => {
+            $location.path("/myCommittee/account/success");
+        }, (error) => {
+            alert(error.message)
+        });
+    }
 
     $scope.signup = function () {
-
         if (!validPassword())
             return;
 
@@ -29,13 +65,19 @@ committeeApp.controller("signupCtrl", function ($scope, $location, userSrv, comm
     }
 
     function validPassword() {
+
+        if (!$scope.isSignup && !$scope.password && !$scope.confirmPassword) {
+            return true;
+        }
+
         if ($scope.password != $scope.confirmPassword) {
             alert("Confirm Password not match");
 
             return false;
         }
 
-            // obsolite after added password pattern attr
+
+        // obsolite after added password pattern attr
         // if ($scope.password.match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/")) {
         //     alert("password not comply with restrictions");
 

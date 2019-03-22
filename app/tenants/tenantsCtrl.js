@@ -62,13 +62,13 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
 
         var promise;
         if ($scope.editMode)
-            promise = user.updateUser(editedUser, $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember);
+            promise = user.updateUser(editedUser, $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember, null, null, null, $scope.newTenant.password);
         else
-            userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
+            promise = userSrv.addUser("", $scope.newTenant.email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), $scope.newTenant.password, $scope.newTenant.isCommitteeMember)
 
         promise.then((user) => {
             // remove "old" user
-            if ($scope.editedMode) {
+            if ($scope.editMode) {
                 var reomveIndex = $scope.issues.indexOf($scope.editedUser);
                 if (reomveIndex > -1)
                     $scope.issues.splice(reomveIndex, 1);

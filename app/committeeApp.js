@@ -3,8 +3,8 @@ var committeeApp = angular.module("committeeApp", ["ngRoute", "ngAnimate", "ngTo
 // parse initialization
 Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
 Parse.initialize(
-  'uNY5Z6HLyf9TmJNS1xQgDRfbWXZUrr39kXDDcR7d', // This is your Application ID
-  'aQd9zgCmtGEXVn1kZ3rNDmsXdKGlEdfiw1rUvDNr' // This is your Javascript key
+    'uNY5Z6HLyf9TmJNS1xQgDRfbWXZUrr39kXDDcR7d', // This is your Application ID
+    'aQd9zgCmtGEXVn1kZ3rNDmsXdKGlEdfiw1rUvDNr' // This is your Javascript key
 );
 
 committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -15,7 +15,16 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
         })
         .when("/myCommittee/signup", {
             templateUrl: "/app/signup/signup.html",
-            controller: "signupCtrl"
+            controller: "signupCtrl",
+            isSignup: true
+        })
+        .when("/myCommittee/account", {
+            templateUrl: "/app/signup/signup.html",
+            controller: "signupCtrl",
+            isSignup: false
+        })
+        .when("/myCommittee/account/success", {
+            templateUrl: "/app/signup/successUpdate.html"
         })
         .when("/myCommittee/dashboard/committee", {
             templateUrl: "/app/dashboard/committee/dashboard.html",
@@ -41,9 +50,9 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
             templateUrl: "/app/polls/polls.html",
             controller: "pollsCtrl"
         })
-//         .when("/about", {
-//             templateUrl: "/app/about/about.html",
-//         })
+        //         .when("/about", {
+        //             templateUrl: "/app/about/about.html",
+        //         })
         .otherwise({
             redirectTo: "/"
         });

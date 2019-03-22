@@ -21,12 +21,11 @@ optional
 =========
 1. optional - improve signup messages with angularjs, password validity/strength
 2. optional - email verification, password reset
-3. optional - user update his details
 4. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
-5. update other users details
-7. dashboard- controler within controller
 8. on closing poll, create new message
 9. dashboard - there are x more polls/issues/messages
+10. reactivate users
+7. dashboard- controler within controller
 
 
 spec Changes and assumptions

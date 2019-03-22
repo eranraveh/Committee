@@ -83,7 +83,7 @@
         <div class="modal-content bg-dark">
 
             <div class="modal-header jumbotron">
-                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Post new tenant</h4>
+                <h4 class="modal-title w-100 text-center" ng-hide="editMode">Add new tenant</h4>
                 <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit tenant</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
@@ -104,7 +104,7 @@
                         <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
                         <div class="col-sm-8 ">
                             <input id="password-field1" type="password" class="form-control" ng-model="newTenant.password"
-                                required name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                ng-required="!editMode" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                             <i toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
                             <small>Password must contain a capital letter, lowercase letter, a number and be at least 8

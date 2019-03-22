@@ -53,6 +53,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         const ParseUser = Parse.Object.extend('User');
         const query = new Parse.Query(ParseUser);
         query.equalTo("committeId", activeUser.committeeId);
+        query.equalTo("isActive", true);
 
         query.find().then((results) => {
             allUsers = results.map(user => new User(user, loadOnlyNames));
@@ -79,6 +80,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         user.set('messagesRead', []);
         user.set('isCommitteeMember', isCommitteeMember);
         user.set('password', password);
+        user.set('isActive', true);
 
         user.signUp().then((user) => {
             // activeUser = new User(user);
@@ -110,7 +112,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         var async = $q.defer();
         signupUser(username, email, name, apt, committee, password, isCommitteeMember).then((parseUser) => {
             var user = new User(parseUser);
-            async.resolve(activeUser);
+            async.resolve(user);
         }, (error) => {
             async.reject(error);
         });
@@ -150,7 +152,11 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(Parse.User.current(), null, null, null, null, pollId);
     }
 
-    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null) {
+    function update(username, email, name, apt, password) {
+        return updateUser(Parse.User.current(), email, name, apt, null, null, null, username, password);
+    }
+
+    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
         var async = $q.defer();
 
         // const currentUser = Parse.User.current();
@@ -162,8 +168,22 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
         if (email != null) {
             parseUser.set('email', email);
+        }
+
+        if (name != null) {
             parseUser.set('name', name);
             parseUser.set('apartment', apt);
+        }
+
+        if (username != null) {
+            parseUser.set('username', username);
+        }
+
+        if (password != null) {
+            parseUser.set('password', password);
+        }
+
+        if (isCommitteeMember != null) {
             parseUser.set('isCommitteeMember', isCommitteeMember);
         }
 
@@ -181,10 +201,17 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
                 if (email != null) {
                     activeUser.email = response.get("email");
+                }
+
+                if (name != null) {
                     activeUser.name = response.get("name");
                     activeUser.apartment = response.get("apartment");
                     activeUser.isCommitteeMember = response.get("isCommitteeMember");
                 }
+
+                if (username != null) {
+                    activeUser.username = response.get('username');
+                }        
             }
 
             async.resolve(true);
@@ -220,6 +247,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
     return {
         login: login,
         signup: signup,
+        update: update,
         addUser: addUser,
         getUsers: getUsers,
         deleteUser: deleteUser,
