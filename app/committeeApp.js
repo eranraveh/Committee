@@ -13,48 +13,48 @@ committeeApp.config(['$routeProvider', '$locationProvider', function ($routeProv
             templateUrl: "app/home/home.html"
         })
         .when("/myCommittee/login", {
-            templateUrl: "/app/home/login.html",
+            templateUrl: "app/home/login.html",
             controller: "loginCtrl"
         })
         .when("/myCommittee/passwordReset", {
-            templateUrl: "/app/home/passwordReset.html",
+            templateUrl: "app/home/passwordReset.html",
             controller: "resetCtrl"
         })
         .when("/myCommittee/signup", {
-            templateUrl: "/app/signup/signup.html",
+            templateUrl: "app/signup/signup.html",
             controller: "signupCtrl",
             isSignup: true
         })
         .when("/myCommittee/account", {
-            templateUrl: "/app/signup/signup.html",
+            templateUrl: "app/signup/signup.html",
             controller: "signupCtrl",
             isSignup: false
         })
         .when("/myCommittee/account/success", {
-            templateUrl: "/app/signup/successUpdate.html"
+            templateUrl: "app/signup/successUpdate.html"
         })
         .when("/myCommittee/dashboard/committee", {
-            templateUrl: "/app/dashboard/committee/dashboard.html",
+            templateUrl: "app/dashboard/committee/dashboard.html",
             controller: "dashboardCommitteeCtrl"
         })
         .when("/myCommittee/dashboard/tenant", {
-            templateUrl: "/app/dashboard/tenant/dashboard.html",
+            templateUrl: "app/dashboard/tenant/dashboard.html",
             controller: "dashboardTenantCtrl"
         })
         .when("/myCommittee/tenants", {
-            templateUrl: "/app/tenants/tenants.html",
+            templateUrl: "app/tenants/tenants.html",
             controller: "tenantsCtrl"
         })
         .when("/myCommittee/messages", {
-            templateUrl: "/app/messages/messages.html",
+            templateUrl: "app/messages/messages.html",
             controller: "messagesCtrl"
         })
         .when("/myCommittee/issues", {
-            templateUrl: "/app/issues/issues.html",
+            templateUrl: "app/issues/issues.html",
             controller: "issuesCtrl"
         })
         .when("/myCommittee/polls", {
-            templateUrl: "/app/polls/polls.html",
+            templateUrl: "app/polls/polls.html",
             controller: "pollsCtrl"
         })
         //         .when("/about", {
