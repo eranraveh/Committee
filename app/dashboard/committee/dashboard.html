@@ -11,6 +11,7 @@
                         <!-- <issue-card ng-repeat="issue in newIssues | filter : newIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
                         <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort | limitTo: 5" parent-id="newIssueAccordion"></issue-card>
                     </div>
+                    <p class="small text-light" ng-show="newIssues.length > 5">There are {{newIssues.length - 5}} more issues</p>
                 </div>
 
                 <!-- new issues -->
@@ -21,6 +22,7 @@
                         <!-- <issue-card ng-repeat="issue in weekOldIssues | filter : openOldIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
                         <issue-card ng-repeat="issue in weekOldIssues | orderBy : issuesSort | limitTo: 5" parent-id="oldIssueAccordion"></issue-card>
                     </div>
+                    <p class="small text-light" ng-show="weekOldIssues.length > 5">There are {{weekOldIssues.length - 5}} more issues</p>
                 </div>
 
                 <!-- open polls -->
@@ -31,6 +33,7 @@
                         <poll ng-repeat="poll in openPolls | orderBy : pollsSort | limitTo: 5"
                             parent-id="pollsAccordion"></poll>
                     </div>
+                    <p class="small text-light" ng-show="openPolls.length > 5">There are {{openPolls.length - 5}} more polls</p>
                 </div>
 
                 <!-- no data      -->

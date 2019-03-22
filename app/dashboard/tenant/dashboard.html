@@ -12,6 +12,7 @@
                         <!-- <issue-card ng-repeat="issue in newIssues | filter : newIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
                         <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort | limitTo: 5" parent-id="newIssueAccordion"></issue-card>
                     </div>
+                    <p class="small text-light" ng-show="newIssues.length > 5">There are {{newIssues.length - 5}} more issues</p>
                 </div>
 
                 <!-- new resolved issues -->
@@ -22,6 +23,7 @@
                         <!-- <issue-card ng-repeat="issue in resolvedIssues | filter : resolvedIssueQueryFilter  | orderBy : issuesSort | limitTo: 5" -->
                         <issue-card ng-repeat="issue in resolvedIssues | orderBy : issuesSort | limitTo: 5" parent-id="oldIssueAccordion"></issue-card>
                     </div>
+                    <p class="small text-light" ng-show="resolvedIssues.length > 5">There are {{resolvedIssues.length - 5}} more issues</p>
                 </div>
 
                 <!-- new messages -->
@@ -33,6 +35,7 @@
                         <message-card ng-repeat="message in newMessages | orderBy : messagesSort | limitTo: 5"
                             parent-id="newMsgAccordion"></message-card>
                     </div>
+                    <p class="small text-light" ng-show="newMessages.length > 5">There are {{newMessages.length - 5}} more messages</p>
                 </div>
 
                 <!-- open votes -->
@@ -43,6 +46,7 @@
                         <!-- <poll ng-repeat="poll in openPolls  | filter : openPollQueryFilter | orderBy : pollsSort"></poll> -->
                         <poll ng-repeat="poll in openPolls | orderBy : pollsSort | limitTo: 5" parent-id="openPollsAccordion"></poll>
                     </div>
+                    <p class="small text-light" ng-show="openPolls.length > 5">There are {{openPolls.length - 5}} more polls</p>
                 </div>
 
                 <!-- closed votes -->
@@ -53,6 +57,7 @@
                         <!-- <poll ng-repeat="poll in closedPolls | filter : closedPollQueryFilter  | orderBy : pollsSort"></poll> -->
                         <poll ng-repeat="poll in closedPolls | orderBy : pollsSort | limitTo: 5" parent-id="closedPollsAccordion"></poll>
                     </div>
+                    <p class="small text-light" ng-show="closedPolls.length > 5">There are {{closedPolls.length - 5}} more polls</p>
                 </div>
 
                 <!-- no data      -->
