@@ -228,7 +228,8 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function GetUsername(userId) {
-        return allUsersNames.find(user => user.id === userId).name;
+        var user = allUsersNames.find(user => user.id === userId);
+        return user.name;
     }
 
     function getMessages(currentUser) {

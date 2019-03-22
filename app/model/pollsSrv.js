@@ -14,6 +14,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
             this.optionVoted = getOptionVoted(this.votes);
             this.wasVoted = this.optionVoted > -1;
             this.sawResult = (userSrv.getActiveUser().readMessages.indexOf(parsePoll.id) > -1);
+            this.isPublished = parsePoll.get("isPublished");
 
             this.parsePoll = parsePoll;
         }
@@ -85,6 +86,7 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         newPoll.set('options', options);
         newPoll.set('votes', createVotesArray(options));
         newPoll.set("committeeId", userSrv.getActiveUserCommitteeId());
+        newPoll.set('isPublished', false);
 
         newPoll.save().then(
             (result) => {
@@ -101,22 +103,23 @@ committeeApp.factory("pollsSrv", function ($q, $log, userSrv) {
         return async.promise;
     }
 
-    function updatePoll(dueDate, oldPoll) {
+    function updatePoll(dueDate, isPublished, oldPoll) {
         var async = $q.defer();
 
         const ParsePoll = Parse.Object.extend('Poll');
         const query = new Parse.Query(ParsePoll);
 
         query.get(oldPoll.parsePoll.id).then((updatedPoll) => {
-            // updatedPoll.set('title', title);
-            // updatedPoll.set('details', details);
-            updatedPoll.set('dueDate', dueDate);
-            // updatedPoll.set('options', options);
-            // updatedPoll.set('votes', votes);
+            if (dueDate != null) {
+                updatedPoll.set('dueDate', dueDate);
+            }
+            updatedPoll.set('isPublished', isPublished);
+            
             updatedPoll.save().then(
                 (result) => {
                     oldPoll.dueDate = result.get("dueDate");
                     oldPoll.isActive = (oldPoll.dueDate > new Date());
+                    oldPoll.isPublished = isPublished;
 
                     // console.log('Poll created', result);
                     var newPollObj = new Poll(result);

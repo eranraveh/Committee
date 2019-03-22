@@ -61,7 +61,6 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
     };
 
     var openReadMsg = null;
-    var prevMsg = null;
     $scope.onMessageOpen = function (message, index, parent) {
         $scope.newComment[index] = "";
         $('#' + parent + 'CollapseComment' + index).collapse("hide");
@@ -70,18 +69,8 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
             var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
             addMessagePromise.then(wasAdded => {
                 // if the unread filter is on, the msg will disapear when open it
-                if (wasAdded) {
-                    message.wasRead = true;
-
-                    if (prevMsg != message) {
-                        openReadMsg = message;
-
-                        prevMsg = message;
-                    } else {
-                        openReadMsg = null;
-                        prevMsg = null;
-                    }
-                }
+                message.wasRead = true;
+                openReadMsg = message;
             }, error => {
 
             });
@@ -146,7 +135,7 @@ committeeApp.controller("messagesCtrl", function ($scope, $location, userSrv, me
         $scope.newMessage = {
             title: null,
             message: null,
-            priority: false
+            priority: null
         };
 
         $("#priority>label").removeClass("active");

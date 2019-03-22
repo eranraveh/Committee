@@ -15,14 +15,11 @@
 todo
 =====
 
-
-
 optional
 =========
 1. optional - improve signup messages with angularjs, password validity/strength
 2. optional - email verification, password reset
 4. get emails for tenants - https://stackoverflow.com/questions/51715391/how-get-users-emails-in-though-query
-8. on closing poll, create new message
 10. reactivate users
 7. dashboard- controler within controller
 

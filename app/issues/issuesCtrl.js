@@ -105,7 +105,6 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
     };
 
     var openReadIssue = null;
-    var prevIssue = null;
     $scope.onIssueOpen = function (issue, index, parent) {
 
         $scope.newComment[index] = "";
@@ -114,24 +113,16 @@ committeeApp.controller("issuesCtrl", function ($scope, $location, userSrv, issu
         if (!issue.wasRead) {
             var addIssuePromise = userSrv.addOpenedIssues(issue.parseIssue.id);
             addIssuePromise.then(wasAdded => {
-
                 // if the unread filter is on, the issue will disapear when open it
-                if (wasAdded) {
-                    issue.wasRead = true;
+                issue.wasRead = true;
 
-                    if (prevIssue != issue) {
-                        openReadIssue = issue;
-
-                        prevIssue = issue;
-                    } else {
-                        openReadIssue = null;
-                        prevIssue = null;
-                    }
-                }
+                // open new read issue
+                openReadIssue = issue;
             }, error => {
 
             });
-        };
+        }
+
 
         if (!issue.commentsObject.wasLoaded) {
             var getCommentsPromise = issueCommentsSrv.getIssueComments(issue);

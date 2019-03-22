@@ -1,4 +1,4 @@
-committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, userSrv, issuesSrv, issueCommentsSrv, pollsSrv) {
+committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, userSrv, issuesSrv, issueCommentsSrv, pollsSrv, messagesSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -60,9 +60,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         if (!issue.wasRead) {
             var addIssuePromise = userSrv.addOpenedIssues(issue.parseIssue.id);
             addIssuePromise.then(wasAdded => {
-                if (wasAdded) {
-                    issue.wasRead = true;
-                }
+                issue.wasRead = true;
             }, error => {
 
             });
@@ -111,12 +109,20 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
     // }
 
     $scope.endPoll = function (poll) {
-        var promise = pollsSrv.updatePoll(new Date(), poll);
+        var promise = pollsSrv.updatePoll(new Date(), true, poll);
 
-        promise.then((poll) => {}, (error) => {
+        promise.then((poll) => {
+            createMessage(poll);
+        }, (error) => {
             alert("Posting poll failed");
         });
+    }
 
+    function createMessage(poll) {
+        var title = `The poll '${poll.title}' isClosed`;
+        var details = `The poll '${poll.title}' isClosed.\nThe question was:'${poll.details}'.\nThe chosen option is:'${getChosenOption(poll.votes)}'\n\nThank you for voting`;
+
+        messagesSrv.postMessage(title, details, false, null);
     }
 
     // hide edit button on dashboard
@@ -142,13 +148,27 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         if (prevPollIx[parent] != null && prevPollIx[parent] != poll.parsePoll.id)
             isOpenPoll[parent][prevPollIx[parent]] = false;
         prevPollIx[parent] = poll.parsePoll.id;
+
+        if (poll.isActive || poll.sawResult) {
+            return
+        }
+
+        // set when user see result of closed poll
+        var addPollPromise = userSrv.addSeenPoll(poll.parsePoll.id);
+        addPollPromise.then(wasAdded => {
+            // if the unread filter is on, the Poll will disapear when open it
+            if (wasAdded) {
+                poll.sawResult = true;
+            }
+        }, error => {
+
+        });
     }
 
     $scope.onVote = function (poll, answer) {
         // add vote to db
         var currentUser = userSrv.getActiveUser();
-        var optionIx = poll.options.indexOf(answer.optionText);
-        poll.votes[optionIx].optionVoters.push(currentUser.id)
+        answer.optionVoters.push(currentUser.id);
 
         pollsSrv.addVote(poll).then(() => {
 
@@ -157,7 +177,7 @@ committeeApp.controller("dashboardCommitteeCtrl", function ($scope, $location, u
         });
     }
 
-    $scope.isCommitteeMember = function() {
+    $scope.isCommitteeMember = function () {
         return true;
     }
     // =============================================

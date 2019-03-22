@@ -1,4 +1,4 @@
-committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, pollsSrv) {
+committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, pollsSrv, messagesSrv) {
 
     if (!userSrv.isLoggedIn()) {
         $location.path("/");
@@ -138,12 +138,46 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
     }
 
     $scope.endPoll = function (poll) {
-        var promise = pollsSrv.updatePoll(new Date(), poll);
+        var promise = pollsSrv.updatePoll(new Date(), true, poll);
 
-        promise.then((poll) => {}, (error) => {
+        promise.then((poll) => {
+            createMessage(poll);
+        }, (error) => {
             alert("Posting poll failed");
         });
 
+    }
+
+    $scope.publishPoll = function (poll) {
+        var promise = pollsSrv.updatePoll(null, true, poll);
+
+        promise.then((poll) => {
+            createMessage(poll);
+        }, (error) => {
+            alert("Posting poll failed");
+        });
+    }
+
+    function createMessage(poll) {
+        var title = `The poll '${poll.title}' isClosed`;
+        var details = `The poll '${poll.title}' isClosed.\nThe question was:'${poll.details}'.\nThe chosen option is:'${getChosenOption(poll.votes)}'\n\nThank you for voting`;
+
+        messagesSrv.postMessage(title, details, false, null);
+    }
+
+    function getChosenOption(votes) {
+        var selectedOption = "";
+        var highestPcnt = 0;
+        for (let index = 0; index < votes.length; index++) {
+            const option = votes[index];
+
+            if (highestPcnt < option.optionVotesCount) {
+                highestPcnt = option.optionVotesCount;
+                selectedOption = option.optionText;
+            }
+        }
+
+        return selectedOption;
     }
 
     // this is not an array because user might add new item and then the inxeding might change
@@ -173,7 +207,7 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
             return
         }
 
-        // set poll as result been see by the user
+        // set when user see result of closed poll
         var addPollPromise = userSrv.addSeenPoll(poll.parsePoll.id);
         addPollPromise.then(wasAdded => {
             // if the unread filter is on, the Poll will disapear when open it
@@ -185,38 +219,25 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         });
     }
 
-    // var isOpenPoll = [];
-    // $scope.isOpen = function (poll) {
-    //     var ix = $scope.polls.indexOf(poll)
-    //     if (isOpenPoll[ix] == undefined)
-    //         isOpenPoll[ix] = false;
-
-    //     return isOpenPoll[ix];
-    // }
-
-    // var prevPollIx = -1;
-    // $scope.onPollOpen = function (poll) {
-    //     var ix = $scope.polls.indexOf(poll);
-    //     isOpenPoll[ix] = !isOpenPoll[ix];
-
-    //     if (prevPollIx > -1 && prevPollIx != ix)
-    //         isOpenPoll[prevPollIx] = false;
-    //     prevPollIx = ix;
-    // }
-
+    var isVoting = false;
     var votedPoll = null;
     $scope.onVote = function (poll, answer) {
+        if (isVoting)
+            return;
+
+        isVoting = true;
         votedPoll = poll;
 
         // add vote to db
         var currentUser = userSrv.getActiveUser();
-        var optionIx = poll.options.indexOf(answer.optionText);
-        poll.votes[optionIx].optionVoters.push(currentUser.id)
+        answer.optionVoters.push(currentUser.id);
 
         pollsSrv.addVote(poll).then(() => {
 
         }, (error) => {
 
+        }).finally(() => {
+            isVoting = false;
         });
     }
 

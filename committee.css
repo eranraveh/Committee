@@ -86,6 +86,7 @@ body {
 .btn-edit>i,
 .btn-trash>i,
 .btn-end-poll>i,
+.btn-publish>i,
 #priority i {
     font-size: 2em;
 }
@@ -97,7 +98,8 @@ body {
 #newPollForm .btn-new>i {
     font-size: 1rem;
 }
-.btn-edit:hover {
+.btn-edit:hover,
+.btn-publish:hover {
     color: cadetblue !important;
 }
 
@@ -114,7 +116,8 @@ body {
 .btn-new,
 .btn-edit,
 .btn-trash,
-.btn-end-poll {
+.btn-end-poll,
+.btn-publish {
     border-color: gray !important;
 }
 
@@ -234,10 +237,6 @@ table {
     cursor: pointer;
 }
 
-/* button {
-    overflow: visible;
-} */
-
 .poll-answer-container button .text {
     z-index: 100;
     font-size: 16px;
@@ -329,4 +328,9 @@ table {
 
 .dashboard .jumbotron {
     padding: 0 2rem;
+}
+
+.btn-link:hover{
+    text-decoration: none;
+    color:#17a2b8;
 }

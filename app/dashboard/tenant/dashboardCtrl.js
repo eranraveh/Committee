@@ -73,9 +73,7 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
         if (!issue.wasRead) {
             var addIssuePromise = userSrv.addOpenedIssues(issue.parseIssue.id);
             addIssuePromise.then(wasAdded => {
-                if (wasAdded) {
-                    issue.wasRead = true;
-                }
+                issue.wasRead = true;
             }, error => {
 
             });
@@ -107,10 +105,6 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
             alert("Failed post comment to server. Please try again");
         });
     }
-
-    // $scope.canEditIssue = function () {
-    //     return false;
-    // }
     // =============================================
     // issues code - end
     // =============================================
@@ -167,65 +161,10 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
         });
     }
 
-    // var isOpenPoll = {};
-    // $scope.isOpen = function (poll, parent) {
-    //     if (!isOpenPoll.hasOwnProperty(parent))
-    //         isOpenPoll[parent] = [];
-
-    //     var ix;
-    //     if (parent === "openPollsAccordion")
-    //         ix = $scope.openPolls.indexOf(poll);
-    //     else
-    //         ix = $scope.closedPolls.indexOf(poll);
-
-    //     if (isOpenPoll[parent][ix] == undefined)
-    //         isOpenPoll[parent][ix] = false;
-
-    //     return isOpenPoll[parent][ix];
-    // }
-
-    // var prevPollIx = {};
-    // $scope.onPollOpen = function (poll, parent) {
-    //     if (!prevPollIx.hasOwnProperty(parent))
-    //         prevPollIx[parent] = -1;
-
-    //     var ix;
-    //     if (parent === "openPollsAccordion")
-    //         ix = $scope.openPolls.indexOf(poll);
-    //     else
-    //         ix = $scope.closedPolls.indexOf(poll);
-
-    //     isOpenPoll[parent][ix] = !isOpenPoll[parent][ix];
-
-    //     if (prevPollIx[parent] > -1 && prevPollIx[parent] != ix)
-    //         isOpenPoll[parent][prevPollIx[parent]] = false;
-    //     prevPollIx[parent] = ix;
-    // }
-
-    // var isOpenPoll = [];
-    // $scope.isOpen = function (poll) {
-    //     var ix = $scope.openPolls.indexOf(poll)
-    //     if (isOpenPoll[ix] == undefined)
-    //         isOpenPoll[ix] = false;
-
-    //     return isOpenPoll[ix];
-    // }
-
-    // var prevPollIx = -1;
-    // $scope.onPollOpen = function (poll) {
-    //     var ix = $scope.openPolls.indexOf(poll);
-    //     isOpenPoll[ix] = !isOpenPoll[ix];
-
-    //     if (prevPollIx > -1 && prevPollIx != ix)
-    //         isOpenPoll[prevPollIx] = false;
-    //     prevPollIx = ix;
-    // }
-
     $scope.onVote = function (poll, answer) {
         // add vote to db
         var currentUser = userSrv.getActiveUser();
-        var optionIx = poll.options.indexOf(answer.optionText);
-        poll.votes[optionIx].optionVoters.push(currentUser.id)
+        answer.optionVoters.push(currentUser.id);
 
         pollsSrv.addVote(poll).then(() => {
 
@@ -253,9 +192,7 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
         if (!message.wasRead) {
             var addMessagePromise = userSrv.addOpenedMessages(message.parseMessage.id);
             addMessagePromise.then(wasAdded => {
-                if (wasAdded) {
-                    message.wasRead = true;
-                }
+                message.wasRead = true;
             }, error => {
 
             });
