@@ -118,7 +118,7 @@ committeeApp.factory("messagesSrv", function ($q, $log, userSrv) {
         const Message = Parse.Object.extend('Message');
         const query = new Parse.Query(Message);
         // here you put the objectId that you want to delete
-        query.get(message.messageId).then((object) => {
+        query.get(message.parseMessage.id).then((object) => {
 
             object.destroy().then((response) => {
                 // console.log('Deleted Message', response);

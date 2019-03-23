@@ -64,7 +64,7 @@ committeeApp.controller("tenantsCtrl", function ($scope, $location, userSrv) {
         var email = $scope.newTenant.email.toLowerCase();
         var promise;
         if ($scope.editMode)
-            promise = userSrv.updateUser($scope.editedUser.parseUser, email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember, null, null, null, null);
+            promise = userSrv.updateOtherUser($scope.editedUser.parseUser, email.toLowerCase(), toTitleCase($scope.newTenant.name), $scope.newTenant.apt, $scope.newTenant.isCommitteeMember, null, null, null, null);
         else
             promise = userSrv.addUser("", email, toTitleCase($scope.newTenant.name), $scope.newTenant.apt, userSrv.getActiveUserCommitteeId(), "a1a1a1A1", $scope.newTenant.isCommitteeMember)
 

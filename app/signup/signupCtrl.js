@@ -39,7 +39,7 @@ committeeApp.controller("signupCtrl", function ($scope, $location, $route, userS
 
         $scope.isSuccessSubmit = true;
 
-        userSrv.update($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, $scope.password).then((user) => {
+        userSrv.updateCurrentUser(userSrv.getActiveUser(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, null, null, null, $scope.username.toLowerCase(), $scope.password).then((user) => {
             $location.path("/myCommittee/account/success");
         }, (error) => {
             alert(error.message)
@@ -49,9 +49,9 @@ committeeApp.controller("signupCtrl", function ($scope, $location, $route, userS
     function signup() {
 
         committeeSrv.createCommittee(toTitleCase($scope.city), toTitleCase($scope.address), $scope.img).then((committee) => {
-
-            userSrv.signup($scope.username.toLowerCase(), $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, committee, $scope.password).then((user) => {
-                $location.path("/myCommittee/issues");
+            var username = !$scope.username ? "" : $scope.username.toLowerCase();
+            userSrv.signup(username, $scope.email.toLowerCase(), toTitleCase($scope.name), $scope.apt, committee, $scope.password).then((user) => {
+                $location.path("/myCommittee/dashboard/committee");
             }, (error) => {
                 // console.error("error signing up user", error);
                 alert(error.message)
@@ -79,14 +79,6 @@ committeeApp.controller("signupCtrl", function ($scope, $location, $route, userS
 
             return false;
         }
-
-
-        // obsolite after added password pattern attr
-        // if ($scope.password.match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/")) {
-        //     alert("password not comply with restrictions");
-
-        //     return false;
-        // }
 
         return true;
     }

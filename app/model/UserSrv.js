@@ -63,7 +63,9 @@ committeeApp.factory("userSrv", function ($q, $log) {
             const ParseUser = Parse.Object.extend('User');
             const query = new Parse.Query(ParseUser);
             query.equalTo("committeId", activeUser.committeeId);
-            query.equalTo("isActive", true);
+
+            // resolve names of deleted users
+            // query.equalTo("isActive", true);
 
             query.find().then((results) => {
                 allUsers = results.map(user => new User(user, loadOnlyNames));
@@ -152,22 +154,22 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function addOpenedMessages(messageId) {
-        return updateUser(Parse.User.current(), null, null, null, null, messageId);
+        return updateCurrentUser(Parse.User.current(), null, null, null, null, messageId);
     }
 
     function addOpenedIssues(issueId) {
-        return updateUser(Parse.User.current(), null, null, null, null, issueId);
+        return updateCurrentUser(Parse.User.current(), null, null, null, null, issueId);
     }
 
     function addSeenPoll(pollId) {
-        return updateUser(Parse.User.current(), null, null, null, null, pollId);
+        return updateCurrentUser(Parse.User.current(), null, null, null, null, pollId);
     }
 
-    function update(username, email, name, apt, password) {
-        return updateUser(Parse.User.current(), email, name, apt, null, null, null, username, password);
-    }
+    // function update(username, email, name, apt, password) {
+    //     return updateUser(Parse.User.current(), email, name, apt, null, null, null, username, password);
+    // }
 
-    function updateUser(user, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
+    function updateOtherUser(user, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
         var async = $q.defer();
 
         var messages = null;
@@ -220,79 +222,78 @@ committeeApp.factory("userSrv", function ($q, $log) {
 
             return async.promise;
         }
+    }
 
-        // var async = $q.defer();
+    function updateCurrentUser(user, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
+        var async = $q.defer();
 
-        // const ParseUser = Parse.Object.extend('User');
-        // const query = new Parse.Query(ParseUser);
+        const ParseUser = Parse.Object.extend('User');
+        const query = new Parse.Query(ParseUser);
 
-        // query.get(user.id).then((parseUser) => {
-        //     // const currentUser = Parse.User.current();
-        //     if (messageId != null) {
-        //         var messages = getMessages(parseUser);
-        //         messages.push(messageId);
-        //         parseUser.set('messagesRead', messages);
-        //     }
+        query.get(user.id).then((parseUser) => {
+            // const currentUser = Parse.User.current();
+            if (messageId != null) {
+                var messages = getMessages(parseUser);
+                messages.push(messageId);
+                parseUser.set('messagesRead', messages);
+            }
 
-        //     if (email != null) {
-        //         parseUser.set('email', email);
-        //     }
+            if (email != null) {
+                parseUser.set('email', email);
+            }
 
-        //     if (name != null) {
-        //         parseUser.set('name', name);
-        //         parseUser.set('apartment', apt);
-        //     }
+            if (name != null) {
+                parseUser.set('name', name);
+                parseUser.set('apartment', apt);
+            }
 
-        //     if (username != null) {
-        //         parseUser.set('username', username);
-        //     }
+            if (username != null) {
+                parseUser.set('username', username);
+            }
 
-        //     if (password != null) {
-        //         parseUser.set('password', password);
-        //     }
+            if (password != null) {
+                parseUser.set('password', password);
+            }
 
-        //     if (isCommitteeMember != null) {
-        //         parseUser.set('isCommitteeMember', isCommitteeMember);
-        //     }
+            if (isCommitteeMember != null) {
+                parseUser.set('isCommitteeMember', isCommitteeMember);
+            }
 
-        //     if (isActive != null) {
-        //         parseUser.set('isActive', isActive);
-        //     }
+            if (isActive != null) {
+                parseUser.set('isActive', isActive);
+            }
 
-        //     // Saves the user with the updated data
-        //     parseUser.save().then((response) => {
-        //         // if updating current user - update user object with new data
-        //         if (activeUser.id === response.id) {
-        //             if (messageId != null) {
-        //                 activeUser.readMessages = response.get("messagesRead");
-        //             }
+            // Saves the user with the updated data
+            parseUser.save().then((response) => {
+                if (messageId != null) {
+                    activeUser.readMessages = response.get("messagesRead");
+                }
 
-        //             if (email != null) {
-        //                 activeUser.email = response.get("email");
-        //             }
+                if (email != null) {
+                    activeUser.email = response.get("email");
+                }
 
-        //             if (name != null) {
-        //                 activeUser.name = response.get("name");
-        //                 activeUser.apartment = response.get("apartment");
-        //                 activeUser.isCommitteeMember = response.get("isCommitteeMember");
-        //             }
+                if (name != null) {
+                    activeUser.name = response.get("name");
+                    activeUser.apartment = response.get("apartment");
+                    activeUser.isCommitteeMember = response.get("isCommitteeMember");
+                }
 
-        //             if (username != null) {
-        //                 activeUser.username = response.get('username');
-        //             }
-        //         }
+                if (username != null) {
+                    activeUser.username = response.get('username');
+                }
 
-        //         async.resolve(true);
-        //     }).catch((error) => {
-        //         console.error('Error while updating user', error);
-        //         async.reject(error);
-        //     });
-        // }), (error) => {
-        //     console.error('Error while getting user', error);
-        //     async.reject(error);
-        // };
+                async.resolve(true);
+            }).catch((error) => {
+                console.error('Error while updating user', error);
+                async.reject(error);
+            });
+        }), (error) => {
+            console.error('Error while getting user', error);
+            async.reject(error);
+        };
 
-        // return async.promise;
+        return async.promise;
     }
 
 
@@ -307,7 +308,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function deleteUser(user) {
-        return updateUser(user.parseUser, user.parseUser.id + "@" + user.parseUser.id, null, undefined, undefined, undefined, false, user.parseUser.id, null);
+        return updateOtherUser(user.parseUser, user.parseUser.id + "@" + user.parseUser.id, null, undefined, undefined, undefined, false, user.parseUser.id, null);
     }
 
     function GetUsername(userId) {
@@ -331,10 +332,11 @@ committeeApp.factory("userSrv", function ($q, $log) {
     return {
         login: login,
         signup: signup,
-        update: update,
+        // update: update,
         addUser: addUser,
         getUsers: getUsers,
-        updateUser: updateUser,
+        updateCurrentUser: updateCurrentUser,
+        updateOtherUser: updateOtherUser,
         deleteUser: deleteUser,
         isLoggedIn: isLoggedIn,
         resetPassword: resetPassword,

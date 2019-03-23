@@ -126,7 +126,7 @@ committeeApp.controller("pollsCtrl", function ($scope, $location, userSrv, polls
         if ($scope.newPollForm.$invalid)
             return;
 
-        var promise = pollsSrv.updatePoll($scope.newPoll.dueDate, $scope.editedPoll);
+        var promise = pollsSrv.updatePoll($scope.newPoll.dueDate, false, $scope.editedPoll);
 
         promise.then((poll) => {
             resetForm();
