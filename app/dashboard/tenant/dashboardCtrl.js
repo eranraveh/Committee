@@ -153,9 +153,9 @@ committeeApp.controller("dashboardTenantCtrl", function ($scope, $location, user
         var addPollPromise = userSrv.addSeenPoll(poll.parsePoll.id);
         addPollPromise.then(wasAdded => {
             // if the unread filter is on, the Poll will disapear when open it
-            if (wasAdded) {
-                poll.sawResult = true;
-            }
+            // if (wasAdded) {
+            poll.sawResult = true;
+            // }
         }, error => {
 
         });

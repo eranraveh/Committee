@@ -167,72 +167,134 @@ committeeApp.factory("userSrv", function ($q, $log) {
         return updateUser(Parse.User.current(), email, name, apt, null, null, null, username, password);
     }
 
-    function updateUser(parseUser, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
+    function updateUser(user, email = null, name = null, apt = null, isCommitteeMember = null, messageId = null, isActive = null, username = null, password = null) {
         var async = $q.defer();
 
-        // const currentUser = Parse.User.current();
+        var messages = null;
         if (messageId != null) {
-            var messages = getMessages(parseUser);
+            var messages = getMessages(user);
             messages.push(messageId);
-            parseUser.set('messagesRead', messages);
         }
 
-        if (email != null) {
-            parseUser.set('email', email);
+        var userParams = {
+            id: user.id,
+            email: email,
+            name: name,
+            apt: apt,
+            isCommitteeMember: isCommitteeMember,
+            messages: messages,
+            isActive: isActive,
+            username: username,
+            password: password
         }
 
-        if (name != null) {
-            parseUser.set('name', name);
-            parseUser.set('apartment', apt);
-        }
+        if (activeUser.isCommitteeMember) {
+            Parse.Cloud.run("updateUser", userParams).then((results) => {
+                // if updating current user - update user object with new data
+                if (activeUser.id === results.id) {
+                    if (messageId != null) {
+                        activeUser.readMessages = results.get("messagesRead");
+                    }
 
-        if (username != null) {
-            parseUser.set('username', username);
-        }
+                    if (email != null) {
+                        activeUser.email = results.get("email");
+                    }
 
-        if (password != null) {
-            parseUser.set('password', password);
-        }
+                    if (name != null) {
+                        activeUser.name = results.get("name");
+                        activeUser.apartment = results.get("apartment");
+                        activeUser.isCommitteeMember = results.get("isCommitteeMember");
+                    }
 
-        if (isCommitteeMember != null) {
-            parseUser.set('isCommitteeMember', isCommitteeMember);
-        }
-
-        if (isActive != null) {
-            parseUser.set('isActive', isActive);
-        }
-
-        // Saves the user with the updated data
-        parseUser.save().then((response) => {
-            // if updating current user - update user object with new data
-            if (activeUser.id === response.id) {
-                if (messageId != null) {
-                    activeUser.readMessages = response.get("messagesRead");
+                    if (username != null) {
+                        activeUser.username = results.get('username');
+                    }
                 }
 
-                if (email != null) {
-                    activeUser.email = response.get("email");
-                }
+                var updatedUser = new User(results);
 
-                if (name != null) {
-                    activeUser.name = response.get("name");
-                    activeUser.apartment = response.get("apartment");
-                    activeUser.isCommitteeMember = response.get("isCommitteeMember");
-                }
+                async.resolve(updatedUser);
+            }, (error) => {
+                async.reject(error);
+            });
 
-                if (username != null) {
-                    activeUser.username = response.get('username');
-                }
-            }
+            return async.promise;
+        }
 
-            async.resolve(true);
-        }).catch((error) => {
-            console.error('Error while updating user', error);
-            async.reject(error);
-        });
+        // var async = $q.defer();
 
-        return async.promise;
+        // const ParseUser = Parse.Object.extend('User');
+        // const query = new Parse.Query(ParseUser);
+
+        // query.get(user.id).then((parseUser) => {
+        //     // const currentUser = Parse.User.current();
+        //     if (messageId != null) {
+        //         var messages = getMessages(parseUser);
+        //         messages.push(messageId);
+        //         parseUser.set('messagesRead', messages);
+        //     }
+
+        //     if (email != null) {
+        //         parseUser.set('email', email);
+        //     }
+
+        //     if (name != null) {
+        //         parseUser.set('name', name);
+        //         parseUser.set('apartment', apt);
+        //     }
+
+        //     if (username != null) {
+        //         parseUser.set('username', username);
+        //     }
+
+        //     if (password != null) {
+        //         parseUser.set('password', password);
+        //     }
+
+        //     if (isCommitteeMember != null) {
+        //         parseUser.set('isCommitteeMember', isCommitteeMember);
+        //     }
+
+        //     if (isActive != null) {
+        //         parseUser.set('isActive', isActive);
+        //     }
+
+        //     // Saves the user with the updated data
+        //     parseUser.save().then((response) => {
+        //         // if updating current user - update user object with new data
+        //         if (activeUser.id === response.id) {
+        //             if (messageId != null) {
+        //                 activeUser.readMessages = response.get("messagesRead");
+        //             }
+
+        //             if (email != null) {
+        //                 activeUser.email = response.get("email");
+        //             }
+
+        //             if (name != null) {
+        //                 activeUser.name = response.get("name");
+        //                 activeUser.apartment = response.get("apartment");
+        //                 activeUser.isCommitteeMember = response.get("isCommitteeMember");
+        //             }
+
+        //             if (username != null) {
+        //                 activeUser.username = response.get('username');
+        //             }
+        //         }
+
+        //         async.resolve(true);
+        //     }).catch((error) => {
+        //         console.error('Error while updating user', error);
+        //         async.reject(error);
+        //     });
+        // }), (error) => {
+        //     console.error('Error while getting user', error);
+        //     async.reject(error);
+        // };
+
+        // return async.promise;
     }
+
 
     function resetPassword(email) {
         return Parse.User.requestPasswordReset(email);
@@ -245,7 +307,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
     }
 
     function deleteUser(user) {
-        return updateUser(user.parseUser, null, null, null, null, null, false);
+        return updateUser(user.parseUser, user.parseUser.id + "@" + user.parseUser.id, null, undefined, undefined, undefined, false, user.parseUser.id, null);
     }
 
     function GetUsername(userId) {
@@ -272,6 +334,7 @@ committeeApp.factory("userSrv", function ($q, $log) {
         update: update,
         addUser: addUser,
         getUsers: getUsers,
+        updateUser: updateUser,
         deleteUser: deleteUser,
         isLoggedIn: isLoggedIn,
         resetPassword: resetPassword,
