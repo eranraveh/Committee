@@ -19,7 +19,7 @@ dbl clik on poll card
 
 optional
 =========
-1. optional - improve signup messages with angularjs, password validity/strength
+1. optional - improve issues/msg/polls/tenants error messages with angularjs, password validity/strength
 2. optional - email verification
 10. reactivate users
 7. dashboard- controler within controller

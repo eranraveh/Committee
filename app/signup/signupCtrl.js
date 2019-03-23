@@ -21,12 +21,21 @@ committeeApp.controller("signupCtrl", function ($scope, $location, $route, userS
 
     }
 
-    $scope.update = function () {
+    $scope.submitForm = function () {
+        if ($scope.signupForm.$invalid)
+            return false;
+
         if (!validPassword())
             return;
 
-        if ($scope.signupForm.$invalid)
-            return false;
+        if ($scope.isSignup) {
+            signup();
+        } else {
+            update();
+        }
+    }
+
+    function update() {
 
         $scope.isSuccessSubmit = true;
 
@@ -37,12 +46,7 @@ committeeApp.controller("signupCtrl", function ($scope, $location, $route, userS
         });
     }
 
-    $scope.signup = function () {
-        if (!validPassword())
-            return;
-
-        if ($scope.signupForm.$invalid)
-            return false;
+    function signup() {
 
         committeeSrv.createCommittee(toTitleCase($scope.city), toTitleCase($scope.address), $scope.img).then((committee) => {
 

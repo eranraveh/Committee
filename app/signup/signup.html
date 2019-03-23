@@ -2,12 +2,20 @@
     <h1 class="text-center mb-4 border-bottom pb-2" ng-show="isSignup">Signup and create your committee</h1>
     <h1 class="text-center mb-4 border-bottom pb-2" ng-hide="isSignup">Your account</h1>
 
-    <form class="container " name="signupForm">
+    <form class="container " name="signupForm" ng-submit="submitForm()" novalidate>
         <!-- Full name -->
         <div class="form-group row">
             <label for="inputName" class="col-sm-4 col-form-label">Full Name</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputName" ng-model="name" required placeholder="Full Name">
+                <input type="text" class="form-control" id="inputName" ng-model="name" required placeholder="Full Name"
+                    name="name">
+                <div ng-messages=signupForm.name.$error
+                    ng-if="signupForm.name.$invalid && (signupForm.$submitted || signupForm.name.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify a full name
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -16,10 +24,26 @@
             <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
             <div class="col-sm-8 ">
                 <input id="password-field1" type="password" class="form-control" ng-model="password"
-                    ng-required="isSignup" name="password" placeholder="Password"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    ng-required="isSignup" name="password" placeholder="Password" ng-minlength="8" ng-maxlength="16"
+                    ng-pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/"
                     title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                 <i toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
+                <div ng-messages=signupForm.password.$error
+                    ng-if="signupForm.password.$invalid && (signupForm.$submitted || signupForm.password.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify a password
+                    </div>
+                    <div ng-message=minlength>
+                        Please specify a password with at least 8 chars
+                    </div>
+                    <div ng-message=maxlength>
+                        Please specify a password with at most 16 chars
+                    </div>
+                    <div ng-message=pattern>
+                        Please specifiy a valid password
+                    </div>
+                </div>
                 <small>Password must contain a capital letter, lowercase letter, a number and be at least 8 characters
                     long.</small>
             </div>
@@ -30,8 +54,19 @@
             <label for="verificationPassword" class="col-sm-4 col-form-label">Confirm Password</label>
             <div class="col-sm-8 ">
                 <input id="password-field2" type="password" class="form-control" ng-model="confirmPassword"
-                    ng-required="isSignup" name="verificationPassword" placeholder="Confirm Password">
+                    ng-required="isSignup" name="verificationPassword" placeholder="Confirm Password"
+                    pattern="^{{password}}$">
                 <i toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password text-dark"></i>
+                <div ng-messages=signupForm.verificationPassword.$error
+                    ng-if="signupForm.verificationPassword.$invalid && (signupForm.$submitted || signupForm.verificationPassword.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify a password
+                    </div>
+                    <div ng-message=pattern>
+                        Passwords not match
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -39,7 +74,18 @@
         <div class="form-group row">
             <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
             <div class="col-sm-8">
-                <input type="email" class="form-control" id="inputEmail" ng-model="email" required placeholder="Email">
+                <input type="email" class="form-control" name="email" id="inputEmail" ng-model="email" required
+                    placeholder="Email">
+                <div ng-messages=signupForm.email.$error
+                    ng-if="signupForm.email.$invalid && (signupForm.$submitted || signupForm.email.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify an email address
+                    </div>
+                    <div ng-message=email>
+                        Please specifiy a valid email address
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -47,9 +93,16 @@
         <div class="form-group row">
             <label for="userName" class="col-sm-4 col-form-label">Username</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="userName" ng-model="username"
-                    placeholder="select your username" pattern="[A-Za-z][A-Za-z\d]{5,}"
-                    title="At least 6 letters or digits, must start with a letter">
+                <input type="text" class="form-control" id="userName" ng-model="username" name="username"
+                    placeholder="select your username" pattern="[A-Za-z][A-Za-z\d]{5,}" ng-minlength="6"
+                    ng-maxlength="30" title="At least 6 letters or digits, must start with a letter">
+                <div ng-messages=signupForm.username.$error
+                    ng-if="signupForm.username.$invalid && (signupForm.$submitted || signupForm.username.$touched)"
+                    class="small text-danger">
+                    <div ng-message=minlength>
+                        Please specify a username with at least 6 chars
+                    </div>
+                </div>
                 <small>optional with minimum 6 letters, otherwise your email will be used to login</small>
             </div>
         </div>
@@ -62,8 +115,15 @@
             <div class="form-group row " ng-show="isSignup">
                 <label for="city" class="col-sm-4 col-form-label">City</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="city" ng-model="city" ng-required="isSignup"
+                    <input type="text" class="form-control" id="city" ng-model="city" ng-required="isSignup" name="city"
                         placeholder="City">
+                    <div ng-messages=signupForm.city.$error
+                        ng-if="signupForm.city.$invalid && (signupForm.$submitted || signupForm.city.$touched)"
+                        class="small text-danger">
+                        <div ng-message=required>
+                            Please specify a city
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -72,7 +132,14 @@
                 <label for="address" class="col-sm-4 col-form-label">Address</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="address" ng-model="address" ng-required="isSignup"
-                        placeholder="Your building Address">
+                        name="address" placeholder="Your building Address">
+                    <div ng-messages=signupForm.address.$error
+                        ng-if="signupForm.address.$invalid && (signupForm.$submitted || signupForm.address.$touched)"
+                        class="small text-danger">
+                        <div ng-message=required>
+                            Please specify an address
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -80,7 +147,15 @@
             <div class="form-group row ">
                 <label for="apt" class="col-sm-4 col-form-label">Apartment</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="apt" ng-model="apt" required placeholder="Apartment">
+                    <input type="text" class="form-control" id="apt" ng-model="apt" required placeholder="Apartment"
+                        name="apt">
+                    <div ng-messages=signupForm.apt.$error
+                        ng-if="signupForm.apt.$invalid && (signupForm.$submitted || signupForm.apt.$touched)"
+                        class="small text-danger">
+                        <div ng-message=required>
+                            Please specify an apartment
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -96,7 +171,8 @@
 
         <div class="form-group " ng-show="isSignup">
             <div class="form-check">
-                <input class="form-check-input" ng-required="isSignup" type="checkbox" value="" id="gridCheckConfirm">
+                <input class="form-check-input" ng-required="isSignup" type="checkbox" value="" id="checkConfirm"
+                    ng-model="checkConfirm" name="checkConfirm">
                 <label class="form-check-label" for="gridCheckConfirm">
                     I read and agreed with the <a class="" href="javascript:void(0)" data-toggle="modal"
                         data-target="#termsOfService"><strong>Terms
@@ -105,15 +181,20 @@
                         data-target="#privacyPolicy"><strong>Privacy
                             Policy</strong></a>.
                 </label>
-                <div class="invalid-feedback">
-                    You must agree before Signing-up.
-                </div>
+                <!-- <div ng-messages=signupForm.gridCheckConfirm.$error -->
+                <!-- ng-if="signupForm.gridCheckConfirm.$invalid && (signupForm.$submitted || signupForm.gridCheckConfirm.$touched)" -->
+            </div>
+            <div ng-show="!checkConfirm && (signupForm.$submitted || signupForm.checkConfirm.$touched)"
+                class="small text-danger">
+                You must agree before Signing-up.
             </div>
         </div>
 
         <div class="justify-content-between w-100">
-            <button type="submit" class="btn btn-success " ng-click="update()" ng-hide="isSignup">Update</button>
-            <button type="submit" class="btn btn-success " ng-click="signup()" ng-show="isSignup">Sign-up</button>
+            <button type="submit" class="btn btn-success " ng-click="update()" ng-hide="isSignup"
+                ng-disabled=!!signupForm.$valid1>Update</button>
+            <button type="submit" class="btn btn-success " ng-click="signup()" ng-show="isSignup"
+                ng-disabled=!!signupForm.$valid1>Sign-up</button>
             <button type="reset" class="btn btn-secondary float-right" value="Reset" ng-show="isSignup">Reset</button>
         </div>
     </form>

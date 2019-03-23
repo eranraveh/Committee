@@ -1,7 +1,7 @@
 <div id="loginForm" class="container my-5 col-sm-10 col-md-5 col-lg-4 col-xl-3 py-4 rounded px-0">
     <h3 class="text-center border-bottom pb-2 mx-3">Login to <span class="iCommittee">iCommittee</span></h3>
     <div class="container mx-auto border1 rounded1 border-dark1 ">
-        <form role="form">
+        <form name="loginForm" role="form" ng-submit="login()" novalidate>
 
             <div class="alert alert-danger small " role="alert" ng-show="invalidLogin">
                 <strong>Invalid Login</strong> incorrect email or password
@@ -9,17 +9,34 @@
 
             <div class="form-group">
                 <label for="username">Email or username:</label>
-                <input type="text" class="form-control" id="username" ng-model="username" required
+                <input type="text" class="form-control" id="username" ng-model="username" required name="username"
                     placeholder="Enter your email address or username" />
+                <div ng-messages=loginForm.username.$error
+                    ng-if="loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify an email or username
+                    </div>
+                </div>
             </div>
+
             <div class="form-group">
                 <label for="pwd">Password:</label>
                 <a class="float-right align-middle small" href="#!/myCommittee/passwordReset">Forgot
                     password?</a>
-                <input type="password" class="form-control" id="pwd" ng-model="pwd" required
+                <input type="password" class="form-control" id="pwd" ng-model="pwd" required name="password"
                     placeholder="Enter your password" />
+
+                <div ng-messages=loginForm.password.$error
+                    ng-if="loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$touched)"
+                    class="small text-danger">
+                    <div ng-message=required>
+                        Please specify a password
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-success btn-block" ng-click="login()">Sign In</button>
+
+            <button type="submit" class="btn btn-success btn-block">Sign In</button>
         </form>
 
         <br>
