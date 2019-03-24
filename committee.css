@@ -336,6 +336,6 @@ table {
 }
 
  /* forms validation */
- input.ng-invalid.ng-dirty {
+ /* input.ng-invalid.ng-dirty {
     background-color:pink;
-}
+} */
