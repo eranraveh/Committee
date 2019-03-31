@@ -1,6 +1,8 @@
 committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
 
     $scope.invalidLogin = false;
+    $scope.username = "luba";
+    $scope.pwd = "123";
 
     $scope.login = function () {
         if ($scope.loginForm.$invalid)
@@ -12,9 +14,16 @@ committeeApp.controller("loginCtrl", function ($scope, $location, userSrv) {
                 } else {
                     $location.path("/myCommittee/dashboard/tenant");
                 }
+
+
+                // todo: remove
+                $location.path("/myCommittee/issues");
+
             },
             function (error) {
                 $scope.invalidLogin = true;
             });
     }
+
+    // $scope.login();
 })

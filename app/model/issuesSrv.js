@@ -1,5 +1,18 @@
 committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
 
+    const issueStatus = {
+        NEW: "New",
+        IN_PROGRESS: "In progress",
+        CLOSE: "Closed"
+    }
+
+    const issueUrgency = {
+        URGENT: "1",
+        IMPORTANT: "2",
+        NORMAL: "3"
+    }
+
+
     class Issue {
         constructor(parseIssue) {
             this.title = parseIssue.get("title");
@@ -93,8 +106,8 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
         query.get(oldIssue.parseIssue.id).then((updatedIssue) => {
             updatedIssue.set('title', title);
             updatedIssue.set('details', issueBody);
-            updatedIssue.set('priority', priority );
-            updatedIssue.set('status', status );
+            updatedIssue.set('priority', priority);
+            updatedIssue.set('status', status);
             updatedIssue.save().then(
                 (result) => {
                     // console.log('Issue created', result);
@@ -142,7 +155,9 @@ committeeApp.factory("issuesSrv", function ($q, $log, userSrv) {
     return {
         getIssues: getIssues,
         postIssue: postIssue,
-        deleteIssue: deleteIssue
+        deleteIssue: deleteIssue,
+        issueStatus: issueStatus,
+        issueUrgency: issueUrgency
     }
 
 })

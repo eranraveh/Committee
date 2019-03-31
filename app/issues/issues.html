@@ -38,29 +38,30 @@
 
         <!-- by spec only tenant can add new issue, actually everyone can
                 ng-show="isCommitteeMember()"  -->
-        <button class="btn btn-new text-danger py-0 px-1 " data-toggle="modal" rel="tooltip" title="Add new issue"
+        <!-- <button class="btn btn-new text-danger py-0 px-1 " data-toggle="modal" rel="tooltip" title="Add new issue"
             tooltip type="button" data-target="#newIssueForm" ng-click="newIssueOpen()">
             <i class="fas fa-plus"></i>
-        </button>
+        </button> -->
         <span class="align-middle mb-0">{{getUnreadIssuesCount()}} unread issues, {{getOpenIssuesCount()}} open issues,
             {{getMyIssuesCount()}} issues I opened</span>
     </div>
 
-    <div id="issueAccordion" class="pb-5">
+    <issues-list class="pb-5" object-id="issueAccordion" issues-array="issues" filter-method="queryFilter" sort="sort" open-issue="openReadIssue" new-issue="newIssue"></issues-list>
+    <!-- <div id="issueAccordion" class="pb-5">
 
         <issue-card ng-repeat="issue in issues | filter : queryFilter | orderBy : sort" parent-id="issueAccordion"></issue-card>
-    </div>
+    </div> -->
 </div>
 
 
-<div id="newIssueForm" class="container modal ">
+<!-- <div id="newIssueForm" class="container modal ">
     <div class="modal-dialog ">
         <div class="modal-content bg-dark">
 
             <div class="modal-header jumbotron">
                 <h4 class="modal-title w-100 text-center" ng-hide="editMode">Open new issue</h4>
                 <h4 class="modal-title w-100 text-center" ng-show="editMode">Edit issue</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" ng-click="closeModal()" data-dismiss="modal">&times;</button>
             </div>
 
             <form role="form" name="newIssueForm">
@@ -99,10 +100,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary mr-auto" ng-click="postIssue()" ng-class="{'btn-block': !editMode}">Post</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="editMode" ng-click="closeModal()" >Cancel</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</div> -->
