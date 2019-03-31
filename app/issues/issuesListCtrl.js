@@ -1,14 +1,16 @@
 committeeApp.controller("issuesListCtrl", function ($scope, issuesSrv, issueCommentsSrv) {
 
+    if (!$scope.isDashboard) {
+        $scope.isDashboard = false;
+    }
+
+    $scope.resetCounter = 0;
+
     $scope.newIssueOpen = function () {
         $scope.editMode = false;
         $scope.newIssue.oldIssue = null;
         $scope.isReadOnly = false;
         resetForm();
-        // priority Normal is default
-        // $("#priority > label:last-child").addClass("active");
-        // $scope.newIssue.priority = issueUrgency.NORMAL;
-        // $scope.newIssue.status = issueStatus.NEW;
     }
 
     function resetForm() {
@@ -17,9 +19,7 @@ committeeApp.controller("issuesListCtrl", function ($scope, issuesSrv, issueComm
         $scope.newIssue.priority = issuesSrv.issueUrgency.NORMAL;
         $scope.newIssue.status = issuesSrv.issueStatus.NEW;
 
-        // priority Normal is default
-        $("#priority>label").removeClass("active");
-        $("#priority > label:last-child").addClass("active");
+        $scope.resetCounter++;
     }
 
     $scope.postIssue = function () {
@@ -38,9 +38,6 @@ committeeApp.controller("issuesListCtrl", function ($scope, issuesSrv, issueComm
 
             // add "new" issue
             $scope.issuesArray.unshift(issue);
-
-            // open the issue just been updated/added (located first in the array)
-            // $('#collapse' + 0).collapse("show");
 
             resetForm();
 
@@ -84,44 +81,14 @@ committeeApp.controller("issuesListCtrl", function ($scope, issuesSrv, issueComm
 
             var reomveIndex = $scope.issuesArray.indexOf(issue);
             if (reomveIndex > -1)
-            $scope.issuesArray.splice(reomveIndex, 1);
+                $scope.issuesArray.splice(reomveIndex, 1);
         }, () => {
             alert("Failed delete issue from server. Please try again");
         });
 
     }
 
-    // $scope.postIssue = function () {
-    //     if ($scope.newIssueForm.$invalid)
-    //         return;
-
-    //     var promise = issuesSrv.postIssue($scope.newIssue.title, $scope.newIssue.issueBody, $scope.newIssue.priority, $scope.newIssue.status, editedIssue);
-
-    //     promise.then((issue) => {
-    //         // remove "old" issue
-    //         if (editedIssue != null) {
-    //             var reomveIndex = $scope.issuesArr.indexOf(editedIssue);
-    //             if (reomveIndex > -1)
-    //                 $scope.issuesArr.splice(reomveIndex, 1);
-    //         }
-
-    //         // add "new" issue
-    //         $scope.issuesArr.unshift(issue);
-
-    //         // open the issue just been updated/added (located first in the array)
-    //         // $('#collapse' + 0).collapse("show");
-
-    //         resetForm();
-
-    //         $("#newIssueForm").modal("hide");
-    //     }, (error) => {
-    //         alert("Posting issue failed");
-    //     });
-
-    // }
-
     $scope.postIssueComment = function (text, issue, collapseMe) {
-        // var text = $scope.newComment;
         if (!text) {
             alert("Enter a comment text");
             return;
@@ -129,28 +96,13 @@ committeeApp.controller("issuesListCtrl", function ($scope, issuesSrv, issueComm
 
         issueCommentsSrv.createComment(text, issue).then((comment) => {
             issue.commentsObject.comments.unshift(comment);
-            // $scope.newComment = "";
             $(collapseMe).collapse("hide");
         }, (error) => {
             alert("Failed post comment to server. Please try again");
         });
     }
 
-    // $scope.isOpen = function (issue) {
-    //     if (!isOpenIssue.hasOwnProperty(issue.parseIssue.id))
-    //         isOpenIssue[issue.parseIssue.id] = false;
-
-    //     return isOpenIssue[issue.parseIssue.id];
-    // }
-
-    // var prevIssueIx = null;
-    // $scope.onPollOpen = function (issue) {
-    //     isOpenIssue[issue.parseIssue.id] = !isOpenIssue[issue.parseIssue.id];
-
-    //     if (prevIssueIx != null && prevIssueIx != issue.parseIssue.id)
-    //         isOpenIssue[prevIssueIx] = false;
-
-    //     prevIssueIx = issue.parseIssue.id;
-    // }
-
+    $scope.closeModal = function () {
+        $scope.editMode = true;
+    }
 });

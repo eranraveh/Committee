@@ -7,10 +7,10 @@
                 <div class="col-sm-6 col-md-5 col-lg-4 p-1" ng-hide="newIssues.length === 0">
                     <hr class="my-2">
                     <h4 class="text-center">New issues</h4>
-                    <div id="newIssueAccordion">
-                        <!-- <issue-card ng-repeat="issue in newIssues | filter : newIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
+                    <issues-list class="pb-5" object-id="newIssueAccordion" issues-array="newIssues" filter-method="queryFilter" sort="issuesSort" open-issue="openReadIssue" new-issue="newIssue" limit="5" is-dashboard="isDashboard"></issues-list>
+                    <!-- <div id="newIssueAccordion">
                         <issue-card ng-repeat="issue in newIssues | orderBy : issuesSort | limitTo: 5" parent-id="newIssueAccordion"></issue-card>
-                    </div>
+                    </div> -->
                     <p class="small text-light" ng-show="newIssues.length > 5">There are {{newIssues.length - 5}} more issues</p>
                 </div>
 
@@ -18,10 +18,10 @@
                 <div class="col-sm-6 col-md-5 col-lg-4 p-1 " ng-hide="weekOldIssues.length === 0">
                     <hr class="my-2">
                     <h4 class="text-center">Week old issues</h4>
-                    <div id="oldIssueAccordion" class="mx-2">
-                        <!-- <issue-card ng-repeat="issue in weekOldIssues | filter : openOldIssueQueryFilter | orderBy : issuesSort | limitTo: 5" -->
+                    <issues-list class="pb-5" object-id="oldIssueAccordion" issues-array="weekOldIssues" filter-method="queryFilter" sort="issuesSort" open-issue="openReadIssue" new-issue="newIssue" limit="5" is-dashboard="isDashboard"></issues-list>
+                    <!-- <div id="oldIssueAccordion" class="mx-2">
                         <issue-card ng-repeat="issue in weekOldIssues | orderBy : issuesSort | limitTo: 5" parent-id="oldIssueAccordion"></issue-card>
-                    </div>
+                    </div> -->
                     <p class="small text-light" ng-show="weekOldIssues.length > 5">There are {{weekOldIssues.length - 5}} more issues</p>
                 </div>
 

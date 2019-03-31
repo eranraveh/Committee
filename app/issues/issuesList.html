@@ -1,11 +1,10 @@
 <div id="{{objectId}}" class="pb-5">
     <button class="btn btn-new text-danger py-0 px-1 " data-toggle="modal" rel="tooltip" title="Add new issue" tooltip
-        type="button" data-target="#newIssueForm" ng-click="newIssueOpen()">
+        type="button" data-target="#newIssueForm" ng-click="newIssueOpen()" ng-show="!isDashboard">
         <i class="fas fa-plus"></i>
     </button>
-
-    <issue-card ng-repeat="issue in issuesArray | filter : filterMethod | orderBy : sort" parent-id="{{objectId}}"
-        edited-issue="newIssue" issue="issue" index="{{$index}}" toggle-card="toggleCard(issue)"></issue-card>
+    <issue-card ng-repeat="issue in issuesArray | filter : filterMethod | orderBy : sort| limitTo: limit" parent-id="{{objectId}}"
+            is-dashboard="isDashboard" edited-issue="newIssue" issue="issue" index="{{$index}}" toggle-card="toggleCard(issue)" ></issue-card>
 </div>
 
 <div id="newIssueForm" class="container modal ">

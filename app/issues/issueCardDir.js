@@ -8,7 +8,8 @@ committeeApp.directive("issueCard", ["issuesSrv", function (issuesSrv) {
             editedIssue: "=",
             issue: "=",
             toggleCard: "&",
-            index: "@"
+            index: "@",
+            isDashboard: "="
         },
         link: function (scope, element, attributes) {
             scope.parentId = attributes.parentId;
